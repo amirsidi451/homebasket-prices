@@ -1,0 +1,58 @@
+[
+ {
+  "source": "HAZI_HINAM",
+  "name": "חצי חינם",
+  "chain_id": "7290700100008",
+  "id": 0,
+  "stores": 13
+ },
+ {
+  "source": "OSHER_AD",
+  "name": "אושר עד",
+  "chain_id": "7290103152017",
+  "id": 1,
+  "stores": 24
+ },
+ {
+  "source": "RAMI_LEVY",
+  "name": "רמי לוי",
+  "chain_id": "7290058140886",
+  "id": 2,
+  "stores": 99
+ },
+ {
+  "source": "SHUFERSAL",
+  "name": "שופרסל",
+  "chain_id": "7290027600007",
+  "id": 3,
+  "stores": 455
+ },
+ {
+  "source": "TIV_TAAM",
+  "name": "טיב טעם",
+  "chain_id": "7290873255550",
+  "id": 4,
+  "stores": 108
+ },
+ {
+  "source": "VICTORY_NEW_SOURCE",
+  "name": "ויקטורי",
+  "chain_id": "7290696200003",
+  "id": 5,
+  "stores": 70
+ },
+ {
+  "source": "YAYNO_BITAN_AND_CARREFOUR",
+  "name": "יינות ביתן/קרפור",
+  "chain_id": "7290055700007",
+  "id": 6,
+  "stores": 147
+ },
+ {
+  "source": "YOHANANOF",
+  "name": "יוחננוף",
+  "chain_id": "7290803800003",
+  "id": 7,
+  "stores": 98
+ }
+]
