@@ -9,3 +9,104 @@
 .fair-best{display:block;background:#e3f2e9;border:1px solid #a8c7b4;color:#084c36;border-radius:10px;padding:8px}.missing-row{display:flex;gap:12px;align-items:center;border-bottom:1px solid var(--line);padding:16px 0;flex-wrap:wrap}.missing-row>div{flex:1;min-width:190px}.missing-row p{margin:4px 0}dialog{width:min(680px,calc(100% - 24px));max-height:85dvh;overflow:auto;border:1px solid var(--line);border-radius:18px;padding:24px;color:var(--ink);background:var(--paper)}dialog::backdrop{background:#132c2580}.dialog-head{display:flex;gap:15px;justify-content:space-between;align-items:center}.alternative-card{padding:18px;background:white;border:1px solid var(--line);border-radius:13px;margin:12px 0}.alternative-card input,#offer-query{padding:10px;border:1px solid var(--line);border-radius:8px;max-width:100%;min-height:44px}.alternative-card label{display:flex;gap:12px;align-items:center;margin:12px 0}.alternative-card input{width:110px}#offers-panel summary{min-height:44px;font-weight:bold}#offer-query{display:block;margin:10px 0;width:100%}@media(max-width:480px){dialog{padding:16px}.dialog-head h2{font-size:19px}.missing-row button{white-space:nowrap}}
 
 .cart-missing{margin-top:8px}.cart-missing>div{margin:6px 0}.cart-missing button{font-size:13px;padding:5px 10px;min-height:44px}
+
+/* v1.4: complete source names, discoverable lazy offers, inseparable amount + coverage. */
+.card h3,.cart-row h3,.alternative-card h3{white-space:normal;overflow:visible;overflow-wrap:anywhere;max-height:none;line-clamp:unset;-webkit-line-clamp:unset;min-width:0}
+.cart-row>div{min-width:0}
+.amount-count{display:inline-flex;align-items:baseline;gap:6px;white-space:nowrap}
+.amount-count small{font-size:12px;font-weight:normal}
+.fair-summary .amount-count{font-size:24px;flex-wrap:wrap;white-space:normal}
+.offers-heading{margin-top:24px}
+#offers-panel summary{background:var(--mint);border:1px solid #a8c7b4;border-radius:12px;padding:14px 18px;color:var(--green);font-size:17px}
+@media(max-width:480px){.rank{grid-template-columns:80px 1fr}.rank .amount-count{grid-column:1/-1}.winner .total{font-size:32px}}
+
+/* v1.5 standalone, top-of-comparison offers; no automatic data fetch. */
+.offers-section{border:2px solid #86b69d;background:#eef7f0}
+.offers-section .offers-heading{margin-top:0;font-size:26px}
+.coverage-badge{font-size:13px;font-weight:bold;color:var(--green);background:var(--mint);border-radius:8px;padding:4px 8px}
+@media(max-width:480px){.card .coverage-badge{grid-column:2}.offers-section{padding:18px}.offers-section .offers-heading{font-size:22px}}
+
+/* v1.6: isolated mixed-direction offer text and actionable cart suggestions. */
+.offer-description{unicode-bidi:isolate;white-space:normal}
+.offer-description bdi{unicode-bidi:isolate;white-space:nowrap}
+.offer-result small{display:block;color:var(--muted)}
+.offer-sources{font-size:13px;color:var(--green)}
+.specific-suggestion{padding:12px;background:var(--mint);border:1px solid #a8c7b4;border-radius:12px;margin-top:10px}
+.specific-suggestion p{font-size:13px}.specific-suggestion small{display:block;margin-top:6px}
+.approved-cart{padding:8px;border-right:3px solid var(--green);background:#eef7f0}
+/* 1.6 UX: visible steps, a persistent basket, and local receipt review. */
+body{padding-bottom:130px}
+.home-explainer{background:white;border:1px solid var(--line);border-radius:22px;padding:28px}
+.home-explainer ol{padding-inline-start:22px}.home-explainer li{padding:9px 0}
+.stepper{display:flex;list-style:none;gap:12px;padding:18px 0;margin:0;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--paper);z-index:4}
+.stepper li{flex:1}.stepper a{display:block;padding:10px;border-radius:10px;text-align:center;font-size:14px;color:var(--muted)}
+.stepper a[aria-current="step"]{background:var(--green);color:white;font-weight:bold}
+.basket-dock{position:fixed;bottom:0;inset-inline:0;background:white;box-shadow:0 -4px 24px #183c211a;border-top:1px solid var(--line);padding:12px max(18px,calc((100vw - 1150px)/2));display:flex;align-items:center;gap:18px;z-index:8}
+#basket-drawer{flex:1;min-width:0;margin:0}#basket-drawer summary{display:flex;flex-direction:column;min-height:48px;gap:2px}
+#basket-drawer summary strong::after{content:" ⌃";color:var(--green)}
+#basket-estimate{font-size:12px;color:var(--muted);line-height:1.4}
+#basket-lines{max-height:36dvh;overflow:auto;margin-top:12px}
+.mini-row{display:grid;grid-template-columns:minmax(0,1fr) 75px 60px;gap:10px;align-items:center;border-bottom:1px solid var(--line);padding:12px 0;font-size:14px}
+.mini-row input{width:100%;padding:8px;border:1px solid var(--line);border-radius:8px;min-height:44px}
+.mini-row button{padding:6px}
+#basket-next{white-space:nowrap}
+#receipt-text{width:100%;padding:14px;font:inherit;border:1px solid var(--line);border-radius:12px;resize:vertical;direction:rtl}
+.privacy-note{background:var(--mint);padding:12px;border-radius:10px;color:var(--green);font-weight:bold}
+.receipt-row{display:grid;grid-template-columns:1fr auto;gap:12px;padding:20px;border:1px solid var(--line);border-radius:14px;margin:14px 0;background:var(--paper)}
+.receipt-row>p,.receipt-row>label,.receipt-row>.approve-receipt{grid-column:1/-1}
+.receipt-original{overflow-wrap:anywhere;font-size:14px}
+.receipt-row label{display:grid;gap:7px;font-size:14px;font-weight:bold}
+.receipt-row input:not([type=checkbox]),.receipt-row select{width:100%;min-width:0;padding:10px;border:1px solid #b2c8b9;border-radius:10px;background:white;min-height:46px}
+.receipt-row .approve-receipt{display:flex;align-items:center;gap:10px}.approve-receipt input{width:22px;height:22px}
+#receipt-progress{width:100%;accent-color:var(--green)}
+#receipt-status:not(:empty),#receipt-review-status:not(:empty){background:var(--mint);padding:12px;border-radius:10px}
+.result-sentence:not(:empty){font-size:20px;font-weight:bold;line-height:1.6;border-inline-start:4px solid var(--green);padding:14px 18px;background:white}
+@media(max-width:600px){
+ header nav{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;text-align:center}
+ .stepper{gap:3px}.stepper a{font-size:12px;padding:10px 3px}
+ .basket-dock{gap:10px;padding:10px 14px}.basket-dock #basket-next{font-size:13px;padding:9px;min-width:108px}
+ #basket-count{font-size:13px}#basket-estimate{font-size:11px}
+ .receipt-row{display:block;padding:14px}.receipt-row label{margin:14px 0}.receipt-row button{margin:5px 0}
+ .mini-row{grid-template-columns:minmax(0,1fr) 64px 52px;gap:6px}.mini-row span{overflow-wrap:anywhere}
+ .page-head{padding-top:30px}.page-head h1{font-size:32px}.panel{padding:18px}
+ .actions .button{flex-grow:1}.home-explainer{padding:20px}.result-sentence:not(:empty){font-size:17px}
+}
+@media print{.basket-dock,.stepper{display:none}body{padding-bottom:0}}
+/* 1.7: safe 390px layout, restrained comparison and explicit basket choice. */
+.saved-banner{background:var(--mint);border:1px solid #a8c7b4;padding:18px;border-radius:14px;margin-top:18px}
+.basket-preferences{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:14px 0}
+.basket-preferences label{display:flex;gap:8px;align-items:center;font-size:14px}.basket-preferences input{width:20px;height:20px}
+.paste-heading{background:var(--mint);padding:12px;border-radius:10px}
+.comparison-extra{background:white;border:1px solid var(--line);border-radius:12px;padding:14px}
+.comparison-extra>summary{font-weight:bold;min-height:44px;padding:8px}
+.comparison-main table{min-width:0;table-layout:fixed;width:100%}
+.main-comparison th:nth-child(1){width:28%}.main-comparison th:nth-child(2){width:44%}.main-comparison th:nth-child(3){width:28%}
+.main-comparison th,.main-comparison td{padding:9px 6px;overflow-wrap:anywhere;font-size:14px}
+.main-comparison td small{display:block;font-size:12px}.main-comparison .tag{display:block;font-size:10px;padding:3px}
+.main-comparison td details{font-size:12px}.main-comparison details summary{min-height:44px}
+.cart-row{grid-template-columns:minmax(0,1fr) auto 70px}
+.cart-row label{display:flex;gap:4px;align-items:center}.cart-row label input{width:70px}
+.cart-row label button{width:44px;min-width:44px;padding:8px}.cart-row label .sr{position:absolute}
+.mini-row{grid-template-columns:minmax(0,1fr) 44px 64px 44px 54px}
+.mini-row button{min-width:44px;min-height:44px;padding:6px}
+.alternative-tag{margin-inline:6px}
+body:has(#basket-drawer[open]){padding-bottom:calc(130px + min(42dvh,320px))}
+#basket-lines{max-height:min(42dvh,320px)}
+#receipt button,#receipt input,#receipt select{scroll-margin-bottom:150px}
+.offer-description{unicode-bidi:isolate}.offer-description bdi{unicode-bidi:isolate}
+@media(max-width:480px){
+ .basket-dock{align-items:flex-start}.basket-dock #basket-next{min-width:94px;font-size:12px}
+ .mini-row{grid-template-columns:44px minmax(44px,64px) 44px 54px;justify-content:start}
+ .mini-row>span{grid-column:1/-1}
+ .cart-row{grid-template-columns:minmax(0,1fr) 60px;padding:14px}
+ .cart-row>div:first-child{grid-column:1/-1}
+ .cart-row label{grid-column:1}.cart-row .remove{grid-column:2}
+ .main-comparison th,.main-comparison td{font-size:12px;padding:8px 4px}
+ .main-comparison td strong{font-size:14px;white-space:nowrap}
+ .comparison-main{padding:12px}
+ .table-wrap{max-width:100%;overflow-x:auto;overscroll-behavior-x:contain}
+ .receipt-row button{min-height:44px;max-width:100%}
+}
+@media print{.basket-preferences,.saved-banner{display:none}.comparison-extra{display:block}}
+/* Avoid iOS auto-zoom while editing quantities or receipt matches. */
+.receipt-row input:not([type=checkbox]),.receipt-row select,#receipt-text,.mini-row input,.cart-row input{font-size:16px}
