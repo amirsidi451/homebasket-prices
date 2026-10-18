@@ -1,0 +1,37 @@
+{
+  "files": {
+    "config.js": "8a6ec532782f7ba285672b32951bc1d8761301f6876a7c5affa5d1ab614ab5a2",
+    "core.js": "13b9db710768c6457e349c429cb0a773b2feb6b8a1911ca5e5efa73eed0e8805",
+    "online-core.js": "c154db8c13113762d5f4881ebb36ae41ce16fd0ec1986c780f1d140301b8ae69",
+    "fees.js": "42e9d5b48a0c6dafec6a79d10e9412579381dc99cccbf492d92d3b2be3df5ce7",
+    "top-ranking.js": "1da1df9e871418ba0326619ab465d3077b7140917234ad94b5a079d73391f252",
+    "chain-status.js": "92b7b3dc941988466b9af8a3dee2bca220cb1e0b5bbf86f9fd3e5e0c0751198e",
+    "comparison-view.js": "4d4d0b87a37e536df226e90433da513302babd4177f0d7027188cb0fbcdb11a9",
+    "product-images.js": "a3cb6adf3f3c7da46792f3432ee1645537d383869e9acc8fa89f66c96408a671",
+    "receipt-core.js": "21ff89a4a2e26f44caf21ba03b23a02f38ebf35f335dd01554578dacb8d80b3b",
+    "receipt-image.js": "09688619c34edf291b5ce9c88bfd94f1c8eb4371c2e464278716dc80166678f4"
+  },
+  "functions": {
+    "dataURL": "8ddabb0931d870008fc660cc0382916ebd91d3abec5879cb2d8460d9ab445c24",
+    "jsonFile": "3557eeb7abf7bba765e25517bfb2e58c77497a843698ef9cd59632473fc71740",
+    "load": "b2aa6d6af28fcfe902d54b2554c7e246ecfba055e513dfb3743ba35d40af22a0",
+    "getChunk": "b846e403a4aa32951ddfd95ad7cd36fb8deaf06d3eee0566a6c65ed1b0285f36",
+    "renderProducts": "e1959e9c998e34e2d3c3f647bb0d1eb946b4f1095f42a41267ded77370f4d2fd",
+    "renderCart": "91991d9179a1756a2bb237f56342cbb0ce4aa6304373446805fcb2bd21fc9634",
+    "renderCompare": "731efb3d38ed565c9db3ff4a2acd9680b4294c049aafe86f7b3f1d83cddf2891",
+    "renderOffers": "589b578d2ccde86b1ec8b82591a294fbd373189e10f28886e9cd8b87948deb75",
+    "openAlternatives": "0196ff0f13678c057d4c47e08078f75e64abf76a2a3eb130fd145993bbe6b1e1",
+    "approveAlternative": "784d4a7b3463d446973dcf589bb594a29a72acb3db62cab0032078f39d104331",
+    "coverageOptions": "aec03fd4cadb03109a96713a03af00e82542ec4123bd44e521940f363de712f1",
+    "approveCoverage": "532dc1a6334efbb153ce695505ee1fab6b7bd5dbaa15228ad8a500a4ccd6f221",
+    "setQuantity": "ccdc2e2deb7f38472976488c6717180eb3f6f751c13fb0ad52adf66bdecd8013",
+    "addProduct": "ff1c74833eb955ab140d070b0dee454fcdaa061fae1226ee3913aeea37c753be",
+    "applyService": "3276f793ca5e1d055b802ec79c51b1a91f1fcf7d91b2e9fbcc43cf5a14ed5ebd",
+    "clearService": "e9d6af532c07431fc5ee1706d00cb54d630ee37c1d0d513f1d459177c85a7db6",
+    "openOrder": "d1ea73a3569e60f7e7c27a349b3468a6a130d7cc868eec768449db1267d0ab23",
+    "updateChainSummary": "f647d49dde5d99928803cec877efc68eb4f00f6e39d4869bfb1a6899a01ce96f",
+    "renderCartMissing": "c82ac01a178dd371e2a82d28a46224359058436c49359191f6660a7ca39d56ad",
+    "closeAlternatives": "f2ae70107be66bd34b9daf23453969b19b9b25943ac5a99b9b80c1f1fd39d292"
+  },
+  "savingsModel": "bcd8d4a8e306f406f7ed43ed95891af01d535caf1fac59e5f5160faa4e482dc8"
+}

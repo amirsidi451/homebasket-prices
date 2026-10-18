@@ -1,27 +1,34 @@
-HomeBasket 2.4 — validation, 2026-10-18
-949 PASS, 0 failures from final full run; actual complete output in test-results.txt.
-855 previous checks retained; 94 new v24 cases. Only earlier release/favicon expectations
-updated to the new canonical version and cache query. No tests removed.
-Node API/DOM stubs + real gzip decoding; Python markup audit (9 checks).
-Synthetic 97,096-product and 60,000-promotion workloads retained.
+HomeBasket 2.5 — 2026-10-18
+1,055 PASS, 0 failing suites: Node 1,046 + Python markup audit 9.
+All 949 prior tests retained; 106 new checks in v25.test.cjs.
+Prior expectations changed only for release/favicon version, redesigned heading/cost wording,
+and the explicitly requested all-network chart: all-partial rows have no comparable bar,
+but their labelled placeholder rows are now shown. No prior tests deleted.
 
-New: all supplied rates, per-mode minima, one-agora-below/equal/above boundaries,
-strictly-over-750 tiers, no subsidy from customer fees toward thresholds, unknown costs,
-minimum-blocked rank and savings, equivalent dock and comparison calculation,
-local city/address parsing without outbound calls, location erase invalidates old results,
-inline quantity controls, preserved drafts, no screen transition and late-response modal close.
+New: SHA256 equality of 10 business/data modules and 20 application functions against 2.4,
+plus unchanged savings model. Product/data schemas, config, fee/minimum/threshold rules,
+rank/order qualifications, cart persistence, search, alternative approval, real gzip and
+first-use OCR/lazy promotion logic retained. All original regression suites executed.
+Synthetic 97,096-product and 60,000-promotion workloads included in existing tests.
 
-Regression guards retained: source snapshot freshness <=72h, cache reload and generated_at,
-real compact-export shapes, chain order, full/partial/common separation, exact barcode and
-approved alternatives, receipt OCR/text review/privacy, 40-result lazy promotions/debounce,
-mutually exclusive eight-chain counter, no automatic file download or payments.
+CSS and geometry contracts cover 360,390,768,1280 viewport widths, quantity controls fitting
+cards, shrinkable chart columns, three step controls, dock/CTA/list bounds, responsive winner
+and secondary cards. Light/dark foreground/background and focus contrast computed from tokens.
+Native file inputs remain keyboard-reachable, focus/reduced-motion rules checked. WOFF header,
+Hebrew alphabet, shekel, digit and Latin size glyphs decoded and verified from actual font bytes.
+Single-workspace visibility, prerequisites, progress, no false completed empty basket, one
+primary CTA, all-network chart placeholders and no rendering-side data mutation tested with
+browser API stubs. The static HTML was additionally checked for nested tag balance/duplicate IDs.
+All JavaScript files pass node --check. Whole original 2.4 source hash manifest verified unchanged.
 
-Limitations: no real browser automation/control skill available in this environment; browser
-QA and preview server were not run. 390px tests are CSS/math assertions, not screenshots or
-measured real layout. No actual 97,096-product export, real receipt photo or retailer checkout
-was supplied here. Product-data schema is unchanged and no data is invented or bundled.
-Rates are user-provided estimates, not independently verified published retailer terms.
-Minimums intentionally apply to both fulfilment modes unless edited in config.
-Unknown Rami Levy pickup fee retains the explicit products-only ranking rule.
-Original v2.3 folder and ZIP are preserved; SHA256 manifest verifies byte identity.
-Live site unchanged. Final archive contains test-results.txt and CHANGELOG_HE.txt.
+Performance budget: Node gzip estimated startup 158,593 bytes vs previous 74,361 (+84,232).
+Local WOFF 76,684 bytes. No new framework, icon library or font CDN. Detailed data exports,
+restoration archives and first-use OCR resources are outside this estimate. No real network
+waterfall, paint/CLS/scroll performance or Chrome heap measurement was performed.
+
+LIMITS: no control-browser capability available in this managed environment. Following the
+Sites workflow, no preview server/browser installation or alternative browser automation was
+used. No visual browser QA, actual phone screenshot, 360px browser overflow measurement,
+retailer checkout, real receipt photo or full real export was run here. CSS/math tests are
+not a guarantee of real rendering; run the supplied real-data/manual checklist before launch.
+No live deployment or data changes. Backup: backups/HomeBasket_Static_v2.4.zip plus full hashes.

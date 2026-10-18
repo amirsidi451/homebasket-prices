@@ -1,0 +1,74 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),zlib=require('node:zlib'),Layout=require('../layout.js'),S=require('../savings.js'),{setup,loadFixture}=require('./support.cjs');
+const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8'),css=read('redesign.css'),html=read('index.html'),baseline=JSON.parse(read('tests/v25-logic-baseline.json')),sha=x=>crypto.createHash('sha256').update(x).digest('hex');
+let count=0;function test(name,fn){fn();count++;console.log('PASS '+name);}
+const e=setup();
+for(const [f,hash]of Object.entries(baseline.files))test('v2.4 business/data module byte-identical: '+f,()=>assert.equal(sha(fs.readFileSync(path.join(root,f))),hash));
+for(const [f,hash]of Object.entries(baseline.functions))test('v2.4 application function unchanged: '+f,()=>assert.equal(sha(e.run(f+'.toString()')),hash));
+test('savings model unchanged; design cannot alter totals/grouping',()=>assert.equal(sha(S.model.toString()),baseline.savingsModel));
+test('canonical release is 2.5',()=>assert.equal(require('../release.js').VERSION,'2.5'));
+test('local variable font and licence actually bundled',()=>{const f=fs.readFileSync(path.join(root,'assets/fonts/Heebo-Variable.woff'));assert.equal(f.subarray(0,4).toString(),'wOFF');assert.equal(f.readUInt32BE(8),f.length);assert.ok(f.length<96*1024);assert.match(read('assets/fonts/OFL-Heebo.txt'),/SIL OPEN FONT LICENSE/);});
+function fontGlyph(cp){const f=fs.readFileSync(path.join(root,'assets/fonts/Heebo-Variable.woff'));let cmap;
+ for(let i=0;i<f.readUInt16BE(12);i++){const d=44+i*20;if(f.toString('ascii',d,d+4)==='cmap'){const offset=f.readUInt32BE(d+4),compressed=f.readUInt32BE(d+8),original=f.readUInt32BE(d+12),data=f.subarray(offset,offset+compressed);cmap=compressed<original?zlib.inflateSync(data):data;}}
+ assert.ok(cmap);for(let t=0;t<cmap.readUInt16BE(2);t++){const off=cmap.readUInt32BE(4+t*8+4),sub=cmap.subarray(off),format=sub.readUInt16BE(0);
+ if(format===4){const n=sub.readUInt16BE(6)/2,start=16+2*n,delta=start+2*n,range=delta+2*n;for(let i=0;i<n;i++){const a=sub.readUInt16BE(start+i*2),b=sub.readUInt16BE(14+i*2);if(cp<a||cp>b)continue;const r=sub.readUInt16BE(range+i*2),d=sub.readInt16BE(delta+i*2);if(!r)return(cp+d)&65535;const g=sub.readUInt16BE(range+i*2+r+(cp-a)*2);return g?(g+d)&65535:0;}}
+ if(format===12)for(let i=0;i<sub.readUInt32BE(12);i++){const a=sub.readUInt32BE(16+i*12),b=sub.readUInt32BE(20+i*12);if(cp>=a&&cp<=b)return sub.readUInt32BE(24+i*12)+cp-a;}
+ }return 0;}
+test('bundled font really contains every Hebrew letter including finals',()=>{for(let c=0x5d0;c<=0x5ea;c++)assert.ok(fontGlyph(c),'missing '+c.toString(16));});
+test('bundled font contains shekel sign, digits and Latin egg sizes',()=>{for(const char of '₪0123456789LMX')assert.ok(fontGlyph(char.codePointAt(0)),char);});
+test('font uses local URL and swap, with variable weight support',()=>{assert.match(css,/@font-face\{font-family:Heebo;src:url\('assets\/fonts\/Heebo-Variable.woff'\) format\('woff'\)/);assert.match(css,/font-weight:100 900;font-display:swap/);assert.match(html,/rel="preload" href="assets\/fonts\/Heebo-Variable.woff" as="font"/);});
+test('font downloaded once from own folder, no remote design libraries',()=>{assert.doesNotMatch(html,/(?:fonts\.googleapis|fonts\.gstatic|unpkg\.com|tailwind|bootstrap|gsap)/i);assert.doesNotMatch(css,/@import|url\(['"]?https?:|url\(['"]?\/\//);assert.equal((html.match(/Heebo-Variable\.woff/g)||[]).length,1);});
+test('theme follows device without storage, toggles or external script',()=>{assert.match(css,/@media\(prefers-color-scheme:dark\)/);assert.match(html,/name="color-scheme" content="light dark"/);assert.doesNotMatch(css,/localStorage|fetch\(/);});
+const rootVars=css.match(/:root\{color-scheme:[^}]+\}/)[0],darkVars=css.match(/@media\(prefers-color-scheme:dark\)\{:root\{([^}]+)/)[1];
+const vars=s=>Object.fromEntries([...s.matchAll(/--([\w-]+):(#[0-9a-f]{3,8})(?:;|\})/g)].map(x=>[x[1],x[2]]));
+const themes={light:vars(rootVars),dark:{...vars(rootVars),...vars(darkVars)}};
+function contrast(a,b){const lum=x=>{let c=x.slice(1);if(c.length===3)c=[...c].map(z=>z+z).join('');const v=c.match(/../g).slice(0,3).map(t=>parseInt(t,16)/255).map(z=>z<=.04045?z/12.92:((z+.055)/1.055)**2.4);return .2126*v[0]+.7152*v[1]+.0722*v[2];};const x=lum(a),y=lum(b);return(Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
+for(const [name,v]of Object.entries(themes))for(const [fg,bg,ratio]of [['ink','paper',4.5],['ink','surface',4.5],['muted','surface',4.5],['brand-ink','brand',4.5],['accent-ink','accent',4.5],['warning-ink','warning-bg',4.5],['focus','paper',3]])test(name+' contrast '+fg+'/'+bg+' >= '+ratio,()=>assert.ok(contrast(v[fg],v[bg])>=ratio,contrast(v[fg],v[bg])));
+test('legacy auxiliary inputs/labels overridden for dark mode',()=>{assert.match(css,/\.design-v25 \.product-letter\{color:var\(--brand\)/);assert.match(css,/\.design-v25 \.receipt-row input:not\(\[type=checkbox\]\),\.design-v25 \.receipt-row select\{background:var\(--surface\)/);assert.match(css,/\.design-v25 \.comparison-extra,\.design-v25 \.other-networks>summary/);});
+for(const width of [360,390,768,1280]){
+ const g=Layout.designMetrics(width,844);
+ test(width+'px content bounded by viewport, without clipping overflow',()=>{assert.ok(g.main+g.reserve<=width);assert.ok(g.content>0);assert.doesNotMatch(css,/overflow-x:\s*hidden|width:\s*100vw/);});
+ test(width+'px product quantity and add controls fit real card geometry',()=>{assert.ok(g.addControls<=g.productInner,JSON.stringify(g));assert.equal(g.controlMin,44);});
+ test(width+'px card columns fit content including gaps',()=>assert.ok(g.productWidth*g.columns+14*(g.columns-1)<=g.content+.001));
+ test(width+'px three step controls fit and keep 44px minimum',()=>{assert.ok(g.stepWidth>=80);assert.equal(g.stepWidth*3+2*(g.mobile?6:10),g.content);});
+ test(width+'px chart columns shrink and fit container',()=>{assert.ok(g.chartColumns.every(n=>n>60));assert.ok(Math.abs(g.chartColumns.reduce((s,n)=>s+n,0)+2*g.chartGap-g.chartInner)<.01);});
+ test(width+'px correct dock placement and capped height',()=>{assert.equal(g.sidebar,width>=1100?304:0);assert.ok(g.dockMax<=844);if(g.sidebar)assert.equal(g.reserve,340);});
+ test(width+'px winner and next-two card grouping adapts',()=>assert.equal(g.topColumns,width<768?1:2));
+}
+test('CSS breakpoints exactly match geometry module',()=>{assert.match(css,/@media\(max-width:767px\)/);assert.match(css,/@media\(min-width:1100px\)/);assert.match(css,/padding-inline-end:340px/);assert.match(css,/grid-template-columns:repeat\(2,minmax\(0,1fr\)\);gap:16px/);});
+test('long names, prices and Latin text can wrap without clipping',()=>{assert.match(css,/overflow-wrap:anywhere/);assert.doesNotMatch(css,/text-overflow:ellipsis|-webkit-line-clamp|line-clamp:\s*[1-9]/);assert.match(css,/\.design-v25 \.savings-chart li>span,\.design-v25 \.savings-chart li>bdi\{min-width:0;overflow-wrap:anywhere/);});
+test('dock keeps CTA outside scrollable list on mobile',()=>{assert.match(css,/\.design-v25 #basket-drawer\{min-height:0;overflow-y:auto;max-height:calc\(48dvh - 90px - env\(safe-area-inset-bottom\)\)/);assert.match(css,/\.design-v25 #basket-next\{flex-shrink:0/);});
+test('keyboard focus ring covers buttons, links, fields and disclosure',()=>assert.match(css,/:where\(button,a,input,select,summary,textarea\):focus-visible\{outline:3px solid var\(--focus\)/));
+test('file upload is keyboard reachable and visibly expands on focus',()=>{const files=html.match(/<input\b[^>]*type="file"[^>]*>/g);assert.ok(files.length>=4);assert.ok(files.every(t=>!(/\shidden(?:\s|>)/.test(t))&&/class="sr file-input"/.test(t)));assert.match(css,/\.file-input:focus-visible\{position:static;width:auto;height:auto;clip-path:none/);});
+test('reduced motion disables animation and smooth scrolling',()=>assert.match(css,/@media\(prefers-reduced-motion:reduce\)[\s\S]*animation:none!important;transition:none!important;scroll-behavior:auto!important/));
+test('one progress indicator, labelled, with three actual linked steps',()=>{assert.equal((html.match(/id="workflow-progress"/g)||[]).length,1);assert.match(html,/<progress id="workflow-progress" max="3" value="1" aria-label=/);const steps=html.match(/<ol class="stepper"[\s\S]*?<\/ol>/)[0];assert.equal((steps.match(/<li>/g)||[]).length,3);});
+test('hero intro precedes step one, three sections have focus targets',()=>{assert.ok(html.indexOf('id="home"')<html.indexOf('id="location"'));for(const id of ['location','search','compare'])assert.match(html,new RegExp('<section id="'+id+'"[^>]+aria-labelledby="[^"]+" tabindex="-1"'));});
+test('all network status remains available in disclosure before main',()=>{const i=html.indexOf('id="chain-summary"');assert.ok(i<html.indexOf('<main'));assert.ok(html.lastIndexOf('<details class="status-help">',i)>html.indexOf('class="chain-status-strip"'));});
+test('technical comparison and promotion explanations are disclosures',()=>{assert.match(html,/<details class="why"><summary>למה המבצעים/);assert.match(read('app.js'),/details class="why ranking-why"/);});
+test('no image feature rewrite; placeholders and lazy images preserved byte-for-byte',()=>{assert.equal(sha(fs.readFileSync(path.join(root,'product-images.js'))),baseline.files['product-images.js']);assert.match(e.run('productVisual.toString()'),/loading="lazy" decoding="async" referrerpolicy="no-referrer"/);assert.match(e.run('productVisual.toString()'),/product-letter/);});
+// Bound the additional runtime download, excluding data and nested restoration backups.
+test('design adds under 100KB of compressed startup assets including local font',()=>{const base=path.join(__dirname,'../../HomeBasket_Static_v2_4');let old=0,current=0;const assets=markup=>[...markup.matchAll(/(?:src|href)="([^"?#]+)(?:\?[^"#]*)?"/g)].map(m=>m[1]).filter(f=>/\.(?:js|css|woff|svg|ico)$/.test(f));const sum=(dir,h)=>[...new Set(['index.html',...assets(h)])].reduce((n,f)=>n+zlib.gzipSync(fs.readFileSync(path.join(dir,f))).length,0);current=sum(root,html);if(fs.existsSync(base))old=sum(base,fs.readFileSync(path.join(base,'index.html'),'utf8'));else old=JSON.parse(read('tests/v25-size-baseline.json')).gzipStartup;assert.ok(current-old<100*1024,{current,old});});
+(async()=>{
+ await loadFixture(e);const views=['home','location','search','compare','receipt','cart','info','networks'].map(e.get),nav=['location','search','compare'].map(id=>({hash:'#'+id,setAttribute(){},removeAttribute(){}}));e.ctx.document.querySelectorAll=s=>s==='.view'?views:nav;
+ e.ctx.location.hash='#search';e.run('route()');
+ test('city, build and compare stay on one screen in the main workspace',()=>{for(const id of ['location','search','compare'])assert.equal(e.get(id).hidden,false);for(const id of ['receipt','cart','info'])assert.equal(e.get(id).hidden,true);});
+ test('step two progress and completed first step exposed to keyboard/screenreader',()=>{assert.equal(e.get('workflow-progress').value,2);assert.equal(e.get('step-build')['aria-current'],'step');assert.equal(e.get('step-location')['data-complete'],'true');});
+ e.run("servicePlace=null;location.hash='#compare';route()");
+ test('redesign does not bypass required location precondition',()=>{assert.equal(e.ctx.location.hash,'#location');assert.equal(e.get('workflow-progress').value,1);});
+ e.run("applyService('עיר בדיקה','delivery');cart=[{barcode:'3073781199918',qty:1}];location.hash='#compare';route()");await e.run('renderCompare()');
+ test('step three and winner card use existing all-in totals',()=>{assert.equal(e.get('workflow-progress').value,3);assert.match(e.get('comparison').innerHTML,/class="top-chain top-first"/);assert.match(e.get('comparison').innerHTML,/סך הסל:/);assert.match(e.get('comparison').innerHTML,/הבחירה המשתלמת/);});
+ test('one primary handoff, runners retain secondary action',()=>{const h=e.get('comparison').innerHTML;assert.equal((h.match(/<button class="primary" data-order=/g)||[]).length,1);assert.match(h,/<button class="secondary" data-order="1"/);});
+ test('winner displays comparable saving already computed by ranking',()=>assert.match(e.get('comparison').innerHTML,/class="winner-saving"[^>]*>[^<]*חוסכת/));
+ test('empty basket is never marked complete just by opening comparison',()=>{const saved=e.run('cart');e.ctx.retainedCart=saved;e.run('cart=[];updateWorkflow()');assert.equal(e.get('step-build')['data-complete'],'false');e.run('cart=retainedCart;updateWorkflow()');});
+ test('remaining-network reasons collapsed, all chain indexes remain present',()=>{const h=e.get('all-chain-explanations').innerHTML;assert.match(h,/^<details class="panel chain-audit"><summary>/);assert.equal((h.match(/data-audit-chain=/g)||[]).length,2);assert.doesNotMatch(h,/<details class="panel chain-audit" open/);});
+ test('chart visible before collapsed data table',()=>{const h=e.get('savings').innerHTML;assert.ok(h.indexOf('<figure class="savings-chart">')<h.indexOf('<details class="savings-detail">'));});
+ const now=Date.now(),n=Array.from({length:8},(_,i)=>({source:'C'+i,name:'רשת '+i,index:i})),c={chains:Object.fromEntries(n.map(x=>[x.source,{availability:'verify',delivery:true,estimatedDeliveryFee:35.9}]))};
+ const model=S.model({rows:n.map((_,i)=>({chain:i,coverage:i===7?1:2,total:2000+i*100})),cartSize:2,networks:n,config:c,place:{city:'בדיקה',mode:'delivery'},snapshots:n.map(()=>new Date(now).toISOString()),now});
+ const chart=S.render(model,'delivery');
+ test('all eight networks appear exactly once in the chart',()=>{assert.equal((chart.match(/data-chart-chain=/g)||[]).length,8);for(let i=0;i<8;i++)assert.equal((chart.match(new RegExp('data-chart-chain="'+i+'"','g'))||[]).length,1);});
+ test('partial row has explicit note, no invented comparable bar',()=>{const row=chart.match(/<li data-chart-chain="7"[\s\S]*?<\/li>/)[0];assert.match(row,/מחיר חלקי, לא ניתן להשוות/);assert.match(row,/class="savings-unpriced"/);assert.doesNotMatch(row,/class="savings-bar/);});
+ const before=JSON.stringify(model);S.render(model,'pickup');
+ test('rendering graph cannot mutate savings model or customer amounts',()=>assert.equal(JSON.stringify(model),before));
+ e.ctx.location.hash='#receipt';e.run('route()');
+ test('receipt remains separate and dock drawer closes to protect review controls',()=>{assert.equal(e.get('receipt').hidden,false);assert.equal(e.get('basket-drawer').open,false);assert.equal(e.get('compare').hidden,true);});
+ console.log(count+' v2.5 design/theme/keyboard/layout/unchanged-logic checks passed (not visual browser QA)');
+})().catch(err=>{console.error(err);process.exitCode=1;});

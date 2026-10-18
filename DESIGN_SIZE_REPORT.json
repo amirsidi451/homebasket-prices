@@ -1,0 +1,8 @@
+{
+  "gzipStartupBytes": 158593,
+  "previousGzipStartupBytes": 74361,
+  "additionalBytes": 84232,
+  "fontBytes": 76684,
+  "method": "Node gzip, default compression; startup HTML/CSS/JS/icons/local font only; excludes data, backup ZIP, documentation and first-use OCR dependencies",
+  "realBrowser": false
+}

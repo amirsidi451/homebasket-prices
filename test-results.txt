@@ -54,7 +54,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 812 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 773 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +156,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":153,"search_ms":16.06,"heap_delta_mb":44.2,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":166,"search_ms":18.76,"heap_delta_mb":32.7,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -1006,6 +1006,115 @@ PASS cache protections still use reload and snapshot freshness
 PASS dock picks same all-in cheapest chain instead of cheapest product subtotal
 PASS clearing location cannot leave old priced recommendation or order modal
 94 v2.4 fulfilment/minima/live-location/inline-add/modal checks passed
+
+v25.test.cjs
+PASS v2.4 business/data module byte-identical: config.js
+PASS v2.4 business/data module byte-identical: core.js
+PASS v2.4 business/data module byte-identical: online-core.js
+PASS v2.4 business/data module byte-identical: fees.js
+PASS v2.4 business/data module byte-identical: top-ranking.js
+PASS v2.4 business/data module byte-identical: chain-status.js
+PASS v2.4 business/data module byte-identical: comparison-view.js
+PASS v2.4 business/data module byte-identical: product-images.js
+PASS v2.4 business/data module byte-identical: receipt-core.js
+PASS v2.4 business/data module byte-identical: receipt-image.js
+PASS v2.4 application function unchanged: dataURL
+PASS v2.4 application function unchanged: jsonFile
+PASS v2.4 application function unchanged: load
+PASS v2.4 application function unchanged: getChunk
+PASS v2.4 application function unchanged: renderProducts
+PASS v2.4 application function unchanged: renderCart
+PASS v2.4 application function unchanged: renderCompare
+PASS v2.4 application function unchanged: renderOffers
+PASS v2.4 application function unchanged: openAlternatives
+PASS v2.4 application function unchanged: approveAlternative
+PASS v2.4 application function unchanged: coverageOptions
+PASS v2.4 application function unchanged: approveCoverage
+PASS v2.4 application function unchanged: setQuantity
+PASS v2.4 application function unchanged: addProduct
+PASS v2.4 application function unchanged: applyService
+PASS v2.4 application function unchanged: clearService
+PASS v2.4 application function unchanged: openOrder
+PASS v2.4 application function unchanged: updateChainSummary
+PASS v2.4 application function unchanged: renderCartMissing
+PASS v2.4 application function unchanged: closeAlternatives
+PASS savings model unchanged; design cannot alter totals/grouping
+PASS canonical release is 2.5
+PASS local variable font and licence actually bundled
+PASS bundled font really contains every Hebrew letter including finals
+PASS bundled font contains shekel sign, digits and Latin egg sizes
+PASS font uses local URL and swap, with variable weight support
+PASS font downloaded once from own folder, no remote design libraries
+PASS theme follows device without storage, toggles or external script
+PASS light contrast ink/paper >= 4.5
+PASS light contrast ink/surface >= 4.5
+PASS light contrast muted/surface >= 4.5
+PASS light contrast brand-ink/brand >= 4.5
+PASS light contrast accent-ink/accent >= 4.5
+PASS light contrast warning-ink/warning-bg >= 4.5
+PASS light contrast focus/paper >= 3
+PASS dark contrast ink/paper >= 4.5
+PASS dark contrast ink/surface >= 4.5
+PASS dark contrast muted/surface >= 4.5
+PASS dark contrast brand-ink/brand >= 4.5
+PASS dark contrast accent-ink/accent >= 4.5
+PASS dark contrast warning-ink/warning-bg >= 4.5
+PASS dark contrast focus/paper >= 3
+PASS legacy auxiliary inputs/labels overridden for dark mode
+PASS 360px content bounded by viewport, without clipping overflow
+PASS 360px product quantity and add controls fit real card geometry
+PASS 360px card columns fit content including gaps
+PASS 360px three step controls fit and keep 44px minimum
+PASS 360px chart columns shrink and fit container
+PASS 360px correct dock placement and capped height
+PASS 360px winner and next-two card grouping adapts
+PASS 390px content bounded by viewport, without clipping overflow
+PASS 390px product quantity and add controls fit real card geometry
+PASS 390px card columns fit content including gaps
+PASS 390px three step controls fit and keep 44px minimum
+PASS 390px chart columns shrink and fit container
+PASS 390px correct dock placement and capped height
+PASS 390px winner and next-two card grouping adapts
+PASS 768px content bounded by viewport, without clipping overflow
+PASS 768px product quantity and add controls fit real card geometry
+PASS 768px card columns fit content including gaps
+PASS 768px three step controls fit and keep 44px minimum
+PASS 768px chart columns shrink and fit container
+PASS 768px correct dock placement and capped height
+PASS 768px winner and next-two card grouping adapts
+PASS 1280px content bounded by viewport, without clipping overflow
+PASS 1280px product quantity and add controls fit real card geometry
+PASS 1280px card columns fit content including gaps
+PASS 1280px three step controls fit and keep 44px minimum
+PASS 1280px chart columns shrink and fit container
+PASS 1280px correct dock placement and capped height
+PASS 1280px winner and next-two card grouping adapts
+PASS CSS breakpoints exactly match geometry module
+PASS long names, prices and Latin text can wrap without clipping
+PASS dock keeps CTA outside scrollable list on mobile
+PASS keyboard focus ring covers buttons, links, fields and disclosure
+PASS file upload is keyboard reachable and visibly expands on focus
+PASS reduced motion disables animation and smooth scrolling
+PASS one progress indicator, labelled, with three actual linked steps
+PASS hero intro precedes step one, three sections have focus targets
+PASS all network status remains available in disclosure before main
+PASS technical comparison and promotion explanations are disclosures
+PASS no image feature rewrite; placeholders and lazy images preserved byte-for-byte
+PASS design adds under 100KB of compressed startup assets including local font
+PASS city, build and compare stay on one screen in the main workspace
+PASS step two progress and completed first step exposed to keyboard/screenreader
+PASS redesign does not bypass required location precondition
+PASS step three and winner card use existing all-in totals
+PASS one primary handoff, runners retain secondary action
+PASS winner displays comparable saving already computed by ranking
+PASS empty basket is never marked complete just by opening comparison
+PASS remaining-network reasons collapsed, all chain indexes remain present
+PASS chart visible before collapsed data table
+PASS all eight networks appear exactly once in the chart
+PASS partial row has explicit note, no invented comparable bar
+PASS rendering graph cannot mutate savings model or customer amounts
+PASS receipt remains separate and dock drawer closes to protect review controls
+106 v2.5 design/theme/keyboard/layout/unchanged-logic checks passed (not visual browser QA)
 
 markup.test.py
 PASS markup has no duplicate IDs

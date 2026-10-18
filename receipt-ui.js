@@ -3,15 +3,13 @@
 let summaryRequest=0,receiptRows=[],reviewGeneration=-1,reviewEpoch=0,ocrEpoch=0,ocrWorker=null,ocrLoading=null;
 const el=id=>document.getElementById(id),escape=E;
 function say(text){el('receipt-status').textContent=text;}
-function update(){updateChainSummary();
+function update(){updateChainSummary();updateWorkflow();
  const types=cart.length,packs=cart.filter(i=>!catalog.get(i.barcode)?.weighted).reduce((s,i)=>s+i.qty,0),kg=cart.filter(i=>catalog.get(i.barcode)?.weighted).reduce((s,i)=>s+i.qty,0);
  el('saved-cart-banner').hidden=!!types||!pendingSavedCart.length;
  el('save-cart-choice').checked=saveCartEnabled;
  el('saved-cart-count').textContent=!types&&pendingSavedCart.length?HBOnline.productsCount(pendingSavedCart.length)+' מסל קודם':'';
  el('basket-count').textContent=types?HBOnline.productsCount(types)+(packs&&packs!==types?' · '+HBOnline.packs(packs):'')+(kg?' · '+Number(kg.toFixed(3))+' ק״ג':''):'הסל ריק — בואו נתחיל';
  el('basket-lines').innerHTML=cart.map(i=>'<div class="mini-row"><span>'+escape(HB.displayName(catalog.get(i.barcode)))+provenanceBadge(i.barcode)+'</span><button data-mini-adjust="-1" data-code="'+i.barcode+'" aria-label="הפחת כמות">−</button><label class="sr" for="mini-'+i.barcode+'">כמות</label><input id="mini-'+i.barcode+'" type="number" min="'+(catalog.get(i.barcode)?.weighted?.001:1)+'" max="999" step="'+(catalog.get(i.barcode)?.weighted?.001:1)+'" value="'+i.qty+'" data-mini-qty="'+i.barcode+'"><button data-mini-adjust="1" data-code="'+i.barcode+'" aria-label="הוסף כמות">+</button><button data-mini-remove="'+i.barcode+'">הסר</button></div>').join('')||'<p>חפשו מוצר או העלו קבלה כדי לבנות סל.</p>';
- const path=location.hash.slice(1),active=!servicePlace||path==='location'?1:['compare','networks'].includes(path)?3:2;
- for(const [id,n]of [['step-location',1],['step-build',2],['step-compare',3]]){el(id).setAttribute('aria-current',n===active?'step':'false');}
  el('basket-next').href=!servicePlace?'#location':types?'#compare':'#search';el('basket-next').textContent=!servicePlace?'בחירת מיקום':types?'השווה מחירים':'בנה סל';
  el('networks-empty').hidden=!!types;window.HB_LAYOUT?.sync();
  el('home-data-status').innerHTML=ready?'<strong>המחירים מוכנים להשוואה</strong><p>'+'מצב כל הרשתות מופיע במונה האחיד בראש העמוד · '+catalog.size.toLocaleString('he-IL')+' מוצרים במאגר. עדכניות כל רשת נבדקת בנפרד.</p>':'<strong>לפני שמתחילים: מחברים את המחירים</strong><p>בחבילה המקומית בחרו פעם אחת את תיקיית הנתונים שלכם. אין כאן מחירי דוגמה.</p><a class="button" href="#info">טעינת המחירים מהמחשב</a>';

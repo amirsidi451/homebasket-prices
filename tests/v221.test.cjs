@@ -14,7 +14,7 @@ f.config.chains.C7.estimatedDeliveryFee=null;m=S.model(f);
 test('one unknown fee switches EVERY full row to products basis',()=>{assert.equal(m.basis,'products');assert.ok(m.full.every(r=>r.amount===r.itemsTotal));});
 test('unknown grand total stays null',()=>{assert.equal(m.all[7].fee,null);assert.equal(m.all[7].total,null);});
 test('known subtotal fee and grand total still displayed separately',()=>{assert.equal(m.all[0].itemsTotal,10000);assert.equal(m.all[0].fee,1000);assert.equal(m.all[0].total,11000);});
-test('unknown-fee fallback stated explicitly in rendered content',()=>assert.match(S.render(m,'delivery'),/מחירי מוצרים לפני דמי שירות/));
+test('unknown-fee fallback stated explicitly in rendered content',()=>assert.match(S.render(m,'delivery'),/מחירי מוצרים לפני משלוח או איסוף/));
 f=fixture();f.rows[1]={chain:1,coverage:1,total:1};f.rows[2]={chain:2,coverage:0,total:0};m=S.model(f);
 test('partial cheap basket never enters full savings',()=>{assert.equal(m.full.length,6);assert.equal(m.chosen.chain,0);assert.equal(m.partial.length,2);});
 test('partial rows excluded from average',()=>assert.equal(m.average,(11000+14000+15000+16000+17000+18000)/6));
@@ -38,7 +38,7 @@ f.chosenChain=0;m=S.model(f);test('unavailable chosen id rejected',()=>assert.eq
 f=fixture();for(const c of Object.values(f.config.chains))c.delivery=false;m=S.model(f);
 test('all unavailable still shows full reference table without recommending',()=>{assert.equal(m.full.length,8);assert.equal(m.chosen,null);assert.equal(m.versusHighest,null);assert.match(S.render(m,'delivery'),/אין כרגע רשת רלוונטית/);});
 f=fixture();f.rows.forEach(r=>r.coverage=1);m=S.model(f);
-test('all partial gives no savings, average or misleading bar chart',()=>{assert.equal(m.full.length,0);assert.equal(m.average,null);assert.equal(m.chosen,null);assert.doesNotMatch(S.render(m,'delivery'),/<figure/);});
+test('all partial gives no savings, average or misleading bar chart',()=>{assert.equal(m.full.length,0);assert.equal(m.average,null);assert.equal(m.chosen,null);assert.doesNotMatch(S.render(m,'delivery'),/class="savings-bar(?: chosen)?"/);});
 f=fixture();f.rows=f.rows.slice(0,1);m=S.model(f);
 test('one full chain not enough for savings claim',()=>{assert.equal(m.versusHighest,null);assert.match(S.render(m,'delivery'),/אין מספיק נתונים/);});
 test('missing rows still preserve all eight source identities',()=>assert.equal(m.all.length,8));
@@ -54,7 +54,7 @@ test('fractional weighted quantities included via coverage core',()=>{const ff=f
 test('existing Top3 policy untouched by savings model',()=>{const ff=fixture();const before=T.rank(ff);S.model(ff);assert.deepEqual(T.rank(ff),before);});
 (async()=>{
  const e=setup();await loadFixture(e);e.run("cart=[{barcode:'3073781199918',qty:1}];");await e.run('renderCompare()');
- test('comparison screen mounts savings without changing main comparison',()=>{assert.match(e.get('savings').innerHTML,/כמה אתה חוסך/);assert.match(e.get('comparison').innerHTML,/top-three/);});
+ test('comparison screen mounts savings without changing main comparison',()=>{assert.match(e.get('savings').innerHTML,/כמה אתם חוסכים/);assert.match(e.get('comparison').innerHTML,/top-three/);});
  test('retains cached gzip data and lazy promotions',()=>{assert.equal(e.run('offers'),null);assert.ok(e.run('priceCache.size')>0);});
  e.run("for(const c of Object.values(HB_CONFIG.chains))c.delivery=false;");await e.run('renderCompare()');
  test('even no eligible service still renders reference savings table',()=>{assert.match(e.get('savings').innerHTML,/רשת א/);assert.match(e.get('comparison').innerHTML,/לא הוגדרו|אזורי שירות/);});
