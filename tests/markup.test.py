@@ -17,7 +17,7 @@ a=Audit();html=(root/'index.html').read_text();a.feed(html)
 assert len(a.ids)==len(set(a.ids));print('PASS markup has no duplicate IDs')
 for id in ['home','receipt','networks','basket-drawer','basket-lines','result-summary','step-build','step-networks','step-compare']:assert id in a.ids
 print('PASS all entry, step and persistent-basket controls exist')
-assert 'networks' in a.parents['chain-select'];print('PASS chain selection mounted in its own page')
+assert 'compare' in a.parents['chain-select'];print('PASS chain selection tucked into comparison options')
 assert 'dir="rtl"' in html;print('PASS RTL document preserved')
 assert all((root/src.split('?')[0]).is_file() for src in a.scripts);print('PASS every startup script exists locally')
 assert 'tesseract' not in ' '.join(a.scripts);print('PASS OCR dependency not loaded at startup')

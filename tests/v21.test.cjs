@@ -51,8 +51,8 @@ f=fixture([[3,100]],[0]);f.rows[0].coverage=4;test('invalid coverage cannot over
  e.run("HB_CONFIG.chains.C0.estimatedDeliveryFee=null;HB_CONFIG.chains.C1.estimatedDeliveryFee=null;HB_CONFIG.chains.C3.estimatedDeliveryFee=null");await e.run('renderCompare()');
  test('unknown-fee main UI has no fabricated total',()=>{assert.match(e.get('comparison').innerHTML,/סכום כולל אינו ידוע/);assert.match(e.get('result-summary').textContent,/לא ניתן לקבוע סכום כולל/);});
  e.run("HB_CONFIG.chains.C0.delivery=false;HB_CONFIG.chains.C1.delivery=false;HB_CONFIG.chains.C3.delivery=false");await e.run('renderCompare()');
- test('fewer than three supported results are not padded',()=>{assert.equal((e.get('comparison').innerHTML.match(/data-top-chain=/g)||[]).length,1);assert.match(e.get('comparison').innerHTML,/נמצאה רשת אחת/);});
- test('all-partial UI labels amount as partial',()=>{assert.match(e.get('comparison').innerHTML,/סכום חלקי:/);assert.match(e.get('result-summary').textContent,/אין רשת שמכסה את כל הסל/);});
+ test('fewer than three supported results are not padded',()=>{assert.equal((e.get('comparison').innerHTML.match(/data-top-chain=/g)||[]).length,0);assert.match(e.get('comparison').innerHTML,/סל חלקי/);});
+ test('all-partial UI labels amount as partial',()=>{assert.match(e.get('comparison').innerHTML,/מחיר חלקי/);assert.match(e.get('result-summary').textContent,/אין רשת שמכסה את כל הסל/);});
  const css=fs.readFileSync(path.join(__dirname,'../styles.css'),'utf8');test('390px top cards become single-column with 48px buttons',()=>{assert.match(css,/@media\(max-width:850px\)\{\.top-three-grid\{grid-template-columns:minmax\(0,1fr\)/);assert.match(css,/\.top-chain button\{[^}]*min-height:48px/);});
  test('explanations entirely deterministic without network or AI dependencies',()=>assert.doesNotMatch(fs.readFileSync(path.join(__dirname,'../top-ranking.js'),'utf8'),/\bfetch\s*\(|OPENAI|apiKey|XMLHttpRequest/));
  console.log(n+' v2.1 ranking/explanation/UI checks passed (Node API stubs, not visual QA)');

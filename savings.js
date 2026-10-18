@@ -42,10 +42,10 @@
   if(m.feesEnabled)html+='<p class="warning">דמי השירות הם חישוב לדוגמה בלבד. אין גבייה באתר; התשלום לרשת מתבצע בנפרד באתר שלה.</p>';
   if(m.chosen)html+='<p>הרשת הנבחרת לחישוב החיסכון: <strong><bdi>'+esc(m.chosen.name)+'</bdi></strong>. '+(m.chosenFromTop?'זו הרשת במקום הראשון ב־Top 3. כשחסרים דמי שירות, בסיס החיסכון כאן עשוי להיות שונה מהדירוג שם.':'נבחרה הזולה בכיסוי מלא מבין הרשתות הרלוונטיות לפי בסיס החיסכון הזה.')+'</p>';
   if(m.versusHighest)html+='<div class="savings-highlights"><p>לעומת היקרה ביותר: <strong><bdi>'+savingText(m.versusHighest)+'</bdi></strong></p><p>לעומת ממוצע '+m.full.length+' הרשתות בעלות הכיסוי המלא (כולל הנבחרת): <strong><bdi>'+savingText(m.versusAverage)+'</bdi></strong></p></div>';
-  html+='<h3>סל מלא — השוואה הוגנת</h3>'+(m.full.length?table(m.full):'<p>אין רשת עם מחיר עדכני לכל המוצרים בסל.</p>');
+  html+='<details class="savings-detail"><summary>פירוט החיסכון והגרף לכל הרשתות</summary><h3>סל מלא — השוואה הוגנת</h3>'+(m.full.length?table(m.full):'<p>אין רשת עם מחיר עדכני לכל המוצרים בסל.</p>');
   if(m.full.length)html+='<figure class="savings-chart"><figcaption>מחיר הסל בכל רשת עם כיסוי מלא · '+basis+'</figcaption><ul>'+m.full.map(r=>'<li><span><bdi>'+esc(r.name)+'</bdi></span><div class="savings-track" aria-hidden="true"><div class="savings-bar'+(r.chain===m.chosen?.chain?' chosen':'')+'" style="width:'+r.bar.toFixed(3)+'%"></div></div><bdi>'+money(r.amount)+'</bdi></li>').join('')+'</ul></figure>';
   if(m.partial.length)html+='<h3>מחירים חלקיים או נתונים לא עדכניים</h3><p>מחיר חלקי, לא ניתן להשוות. רשתות אלו אינן נכללות בחיסכון, בממוצע או בגרף; סכום זול יותר אינו מעיד על סל זול יותר.</p>'+table(m.partial);
-  return html+'</section>';
+  return html+'</details></section>';
  }
  return {model,difference,savingText,render};
 });

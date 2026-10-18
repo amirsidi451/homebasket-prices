@@ -73,7 +73,7 @@ e.ctx.document.querySelectorAll=selector=>selector==='.view'?['home','search','r
 e.ctx.location.hash='#home';e.run('route()');
 test('opening view exposes both manual and receipt entry paths',()=>{assert.equal(e.get('home').hidden,false);assert.equal(e.get('receipt').hidden,true);});
 e.ctx.location.hash='#networks';e.run('route()');
-test('network selection is separate visible step',()=>{assert.equal(e.get('networks').hidden,false);assert.equal(e.get('home').hidden,true);});
+test('legacy network step redirects to comparison options',()=>{assert.equal(e.get('compare').hidden,false);assert.equal(e.get('networks').hidden,true);assert.equal(e.get('home').hidden,true);});
 await new Promise(resolve=>setTimeout(resolve,0));
 test('basket amount is labeled single-chain estimate, never mixed minima',()=>assert.match(e.get('basket-estimate').textContent,/הערכת סל מלא ב־רשת א/));
 e.get('basket-lines').listeners.change({target:{dataset:{miniQty:'3073781199918'},value:'3'}});

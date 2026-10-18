@@ -1,3 +1,69 @@
+HomeBasket 2.3 — final validation, 2026-10-18
+855 PASS, 0 failures: Node 846 + Python markup/CSS audit 9.
+765 prior cases retained, 90 new v23 cases. Full test-results.txt included.
+Prior expectations updated ONLY for intentional requested behavior: 72h cutoff rather
+than 48h, three visible steps with network options in comparison, partial baskets outside
+Top3, explicit partial missing lists, current release/favicon version. Layout's historical
+hash case now checks retained mobile metrics, because desktop sidebar sync legitimately
+changed. Receipt engine, image preprocessing and Tesseract vendor hash guards still pass.
+No test cases were deleted.
+
+Comparison model: original eight chain positions retained. Full, partial and excluded all
+explained; missing originals per source and snapshot age carried through. Partial table
+sort coverage descending then priced-products subtotal; same-coverage price ordering tested.
+No price for missing originals, no zero-coverage free-basket quote or handoff CTA.
+Top3 + full-basket savings only on complete original baskets in relevant fresh networks.
+No-full fallback selects a real shared group; same original products and quantities with
+named chains and excluded products. Auto maximizes shared count over relevant pairs, then
+combined coverage; manual nonempty intersection respected. Empty manual intersection has
+explicit auto-group explanation without silently changing manual promotion selection.
+Common totals before shipping/customer fees are NOT represented as full-basket savings.
+Substitutions use existing similarProducts and approval path, separate adjusted totals.
+
+72h policy: one MAX_PRICE_AGE_HOURS constant. Exact 72h accepted; one millisecond older and
+73h rejected. Source scan timestamps drive validity, not product last_updated. Unknown,
+ambiguous naive or excessively future timestamps still rejected. 0/24/48/49/65/71.999/72h
+cases tested. Age text present; 24h+ visually emphasized as warning. Expired/offline/city-
+ineligible sources have visible reasons and last scan dates; no eligible price from >72h.
+
+Low-coverage regression: synthetic 100-item basket, 71 single-chain products and 29 shared;
+all eight partial sources retained, shared comparison contains precisely the 29 comparable
+products and excludes the other 71. Disjoint high-coverage pair falls back to a real larger
+intersection rather than a fabricated full basket. Input cart/raw prices not mutated.
+No real full export dataset is available here; this is a synthetic scenario, not a claim
+that the user's real catalog proportion was independently verified.
+
+Shopping UI: three visible step links; legacy network route redirects to comparison;
+advanced network/mode settings and technical why/help collapsed. Search cards show exact
+name/size, visible pricing-network count, quantity picker and 44px add control. Correct
+selected quantity added, duplicate barcode merged; packaged fractional/zero/excess amounts
+rejected, weighted kg with three decimals supported. Dock controls keep quantity/removal
+and compare action visible in build flow, bottom on mobile/side on >=1100px desktop. Receipt
+review closes auto-open drawer. Scroll padding/sync prevents the dock covering bottom UI.
+
+Images: separate optional map only, product/price schema unchanged. No default optional
+HTTP probe; missing local map no fallback request. Declared map loaded once and concurrent
+loads share one read. Old responses cannot overwrite new dataset image cache. HTTPS/site
+images paths validated; javascript/data/http/credentials/traversal rejected. Broken image
+hides only bitmap, retaining initial/tone placeholder. Map failure does not block pricing.
+Images lazy/no-referrer; no receipt/location/cart uploads. See IMAGE_MAP_HE.md.
+
+Validation methods: Node pure functions, real gzip streams and browser API stubs. Synthetic
+97,096-product and 60,000-promotion suites retained, with lazy/indexed/debounced/40-result
+promotion rules. CSS/markup checks and width arithmetic at 390px; contrast math >=4.5:1
+for primary button and secondary text. Index HTML tag balance and all JS syntax checked.
+No actual browser/phone screenshot or visual layout/console test here, no real WhatsApp,
+real-photo OCR accuracy or live retailer stock/checkout price check. Node benchmark is not
+a Chrome speed/memory guarantee. Manual browser verification steps in README_HE.html.
+
+Original 2.2.4 directory AND ZIP verified byte-for-byte, with manifest in
+BACKUP_v2.2.4_SHA256.txt. Production config.js, fee calculator, online service matching,
+receipt-core/image and OCR vendor files remain unchanged. Products/prices export schemas,
+unit/barcode identity, cache guards, fee quote defaults and no-payment handoff preserved.
+No deployment, live Site edits, server-side processing, purchase or paid dependency added.
+Keep user's filled config.js and existing data directory when installing this release.
+
+Historical 2.2.4 validation (previous run, prior 48h policy superseded):
 HomeBasket 2.2.4 — 2026-10-18
 765 PASS, 0 failing suites: Node 756 + Python markup 9.
 All 727 previous cases retained, plus 38 focused v224 cases. Raw output: test-results.txt.

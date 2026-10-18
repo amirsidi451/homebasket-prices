@@ -67,7 +67,7 @@ test('online label only explicit config',()=>assert.match(O.priceLabel(chain,{ch
  test('weighted list preserves fractional kilograms',()=>assert.equal(plain(O.list([{barcode:'42',qty:0.75}],new Map([['42',{name:'עגבניות',weighted:true}]]),p=>p.name)),'עגבניות — 0.75 ק״ג'));
  // Stale chains and promotions retain their independent freshness rule.
  e.run("applyService('עיר ב','delivery');meta.per_chain_freshness.B.latest_snapshot_at='2020-01-01'");await e.run('renderCompare()');
- test('service availability does not override 48h freshness',()=>assert.match(e.get('comparison').innerHTML,/לא זמין היום/));
+ test('service availability does not override 72h freshness',()=>assert.match(e.get('comparison').innerHTML,/לא זמין היום/));
  test('old product update still valid in fresh chain',()=>assert.match(e.get('comparison').innerHTML,/מחיר חלקי:.*30/));
  e.run('openOrder(0)');await e.run('load()');test('refresh closes stale handoff and clears list',()=>{assert.equal(e.get('order-dialog').open,false);assert.equal(e.get('order-list').value,'');});
  const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8'),css=fs.readFileSync(path.join(__dirname,'../styles.css'),'utf8');
