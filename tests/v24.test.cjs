@@ -16,7 +16,7 @@ test('no stale city value in quote API and rules have no city override',()=>{for
 test('legacy fee configuration remains compatible',()=>assert.equal(O.quote(chain('A'),{chains:{A:{estimatedDeliveryFee:35.9}}},'delivery',999).fee,3590));
 test('published basis supported while labels still say estimated',()=>{const c=structuredClone(config);c.chains.TIV_TAAM.fulfilment.basis='published';assert.equal(O.quote(chain('TIV_TAAM'),c,'delivery',90000).basis,'published');assert.match(fs.readFileSync(path.join(root,'app.js'),'utf8'),/משלוח משוער/);});
 test('policy description includes strict threshold and minimum before basket is priced',()=>{assert.match(O.policyLabel(chain('TIV_TAAM'),config,'delivery'),/מעל/);assert.match(O.policyLabel(chain('TIV_TAAM'),config,'delivery'),/מינימום הזמנה/);});
-test('minimum message contains deficit in shekels not agorot',()=>assert.equal(O.minimumLabel(q('VICTORY_NEW_SOURCE','delivery',24999)),'מתחת למינימום הזמנה (חסרים 0.01 ש"ח)'));
+test('minimum message contains deficit in shekels not agorot',()=>assert.equal(O.minimumLabel(q('VICTORY_NEW_SOURCE','delivery',24999)),'מתחת למינימום הזמנה (חסרים 0.01 ₪)'));
 test('minimum met produces no misleading deficit label',()=>assert.equal(O.minimumLabel(q('VICTORY_NEW_SOURCE','delivery',25000)),''));
 for(const amount of [-1,NaN,Infinity,'75001',.1])test('invalid subtotal cannot unlock free delivery '+amount,()=>assert.equal(q('TIV_TAAM','delivery',amount).fee,2990));
 test('invalid tier and negative amount do not unlock free service',()=>{const c={chains:{A:{fulfilment:{delivery:{amount:10,tiers:[{above:-1,amount:0},{above:0,amount:-3}]}}}}};assert.equal(O.quote(chain('A'),c,'delivery',200).fee,1000);});
@@ -43,10 +43,10 @@ test('minimum audit visible but not primary card',()=>{assert.match(e.get('all-c
 e.ctx.location.hash='#compare';e.run("HB_CONFIG.chains.A.serviceAreas=['עיר אחרת'];HB_CONFIG.chains.B.serviceAreas=['עיר בדיקה'];applyService('עיר אחרת','delivery')");
 await e.run('renderCompare()');
 test('location updates all comparison and audit content without navigation',()=>{assert.match(e.get('location-summary').textContent,/עיר אחרת/);assert.match(e.get('all-chain-explanations').innerHTML,/לא זמינה בעירך/);assert.doesNotMatch(e.get('comparison').innerHTML,/data-top-chain="1"/);assert.match(e.get('result-summary').textContent,/מתחת למינימום/);assert.match(e.get('comparison').innerHTML,/הסל מתחת למינימום ההזמנה/);});
-e.get('service-city').value='עיר בדיקה';e.get('service-pickup').checked=true;e.get('service-pickup').listeners.change();await e.run('renderCompare()');
+e.run("applyService('עיר בדיקה','delivery')");e.get('service-city').value='עיר בדיקה';e.get('service-pickup').checked=true;e.get('service-pickup').listeners.change();await e.run('renderCompare()');
 test('radio selection applies pickup immediately and recalculates total',()=>{assert.equal(e.run('servicePlace.mode'),'pickup');assert.match(e.get('comparison').innerHTML,/איסוף משוער/);assert.match(e.get('comparison').innerHTML,/27/);});
 e.get('service-city').value='עיר אחרת';e.get('service-city').listeners.input();await new Promise(r=>setTimeout(r,350));
-test('city input debounce commits latest text without submit',()=>assert.equal(e.run('servicePlace.city'),'עיר אחרת'));
+test('city draft requires explicit confirmation and invalidates old place',()=>{assert.equal(e.run('servicePlace'),null);assert.match(e.get('location-feedback').textContent,/אשרו את העיר כדי לעדכן/);});
 e.ctx.location.hash='#search';e.run("applyService('עיר בדיקה','delivery')");await e.run('renderProducts()');
 e.run("setAddQuantity('3073781199918',3)");await e.run('renderProducts()');
 test('chosen add quantity survives suggestion rerender',()=>assert.match(e.get('products').innerHTML,/value="3"/));
@@ -74,6 +74,6 @@ const dock=setup();await loadFixture(dock);dock.run("cart=[{barcode:'30737811999
 dock.run(fs.readFileSync(path.join(root,'receipt-ui.js'),'utf8'));dock.run('HB_UX.update()');await new Promise(r=>setTimeout(r,30));
 test('dock picks same all-in cheapest chain instead of cheapest product subtotal',()=>{assert.match(dock.get('basket-estimate').textContent,/רשת ב/);assert.match(dock.get('basket-estimate').textContent,/כולל משלוח משוער/);});
 dock.ctx.location.hash='#compare';await dock.run('renderCompare()');dock.get('service-city').value='';dock.get('service-city').listeners.input();await new Promise(r=>setTimeout(r,340));
-test('clearing location cannot leave old priced recommendation or order modal',()=>{assert.equal(dock.run('servicePlace'),null);assert.equal(dock.get('comparison').innerHTML,'');assert.equal(dock.get('savings').innerHTML,'');assert.match(dock.get('result-summary').textContent,/בחרו עיר/);});
+test('clearing location cannot leave old priced recommendation or order modal',()=>{assert.equal(dock.run('servicePlace'),null);assert.equal(dock.get('comparison').innerHTML,'');assert.equal(dock.get('savings').innerHTML,'');assert.match(dock.get('result-summary').textContent,/אשרו את העיר כדי לעדכן/);});
 console.log(count+' v2.4 fulfilment/minima/live-location/inline-add/modal checks passed');
 })().catch(err=>{console.error(err);process.exitCode=1;});

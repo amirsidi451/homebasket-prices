@@ -1,0 +1,46 @@
+{
+  "online": {
+    "service": "cfc8bafd71d4630bb1afb595bcda9676cb23b8a35f52c47a4b56b457b1d80c8c",
+    "quote": "3fffd04cb7754ab1d840ac7e5bd4444c87fe00129fe35819ce49d13bbdaed74c",
+    "cityFromText": "fde86cbf1c9e6f18ce8912c934290bcf91c95d5736779d6d4c38719cb056bd9f"
+  },
+  "authorizedUI": {
+    "renderProducts": "e07da26e59a7257f12ee186df22898e936b28779c44c2b5579c0e7eeb01ff4be",
+    "renderCompare": "d5eb16fe4e2975672aea8209944923ac72efaf0145cf48343b00c3294d17a8c1",
+    "applyService": "38e604c47abbb533ea14ae56231d76d513f354e887c1f11c3d27155f93d59c81",
+    "setQuantity": "7a7610b55aa2fa4b9b1dcdec12767abd7671738c2b90c978039e70a90db5c8da",
+    "clearService": "dbaa52b1ce23cf6181606b27756424b8bb4773a4de096ba1013baa5e893261a0",
+    "load": "6f41309994553c5b8d8be8276aaa53f2915cacc61548741667429205d3ff0bf6"
+  },
+  "core": {
+    "ageHours": "21d71ba172ebdf6c4b743e54381a446dbd52ea74965cad6a953fc2bf8726013c",
+    "ageNotice": "c6cebb6b40217dca3fa88625212b4a57abecb21d552b4ae00d3908188d93dc31",
+    "cleanName": "a1672e2c3f4f712f33baf296546ccfa85cbb6dd64a1880eb4eb900caea3334db",
+    "eggGrade": "32328eeadd422cb4782a48b75b90cdcfec82d0b9a33b5b29634fe66380b07209",
+    "promotionDescription": "71b5f1d2c63331c6a934116b368e3529d4ff28b3727b2586ee68c1413ac06621",
+    "displayName": "0994a95f8304ec1fdbb3ec9ebb0d7d329cdd33ae2ae6d398ad233fdb51467e07",
+    "createPromotionIndex": "50e9724e40a8dd732a090d337477ace985962cff88bbf56429e921ba2865d950",
+    "findPromotions": "1f2f1b208c6f792210242ec500b73304e08c8ea7651edb1dc7ba928124d24d08",
+    "queryTokens": "001795b5ca55c67c9f7ded21548c5b1723080a51ed4ba22aaf6ed967cddbc0b4",
+    "validateSources": "427aedc9c24ab56071e9fce6995f54c643491d087260f2d3dd3d135dc53e69a4",
+    "priceStatus": "0595aa1a5ea35dcdfef49dae61484e6a3f7e026506ed03cfc3c656b2f5ed8c9f",
+    "commonAcross": "1a41e79328f5c7214104494c9c65641fcb61d2addcd35ded3dd057439ec2b4aa",
+    "similarProducts": "e106f7a8623a557ef03a0899e880c4cab370855d08d29645fad4439e646b3905",
+    "adjusted": "77885d0619eb4dc7c9abc43874b1a326d5557fb0b1f0ce600d43f967ccf0f095",
+    "chains": "91534e96cce37c1d59583081aea7290c800821d610c023fc8e58907f6cef204d",
+    "products": "6c4cd31ffafe6f1944556ab62eecfb32c0b0ac76d15f2fd4a01651839ee0a1ab",
+    "prices": "90bd47bbd1001db6c537b23113a5e0a48e5d729b29519154445203d4770bb98a",
+    "fresh": "7db60307e1f04f75b1b9cb9c38a9f61733ebd9e74a7e875dfb8f7ba01e6cd207",
+    "compare": "d96c8cbf505ea128d2ecc441d0edf3842d2ed1e24f7ffaab1e6572dbb2466f9f",
+    "validCart": "2a4b3d39e1b4ada92299ca339adfd80be4a38c02cbc4324be998eac13bf11b37",
+    "snapshotStamp": "927a693c42b152eefe853de0ccb575659f13ed8aea72cc6888324f047a36dde0",
+    "normalizeUnit": "e9f251d67f59e3dd7a9f6faa3c75153d2d9642be9544e62c0cfddf684051951c",
+    "packageLabel": "a04ce19db4783a2d8760a0a38dfb0574be393fe58e8cdd1a7644e672acce7991",
+    "snapshots": "09640e34e0aff65995d918c7d549bb722b3ba0cf0ec4c0f2457063846e04088f",
+    "coverage": "74b61c0a1737b50d26ca1609434c8df5e5fc3eb8641042ef4c70612feef3aa58",
+    "autoSelect": "1923fe830469f1fe29c1a93b9d6decafc35da668d917d4533713df8d72356f16",
+    "cheapest": "0b0de4cd517cc0a0c47b67c0ceabfcae6eff488a016e123a5efa03325a7f78af",
+    "promotions": "6a99a1654a707c91a4b1ec49ac96ac08d505b91c0eef5ddd500e765ef26a4063",
+    "activePromotion": "093ce2ca0c84f2c82b4534636dece93159f92f92caabef35b72f381b497a8e90"
+  }
+}

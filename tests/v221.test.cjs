@@ -24,7 +24,7 @@ f=fixture();f.snapshots[7]='2020-01-01';m=S.model(f);
 test('stale snapshot excluded even if price present',()=>{assert.equal(m.full.length,7);assert.equal(m.all[7].coverage,0);assert.equal(m.all[7].itemsTotal,null);});
 test('stale display distinct from missing price',()=>assert.match(S.render(m,'delivery'),/הרשת לא עדכנית/));
 f=fixture();f.config.chains.C0.visible=false;f.config.chains.C1.availability='known';f.config.chains.C1.serviceAreas=['עיר אחרת'];m=S.model(f);
-test('offline and city-unavailable networks remain in all-eight comparison',()=>{assert.equal(m.full.length,8);assert.equal(m.all[0].eligible,false);assert.equal(m.all[1].eligible,false);});
+test('offline and unavailable retained as separate all-eight information, outside savings',()=>{assert.equal(m.full.length,6);assert.equal(m.unavailable.length,2);assert.equal(m.all[0].eligible,false);assert.equal(m.all[1].eligible,false);});
 test('offline cheapest never nominated for purchase',()=>assert.equal(m.chosen.chain,2));
 test('outside-city label is explicit',()=>assert.match(m.all[1].availability,/לא זמינה בעירך/));
 test('offline chain is reference-only',()=>assert.match(m.all[0].availability,/אין הזמנות אונליין.*ייחוס/));
@@ -36,7 +36,7 @@ test('cheaper reference rows report cost increase honestly',()=>assert.match(S.s
 test('Top3 selected provenance stated',()=>assert.match(S.render(m,'delivery'),/מקום הראשון ב־Top 3/));
 f.chosenChain=0;m=S.model(f);test('unavailable chosen id rejected',()=>assert.equal(m.chosen.chain,2));
 f=fixture();for(const c of Object.values(f.config.chains))c.delivery=false;m=S.model(f);
-test('all unavailable still shows full reference table without recommending',()=>{assert.equal(m.full.length,8);assert.equal(m.chosen,null);assert.equal(m.versusHighest,null);assert.match(S.render(m,'delivery'),/אין כרגע רשת רלוונטית/);});
+test('all unavailable shown separately without comparison or recommendation',()=>{assert.equal(m.full.length,0);assert.equal(m.unavailable.length,8);assert.equal(m.chosen,null);assert.equal(m.versusHighest,null);assert.match(S.render(m,'delivery'),/אין כרגע רשת רלוונטית/);});
 f=fixture();f.rows.forEach(r=>r.coverage=1);m=S.model(f);
 test('all partial gives no savings, average or misleading bar chart',()=>{assert.equal(m.full.length,0);assert.equal(m.average,null);assert.equal(m.chosen,null);assert.doesNotMatch(S.render(m,'delivery'),/class="savings-bar(?: chosen)?"/);});
 f=fixture();f.rows=f.rows.slice(0,1);m=S.model(f);
@@ -64,6 +64,6 @@ test('existing Top3 policy untouched by savings model',()=>{const ff=fixture();c
  test('new script loaded before app and separate accessible container',()=>{assert.ok(html.indexOf('src="savings.js')<html.indexOf('src="app.js'));assert.match(html,/id="savings"/);assert.match(code,/aria-labelledby="savings-heading"/);});
  test('chart has text equivalents and no external library or network',()=>{assert.match(code,/<figcaption>/);assert.match(code,/aria-hidden="true"/);assert.doesNotMatch(code,/fetch\(|https?:|localStorage/);});
  test('390px responsive chart uses shrinkable columns; table scroll localized',()=>{assert.match(css,/@media\(max-width:480px\).*savings-chart li\{grid-template-columns:minmax\(72px,1fr\) minmax\(0,1.5fr\) auto/s);assert.match(css,/savings-section \.table-wrap\{max-width:100%;overflow-x:auto/);const inner=390-32-32-4;assert.ok(inner-72-80-13>0);});
- test('all eight exact rows appear once per table even if outside Top3',()=>{const ff=fixture();ff.config.chains.C7.visible=false;const text=S.render(S.model(ff),'delivery');assert.equal((text.match(/<tr(?: class="savings-chosen")?>/g)||[]).length,9);assert.match(text,/רשת 7/);});
+ test('available rows stay in price table; offline source explicitly separated',()=>{const ff=fixture();ff.config.chains.C7.visible=false;const text=S.render(S.model(ff),'delivery');assert.equal((text.match(/<tr(?: class="savings-chosen")?>/g)||[]).length,8);assert.match(text,/רשת 7/);assert.match(text,/מחוץ לדירוג/);});
  console.log(checks+' savings v2.2.1 checks passed (offline fixtures, not browser visual QA)');
 })().catch(e=>{console.error(e);process.exitCode=1;});

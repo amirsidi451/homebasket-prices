@@ -1,13 +1,9 @@
-# HomeBasket 2.5.3
-
-Static Hebrew RTL grocery comparison app. Read START_HERE_v2.5.3_HE.txt.
-The complete 2.5.2 backup is in backups/. No live deployment.
-Original data formats, config rates and price arithmetic are unchanged.
-Keep your actual data exports and configured service areas when upgrading.
-
-Run locally on Windows: extract, transfer your data/config, double-click START_LOCAL.bat.
-Select a suggested city, then explicitly confirm it. Draft changes immediately invalidate old results.
-Saved baskets with a location resume at step 2. Location storage remains opt-in and local.
-
-Tests: python run_tests.py (Node.js required for tests, not for the app).
-Full run output: test-results.txt. Limits and required phone checks: VALIDATION.txt.
+# HomeBasket 2.5.4
+Static Hebrew RTL app. See START_HERE_v2.5.4_HE.txt.
+1288 automated checks passed. Full log: test-results.txt.
+Backup: backups/HomeBasket_Static_v2.5.3.zip. No live deployment.
+Keep your full production config.js and data exports when upgrading.
+Pricing/data formats unchanged. Rehovot aliases do not invent service coverage.
+Mobile basket opens a native dialog with a locked background and one scroll owner.
+Real phone/visual QA still required; see VALIDATION.txt.
+Run locally: START_LOCAL.bat. Run tests with Python and Node: python run_tests.py.

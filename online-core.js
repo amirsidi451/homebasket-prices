@@ -1,7 +1,7 @@
 /* Local-only service matching. No geocoder, network calls, storage or location in URLs. */
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.HBOnline=factory();})(typeof globalThis!=='undefined'?globalThis:this,function(){'use strict';
  const normalize=s=>String(s||'').normalize('NFKC').replace(/־/g,' ').replace(/[\u0591-\u05C7]/g,'').replace(/["'׳״.,־–-]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
- function canonicalCity(value){const raw=String(value||'').replace(/\([^)]*\)/g,'').trim(),key=normalize(raw);return ['תל אביב','תל אביב יפו'].includes(key)?'תל אביב-יפו':raw;}
+ function canonicalCity(value){const raw=String(value||'').normalize('NFKC').replace(/[\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g,'').replace(/\([^)]*\)/g,'').trim(),key=normalize(raw).replace(/^עיריית\s+|^עיר\s+/,'');if(['רחובות','רחובות העיר','רחובות ישראל','rehovot','rechovot','rehovoth'].includes(key))return 'רחובות';return ['תל אביב','תל אביב יפו'].includes(key)?'תל אביב-יפו':raw;}
  function settings(chain,config){return config?.chains?.[chain.source]||{};}
  function availabilityLabel(mode){return mode==='pickup'?'יש לבדוק זמינות איסוף באתר הרשת':'יש לבדוק זמינות משלוח לכתובת באתר הרשת';}
  function service(chain,config,place){

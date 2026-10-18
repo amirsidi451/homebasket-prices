@@ -9,9 +9,9 @@ test('multiple packs label',()=>assert.equal(O.packs(5),'5 אריזות'));
 test('single basket product label',()=>assert.equal(O.productsCount(1),'מוצר אחד'));
 test('multiple basket products label',()=>assert.equal(O.productsCount(5),'5 מוצרים'));
 const products=new Map([['1',{name:'במבה 80 גרם',quantity:80,unit:'גרם'}],['2',{name:'ביצים M 12 יחידות',quantity:12,unit:'יחידות'}],['3',{name:'ויטמין D 1000',quantity:1,unit:'יחידות'}],['4',{name:'עגבניות',weighted:true}]]),list=O.list([{barcode:'1',qty:1},{barcode:'2',qty:2},{barcode:'3',qty:1},{barcode:'4',qty:0.75}],products,H.displayName);
-test('clipboard has one RTL-isolated line per product',()=>{const lines=list.split('\n');assert.equal(lines.length,4);assert.ok(lines.every(x=>x.startsWith('\u200F\u2067')&&x.endsWith('\u2069\u200F')));});
-test('clipboard numbers and Latin M D independently isolated',()=>{for(const token of ['80','M','D','1000'])assert.ok(list.includes('\u2066'+token+'\u2069'));});
-test('clipboard has balanced nested isolates',()=>{for(const line of list.split('\n')){let depth=0;for(const c of line){if(/[\u2066-\u2068]/.test(c))depth++;if(c==='\u2069')depth--;assert.ok(depth>=0);}assert.equal(depth,0);}});
+test('clipboard has one clean line per product',()=>{const lines=list.split('\n');assert.equal(lines.length,4);assert.ok(lines.every(x=>!/[\u200F\u2066-\u2069]/.test(x)&&x.includes(' — ')));});
+test('clipboard preserves readable numbers and Latin M D',()=>{for(const token of ['80','M','D','1000'])assert.ok(list.includes(token));});
+test('clipboard injects no unbalanced or invisible isolates',()=>{for(const line of list.split('\n')){let depth=0;for(const c of line){if(/[\u2066-\u2068]/.test(c))depth++;if(c==='\u2069')depth--;assert.ok(depth>=0);}assert.equal(depth,0);}});
 test('clipboard natural quantity labels retain meaning',()=>{const s=plain(list);assert.match(s,/במבה 80 גרם — אריזה אחת/);assert.match(s,/ביצים M 12 יחידות — 2 אריזות/);assert.match(s,/עגבניות — 0.75 ק״ג/);assert.doesNotMatch(s,/1 אריזות|1 יחידות/);});
 test('existing malicious bidi controls stripped before wrapping',()=>{const s=O.list([{barcode:'x',qty:1}],new Map([['x',{name:'בדיקה\u202EM80'}]]),p=>p.name);assert.ok(!s.includes('\u202E'));assert.match(plain(s),/בדיקהM80/);});
 (async()=>{

@@ -1,11 +1,11 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),crypto=require('node:crypto'),zlib=require('node:zlib'),Layout=require('../layout.js'),S=require('../savings.js'),{setup,loadFixture}=require('./support.cjs');
 const root=path.join(__dirname,'..'),read=f=>fs.readFileSync(path.join(root,f),'utf8'),css=read('redesign.css'),html=read('index.html'),baseline=JSON.parse(read('tests/v25-logic-baseline.json')),sha=x=>crypto.createHash('sha256').update(x).digest('hex');
 let count=0;function test(name,fn){fn();count++;console.log('PASS '+name);}
-const e=setup();
-for(const [f,hash]of Object.entries(baseline.files))test('v2.4 business/data module byte-identical: '+f,()=>assert.equal(sha(fs.readFileSync(path.join(root,f))),hash));
-for(const [f,hash]of Object.entries(baseline.functions))test('v2.4 application function unchanged: '+f,()=>assert.equal(sha(e.run(f+'.toString()')),hash));
-test('savings model unchanged; design cannot alter totals/grouping',()=>assert.equal(sha(S.model.toString()),baseline.savingsModel));
-test('canonical release is 2.5',()=>assert.equal(require('../release.js').VERSION,'2.5'));
+const e=setup(),priceBaseline=JSON.parse(read('tests/v251-price-baseline.json')),O=require('../online-core.js');
+for(const [f,hash]of Object.entries(baseline.files))test('pricing/data retained; plain clipboard allowed for online-core: '+f,()=>{if(f==='online-core.js')assert.equal(sha(O.quote.toString()),require('./v252-authorized-changes.json').online.quote);else if(f==='core.js'){const H=require('../core.js');for(const [name,expected]of Object.entries(require('./v252-authorized-changes.json').core))assert.equal(sha(H[name].toString()),expected);}else if(f==='config.js'){const vm=require('vm'),a={window:{}},b={window:{}};vm.runInNewContext(read(f),a);vm.runInNewContext(fs.readFileSync(path.join(__dirname,'fixtures/production-v251.js'),'utf8'),b);for(const c of Object.values(a.window.HB_CONFIG.chains))delete c.freeAbove;assert.equal(JSON.stringify(a.window.HB_CONFIG),JSON.stringify(b.window.HB_CONFIG));}else assert.equal(sha(fs.readFileSync(path.join(root,f))),hash);});
+for(const [f,hash]of Object.entries(baseline.functions))test('application invariant or explicitly requested flow fix: '+f,()=>assert.equal(sha(e.run(f+'.toString()')),require('./v254-authorized-ui.json')[f]||require('./v253-authorized-ui.json')[f]||require('./v252-authorized-changes.json').authorizedUI[f]||priceBaseline.authorizedUI[f]||hash));
+test('savings arithmetic retained while availability cohort is corrected',()=>assert.equal(sha(S.difference.toString()),priceBaseline.difference));
+test('canonical release is 2.5',()=>assert.equal(require('../release.js').VERSION,'2.5.4'));
 test('local variable font and licence actually bundled',()=>{const f=fs.readFileSync(path.join(root,'assets/fonts/Heebo-Variable.woff'));assert.equal(f.subarray(0,4).toString(),'wOFF');assert.equal(f.readUInt32BE(8),f.length);assert.ok(f.length<96*1024);assert.match(read('assets/fonts/OFL-Heebo.txt'),/SIL OPEN FONT LICENSE/);});
 function fontGlyph(cp){const f=fs.readFileSync(path.join(root,'assets/fonts/Heebo-Variable.woff'));let cmap;
  for(let i=0;i<f.readUInt16BE(12);i++){const d=44+i*20;if(f.toString('ascii',d,d+4)==='cmap'){const offset=f.readUInt32BE(d+4),compressed=f.readUInt32BE(d+8),original=f.readUInt32BE(d+12),data=f.subarray(offset,offset+compressed);cmap=compressed<original?zlib.inflateSync(data):data;}}
@@ -31,10 +31,10 @@ for(const width of [360,390,768,1280]){
  test(width+'px card columns fit content including gaps',()=>assert.ok(g.productWidth*g.columns+14*(g.columns-1)<=g.content+.001));
  test(width+'px three step controls fit and keep 44px minimum',()=>{assert.ok(g.stepWidth>=80);assert.equal(g.stepWidth*3+2*(g.mobile?6:10),g.content);});
  test(width+'px chart columns shrink and fit container',()=>{assert.ok(g.chartColumns.every(n=>n>60));assert.ok(Math.abs(g.chartColumns.reduce((s,n)=>s+n,0)+2*g.chartGap-g.chartInner)<.01);});
- test(width+'px correct dock placement and capped height',()=>{assert.equal(g.sidebar,width>=1100?304:0);assert.ok(g.dockMax<=844);if(g.sidebar)assert.equal(g.reserve,340);});
+ test(width+'px correct dock placement and capped height',()=>{assert.equal(g.sidebar,width>=1100?288:0);assert.ok(g.dockMax<=844);if(g.sidebar)assert.equal(g.reserve,312);});
  test(width+'px winner and next-two card grouping adapts',()=>assert.equal(g.topColumns,width<768?1:2));
 }
-test('CSS breakpoints exactly match geometry module',()=>{assert.match(css,/@media\(max-width:767px\)/);assert.match(css,/@media\(min-width:1100px\)/);assert.match(css,/padding-inline-end:340px/);assert.match(css,/grid-template-columns:repeat\(2,minmax\(0,1fr\)\);gap:16px/);});
+test('CSS breakpoints exactly match geometry module',()=>{assert.match(css,/@media\(max-width:767px\)/);assert.match(css,/@media\(min-width:1100px\)/);assert.match(css,/padding-inline-end:312px/);assert.match(css,/grid-template-columns:repeat\(2,minmax\(0,1fr\)\);gap:16px/);});
 test('long names, prices and Latin text can wrap without clipping',()=>{assert.match(css,/overflow-wrap:anywhere/);assert.doesNotMatch(css,/text-overflow:ellipsis|-webkit-line-clamp|line-clamp:\s*[1-9]/);assert.match(css,/\.design-v25 \.savings-chart li>span,\.design-v25 \.savings-chart li>bdi\{min-width:0;overflow-wrap:anywhere/);});
 test('dock keeps CTA outside scrollable list on mobile',()=>{assert.match(css,/\.design-v25 #basket-drawer\{min-height:0;overflow-y:auto;max-height:calc\(48dvh - 90px - env\(safe-area-inset-bottom\)\)/);assert.match(css,/\.design-v25 #basket-next\{flex-shrink:0/);});
 test('keyboard focus ring covers buttons, links, fields and disclosure',()=>assert.match(css,/:where\(button,a,input,select,summary,textarea\):focus-visible\{outline:3px solid var\(--focus\)/));

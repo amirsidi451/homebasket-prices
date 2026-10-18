@@ -275,3 +275,21 @@
  .design-v25 .mini-row{padding-block:4px}
 }
 @media(min-width:1100px){.design-v25 .basket-dock{overflow:visible}.design-v25 #basket-drawer{flex:1;max-height:calc(var(--visual-height,100dvh) - 210px);min-height:0}.design-v25 .dock-actions{flex-shrink:0;padding-top:8px}}
+/* 2.5.4: visible comparison notice; native modal basket and safe-area CTA. */
+.design-v25 .comparison-city-warning:not([hidden]){display:block;font-size:16px;font-weight:700;line-height:1.6;padding:14px;border:2px solid var(--warning-ink);border-radius:12px;background:var(--warning-bg);color:var(--warning-ink);margin:0 0 16px}
+html.basket-modal-open,html.basket-modal-open body{overflow:hidden;overscroll-behavior:none}
+.design-v25 #basket-mobile-dialog{box-sizing:border-box;width:min(560px,calc(100% - 16px));max-width:calc(100% - 16px);height:min(88dvh,calc(var(--visual-height,100dvh) - 24px));max-height:calc(var(--visual-height,100dvh) - 24px);padding:12px 12px calc(12px + env(safe-area-inset-bottom));overflow:hidden;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:18px}
+.design-v25 #basket-mobile-dialog[open]{display:flex;flex-direction:column;gap:8px}
+.design-v25 .basket-mobile-head{display:flex;justify-content:space-between;align-items:center;flex-shrink:0;gap:12px}
+.design-v25 .basket-mobile-head h2{font-size:20px;margin:0}
+.design-v25 #basket-mobile-close{min-height:44px;flex-shrink:0}
+.design-v25 #basket-mobile-slot{min-height:0;flex:1;display:flex;overflow:hidden}
+.design-v25 #basket-mobile-dialog .basket-dock{position:static;inset:auto;width:100%;max-width:100%;height:100%;max-height:none;margin:0;padding:0;border:0;box-shadow:none;overflow:hidden;display:flex;flex-direction:column;gap:8px}
+.design-v25 #basket-mobile-dialog #basket-drawer{flex:1;min-height:0;max-height:none;overflow-y:auto;overscroll-behavior:contain}
+.design-v25 #basket-mobile-dialog #basket-lines{max-height:none;overflow:visible}
+.design-v25 #basket-mobile-dialog .dock-actions{flex:0 0 auto;grid-template-columns:minmax(0,1fr) minmax(0,1fr);padding:4px 0 0;background:var(--surface)}
+.design-v25 #basket-mobile-dialog #basket-next{grid-column:1/-1;min-height:48px;white-space:normal;margin:0}
+.design-v25 #order-copy-status:empty{display:none;margin:0;padding:0;border:0;box-shadow:none}
+.design-v25 #order-copy-status:not(:empty){background:var(--surface);color:var(--ink);border:0;padding:8px 0;box-shadow:none}
+.design-v25 #order-dialog .actions{background:var(--surface);box-shadow:none;border-bottom:0;outline:0}
+@media(max-width:1099px){.design-v25>.basket-dock{max-height:none;overflow:visible;padding:6px 12px calc(8px + env(safe-area-inset-bottom));gap:4px}.design-v25>.basket-dock>.dock-actions{flex-shrink:0;align-items:stretch}.design-v25>.basket-dock #basket-next{min-height:48px;margin:0;line-height:1.4}.design-v25>.basket-dock #basket-drawer:not([open]){flex:0 0 auto;min-height:24px;max-height:none;overflow:visible}}

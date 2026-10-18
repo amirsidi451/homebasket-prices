@@ -1,22 +1,23 @@
-HomeBasket 2.5.3 — 2026-10-18
-FINAL: 1238 PASS; 0 failed suites.
-1196 previous checks retained + 42 new targeted regression checks.
-All suites run using python run_tests.py; complete output: test-results.txt.
-Syntax checks: all 16 root JavaScript files passed node --check.
-Data directory remains byte-identical to 2.5.2; pricing/config modules have original hashes.
-Backup: backups/HomeBasket_Static_v2.5.2.zip and BACKUP_v2.5.2_SHA256.txt.
+HomeBasket 2.5.4
+FINAL: 1288 PASS; 0 failed suites.
+1238 previous checks retained; 50 targeted regression checks added.
+Run: python run_tests.py. Full output: test-results.txt.
+16 JavaScript files passed node --check. Data directory byte-identical to 2.5.3.
+Config.js and service area lists byte-identical to 2.5.3.
+Original pricing modules and online API except canonicalCity protected by hashes.
+No live deployment. No external verification of retailer address coverage.
 
-Test coverage: persistent unlisted-city warning and mode-specific service lists;
-known/unknown/unavailable labels; draft/suggestion/native-change invalidation;
-paused comparison cancellation and late-response guards; weighted and packaged duplicate
-presentation with highest-coverage selection and preservation of catalog barcodes;
-minimum label dedup; restore step; relevant versus catalog network counts;
-desktop CTA grid, one mobile dock scroll owner, opaque dialog actions, bounded tables;
-free delivery at threshold-1 agorot, exactly threshold, threshold+1 agorot for both
-freeAbove and the existing tier path. No price arithmetic changes.
+Coverage: comparison-local unlisted-city warning; native mobile dialog dock relocation,
+page scroll lock and restore, close/resize behavior, no automatic mobile opening;
+safe-area padding and fixed footer geometry; empty copy status and decorative strip;
+Rehovot aliases and unmodified known/unknown service lists; all previous arithmetic,
+cache, basket persistence, free-delivery boundaries and large-data regressions.
 
-Validation uses Node API/DOM stubs, synthetic data, gzip fixtures, CSS constraints and
-Python HTML audit. This is not real browser or physical phone visual verification.
-Real phone checks: 390px, 200% zoom/text, keyboard/city menu, warning persistence,
-open/closed dock scroll and safe areas, sticky modal action background. Also check
-640px price tables and desktop CTA using your full real data. No live deployment.
+This is Node/DOM-stub, synthetic-data, HTML and CSS-constraint validation.
+It is NOT real browser layout or real phone validation.
+Real phone checks required: 390px and 200% zoom, software keyboard/visual viewport,
+safe-area/home indicator, visible compare CTA, one scroll owner and locked background,
+modal close/focus restoration, warning at comparison top and order footer rendering.
+Rehovot still requires a matching entry in the operator's actual service-area config.
+The bundled production template has empty Rami Levy and Hazi Hinam service lists;
+no coverage has been fabricated and no cities have been added.

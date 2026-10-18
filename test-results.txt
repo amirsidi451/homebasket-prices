@@ -54,7 +54,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 773 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 691 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +156,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":166,"search_ms":18.76,"heap_delta_mb":32.7,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":159,"search_ms":18.57,"heap_delta_mb":32.1,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -474,9 +474,9 @@ PASS single pack label
 PASS multiple packs label
 PASS single basket product label
 PASS multiple basket products label
-PASS clipboard has one RTL-isolated line per product
-PASS clipboard numbers and Latin M D independently isolated
-PASS clipboard has balanced nested isolates
+PASS clipboard has one clean line per product
+PASS clipboard preserves readable numbers and Latin M D
+PASS clipboard injects no unbalanced or invisible isolates
 PASS clipboard natural quantity labels retain meaning
 PASS existing malicious bidi controls stripped before wrapping
 PASS pending search shows loading instead of products
@@ -605,7 +605,7 @@ PASS zero coverage never becomes free basket
 PASS partial display clearly noncomparable and no savings value
 PASS stale snapshot excluded even if price present
 PASS stale display distinct from missing price
-PASS offline and city-unavailable networks remain in all-eight comparison
+PASS offline and unavailable retained as separate all-eight information, outside savings
 PASS offline cheapest never nominated for purchase
 PASS outside-city label is explicit
 PASS offline chain is reference-only
@@ -615,7 +615,7 @@ PASS selected Top3 chain used for per-chain and average savings
 PASS cheaper reference rows report cost increase honestly
 PASS Top3 selected provenance stated
 PASS unavailable chosen id rejected
-PASS all unavailable still shows full reference table without recommending
+PASS all unavailable shown separately without comparison or recommendation
 PASS all partial gives no savings, average or misleading bar chart
 PASS one full chain not enough for savings claim
 PASS missing rows still preserve all eight source identities
@@ -636,7 +636,7 @@ PASS empty cart has no stale savings
 PASS new script loaded before app and separate accessible container
 PASS chart has text equivalents and no external library or network
 PASS 390px responsive chart uses shrinkable columns; table scroll localized
-PASS all eight exact rows appear once per table even if outside Top3
+PASS available rows stay in price table; offline source explicitly separated
 49 savings v2.2.1 checks passed (offline fixtures, not browser visual QA)
 
 v222.test.cjs
@@ -989,7 +989,7 @@ PASS ambiguous multi-city text never invents a location
 PASS minimum audit visible but not primary card
 PASS location updates all comparison and audit content without navigation
 PASS radio selection applies pickup immediately and recalculates total
-PASS city input debounce commits latest text without submit
+PASS city draft requires explicit confirmation and invalidates old place
 PASS chosen add quantity survives suggestion rerender
 PASS inline add merges quantity without moving screens
 PASS quantity plus operates in the same result
@@ -1008,37 +1008,37 @@ PASS clearing location cannot leave old priced recommendation or order modal
 94 v2.4 fulfilment/minima/live-location/inline-add/modal checks passed
 
 v25.test.cjs
-PASS v2.4 business/data module byte-identical: config.js
-PASS v2.4 business/data module byte-identical: core.js
-PASS v2.4 business/data module byte-identical: online-core.js
-PASS v2.4 business/data module byte-identical: fees.js
-PASS v2.4 business/data module byte-identical: top-ranking.js
-PASS v2.4 business/data module byte-identical: chain-status.js
-PASS v2.4 business/data module byte-identical: comparison-view.js
-PASS v2.4 business/data module byte-identical: product-images.js
-PASS v2.4 business/data module byte-identical: receipt-core.js
-PASS v2.4 business/data module byte-identical: receipt-image.js
-PASS v2.4 application function unchanged: dataURL
-PASS v2.4 application function unchanged: jsonFile
-PASS v2.4 application function unchanged: load
-PASS v2.4 application function unchanged: getChunk
-PASS v2.4 application function unchanged: renderProducts
-PASS v2.4 application function unchanged: renderCart
-PASS v2.4 application function unchanged: renderCompare
-PASS v2.4 application function unchanged: renderOffers
-PASS v2.4 application function unchanged: openAlternatives
-PASS v2.4 application function unchanged: approveAlternative
-PASS v2.4 application function unchanged: coverageOptions
-PASS v2.4 application function unchanged: approveCoverage
-PASS v2.4 application function unchanged: setQuantity
-PASS v2.4 application function unchanged: addProduct
-PASS v2.4 application function unchanged: applyService
-PASS v2.4 application function unchanged: clearService
-PASS v2.4 application function unchanged: openOrder
-PASS v2.4 application function unchanged: updateChainSummary
-PASS v2.4 application function unchanged: renderCartMissing
-PASS v2.4 application function unchanged: closeAlternatives
-PASS savings model unchanged; design cannot alter totals/grouping
+PASS pricing/data retained; plain clipboard allowed for online-core: config.js
+PASS pricing/data retained; plain clipboard allowed for online-core: core.js
+PASS pricing/data retained; plain clipboard allowed for online-core: online-core.js
+PASS pricing/data retained; plain clipboard allowed for online-core: fees.js
+PASS pricing/data retained; plain clipboard allowed for online-core: top-ranking.js
+PASS pricing/data retained; plain clipboard allowed for online-core: chain-status.js
+PASS pricing/data retained; plain clipboard allowed for online-core: comparison-view.js
+PASS pricing/data retained; plain clipboard allowed for online-core: product-images.js
+PASS pricing/data retained; plain clipboard allowed for online-core: receipt-core.js
+PASS pricing/data retained; plain clipboard allowed for online-core: receipt-image.js
+PASS application invariant or explicitly requested flow fix: dataURL
+PASS application invariant or explicitly requested flow fix: jsonFile
+PASS application invariant or explicitly requested flow fix: load
+PASS application invariant or explicitly requested flow fix: getChunk
+PASS application invariant or explicitly requested flow fix: renderProducts
+PASS application invariant or explicitly requested flow fix: renderCart
+PASS application invariant or explicitly requested flow fix: renderCompare
+PASS application invariant or explicitly requested flow fix: renderOffers
+PASS application invariant or explicitly requested flow fix: openAlternatives
+PASS application invariant or explicitly requested flow fix: approveAlternative
+PASS application invariant or explicitly requested flow fix: coverageOptions
+PASS application invariant or explicitly requested flow fix: approveCoverage
+PASS application invariant or explicitly requested flow fix: setQuantity
+PASS application invariant or explicitly requested flow fix: addProduct
+PASS application invariant or explicitly requested flow fix: applyService
+PASS application invariant or explicitly requested flow fix: clearService
+PASS application invariant or explicitly requested flow fix: openOrder
+PASS application invariant or explicitly requested flow fix: updateChainSummary
+PASS application invariant or explicitly requested flow fix: renderCartMissing
+PASS application invariant or explicitly requested flow fix: closeAlternatives
+PASS savings arithmetic retained while availability cohort is corrected
 PASS canonical release is 2.5
 PASS local variable font and licence actually bundled
 PASS bundled font really contains every Hebrew letter including finals
@@ -1115,6 +1115,251 @@ PASS partial row has explicit note, no invented comparable bar
 PASS rendering graph cannot mutate savings model or customer amounts
 PASS receipt remains separate and dock drawer closes to protect review controls
 106 v2.5 design/theme/keyboard/layout/unchanged-logic checks passed (not visual browser QA)
+
+v251.test.cjs
+PASS price/service API unchanged: quote
+PASS price/service API unchanged: fee
+PASS price/service API unchanged: service
+PASS price/service API unchanged: settings
+PASS price/service API unchanged: destination
+PASS price/service API unchanged: cityFromText
+PASS price/service API unchanged: parseAreas
+PASS price/service API unchanged: applyAreas
+PASS partial city normalization תל אביב
+PASS partial city normalization תל-אביב
+PASS partial city normalization גבעת־שמואל
+PASS partial city normalization גבעת״שמואל
+PASS partial city normalization גבעת'שמואל
+PASS partial autocomplete finds canonical city תל-א
+PASS partial autocomplete finds canonical city תלא
+PASS partial autocomplete finds canonical city תל א
+PASS configured city labels supported without inventing coverage
+PASS quote and dash aliases deduplicate in suggestions
+PASS free address retained as explicit selectable option
+PASS suggestions never imply actual service coverage
+PASS city is accessible custom combobox, not native datalist
+PASS blank form uses embedded custom validation and a labelled confirm button
+PASS error styles highlight both city and explicit confirmation
+PASS clipboard strips 200f
+PASS clipboard strips 2066
+PASS clipboard strips 2067
+PASS clipboard strips 2069
+PASS clipboard strips 202e
+PASS plain copy preserves weighted amount and multi-line products
+PASS unavailable cheap network not included in average or saving cohort
+PASS unavailable row remains visible but distinct from ranked price bars
+PASS recommended cheapest cannot appear more expensive than available average
+PASS equal prices display equality instead of save-up-to-zero
+PASS total basis does not compare unknown fee as zero or product-only average
+PASS products-only Top3 basis preserved for unknown pickup fee
+PASS currency symbol retained consistently in deficit
+PASS 1280px centered desktop shell has no detached sidebar gap
+PASS 1440px centered desktop shell has no detached sidebar gap
+PASS 1920px centered desktop shell has no detached sidebar gap
+PASS 2560px centered desktop shell has no detached sidebar gap
+PASS 360x800 zoom/compact dock capped at about quarter of viewport
+PASS 390x844 zoom/compact dock capped at about quarter of viewport
+PASS 768x900 zoom/compact dock capped at about quarter of viewport
+PASS 640x400 zoom/compact dock capped at about quarter of viewport
+PASS 390x422 zoom/compact dock capped at about quarter of viewport
+PASS 320x320 zoom/compact dock capped at about quarter of viewport
+PASS one and two ranked cards use full row rather than orphan half-width
+PASS scroll down hides non-desktop steps
+PASS small scroll jitter does not flash tabs back into view
+PASS scroll up restores tabs
+PASS focused keyboard tabs are never hidden by scroll
+PASS no-city step-compare routes to city with clear inline warning and focus
+PASS no-city nav-compare routes to city with clear inline warning and focus
+PASS no-city basket-next routes to city with clear inline warning and focus
+PASS basket compare remains active and clearly labelled even without city
+PASS blank confirmation uses embedded error not silent native validation
+PASS search before city does not claim missing product prices
+PASS typing a valid-looking city never implicitly confirms it
+PASS confirm button accepts arbitrary city text and clears error
+PASS editing immediately revokes old city and stale success banner
+PASS ArrowDown activates first city suggestion with ARIA
+PASS Enter selects draft city pending explicit approval
+PASS ArrowUp from closed selection starts with last/free-address option
+PASS Escape dismisses without approving draft
+PASS pointer chooses free address pending explicit approval
+PASS repeat compare click scrolls and marks successful comparison updated
+PASS repeat top step triggers a fresh comparison even when hash is unchanged
+PASS failed or empty comparison never claims updated
+PASS real handoff copy path is clean, readable and excludes invisible controls
+PASS location changes never erase basket or approve substitutions
+PASS late comparison response cannot restore success for an unconfirmed city
+71 v2.5.1 flow/location/copy/savings/layout checks passed (code/CSS, not visual browser QA)
+
+v252.test.cjs
+PASS v252 canonical city תל אביב
+PASS v252 same eligibility תל אביב
+PASS v252 same suggestion תל אביב
+PASS v252 canonical city תל אביב-יפו
+PASS v252 same eligibility תל אביב-יפו
+PASS v252 same suggestion תל אביב-יפו
+PASS v252 canonical city תל-אביב
+PASS v252 same eligibility תל-אביב
+PASS v252 same suggestion תל-אביב
+PASS v252 canonical city תל אביב (מרכז וצפון העיר)
+PASS v252 same eligibility תל אביב (מרכז וצפון העיר)
+PASS v252 same suggestion תל אביב (מרכז וצפון העיר)
+PASS v252 canonical city תל אביב־יפו
+PASS v252 same eligibility תל אביב־יפו
+PASS v252 same suggestion תל אביב־יפו
+PASS v252 known outside remains outside delivery
+PASS v252 empty configured areas are unknown delivery
+PASS v252 known outside remains outside pickup
+PASS v252 empty configured areas are unknown pickup
+PASS v252 unknown freeAbove retains existing fee null
+PASS v252 unknown freeAbove retains existing fee undefined
+PASS v252 free threshold boundary 74999
+PASS v252 free threshold boundary 75000
+PASS v252 free threshold boundary 75001
+PASS v252 free threshold boundary 100000
+PASS v252 free threshold visible only when known
+PASS v252 pickup never uses delivery threshold
+PASS v252 coverage-first relevant family חלב
+PASS v252 coverage-first relevant family לחם
+PASS v252 coverage-first relevant family שמן
+PASS v252 coverage-first relevant family פסטה
+PASS v252 coverage-first relevant family קפה
+PASS v252 size and category remain guarded
+PASS v252 clipboard cleans doubled spaces
+PASS v252 weighted clipboard has actual ordered weight without package invention
+PASS v252 missing package does not invent 1kg
+PASS v252 nav hiding retains geometry and does not display:none
+PASS v252 programmatic anchor and reload lock navigation
+PASS v252 dropdown is in flow and bounded
+PASS v252 focus does not open dropdown
+PASS v252 save option visible outside cart drawer
+PASS v252 copy and clear visible controls
+PASS v252 dialog buttons sticky with safe area
+PASS v252 savings notes separated from chain names
+PASS v252 bounded action geometry 360
+PASS v252 bounded action geometry 390
+PASS v252 bounded action geometry 640
+PASS v252 bounded action geometry 768
+PASS v252 bounded action geometry 1280
+PASS v252 winner secondary amount text inherits accessible foreground
+PASS v252 winner savings is not repeated in reasons
+PASS v252 dedup preserves barcode catalog and distinguishes size
+PASS v252 initial comparison contains order actions
+PASS v252 quantity 2 invalidates old cards immediately
+PASS v252 quantity 2 gets refreshed comparison
+PASS v252 quantity 3 invalidates old cards immediately
+PASS v252 quantity 3 gets refreshed comparison
+PASS v252 quantity 1 invalidates old cards immediately
+PASS v252 quantity 1 gets refreshed comparison
+PASS v252 last-item removal invalidates actions and explains empty basket
+PASS v252 cancelled zero removal reports retained quantity
+PASS v252 consented storage retains city and mode
+PASS v252 saved basket has prominent opt-in restore without silently replacing current
+PASS v252 one-click restore recovers city mode and quantity
+PASS v252 unlisted-city warning אטלנטיס
+PASS v252 unlisted-city warning אילת
+PASS v252 unlisted-city warning ירושלים
+PASS v252 banner tracks selected city
+PASS v252 partial missing list uses live requested quantity
+PASS v252 duplicate search cards collapse to highest coverage barcode
+70 v2.5.2 checks passed; Node/CSS/API stubs, not real phone QA
+
+v253.test.cjs
+PASS v253 original pricing/data module retained online-core.js
+PASS v253 original pricing/data module retained fees.js
+PASS v253 original pricing/data module retained core.js
+PASS v253 original pricing/data module retained config.js
+PASS v253 original pricing/data module retained top-ranking.js
+PASS v253 original pricing/data module retained comparison-view.js
+PASS v253 original pricing/data module retained chain-status.js
+PASS v253 exact freeAbove 200 at -1 agorot
+PASS v253 exact freeAbove 200 at 0 agorot
+PASS v253 exact freeAbove 200 at 1 agorot
+PASS v253 exact freeAbove 750 at -1 agorot
+PASS v253 exact freeAbove 750 at 0 agorot
+PASS v253 exact freeAbove 750 at 1 agorot
+PASS v253 existing free tier at 74999
+PASS v253 existing free tier at 75000
+PASS v253 existing free tier at 75001
+PASS v253 warning is separate persistent live region
+PASS v253 desktop actions have dedicated full width compare row
+PASS v253 single basket scroll owner
+PASS v253 compact dock controls fit 390x844
+PASS v253 compact dock controls fit 390x422
+PASS v253 compact dock controls fit 640x400
+PASS v253 compact dock controls fit 1280x800
+PASS v253 dialog sticky action backing is opaque and isolated
+PASS v253 table expansion contained at 640px
+PASS v253 warning survives routing for מצפה רמון
+PASS v253 warning survives routing for קצרין
+PASS v253 warning survives routing for אילת
+PASS v253 known city hides unlisted warning
+PASS v253 unavailable known list versus unknown verify are distinct
+PASS v253 known city tested for selected mode only
+PASS v253 comparison prepared before city edit
+PASS v253 native change invalidates results and order buttons
+PASS v253 suggestion without confirmation invalidates previous comparison
+PASS v253 draft prompt survives pending refresh timer
+PASS v253 explicit confirmation commits draft and persists warning
+PASS v253 identical weighted presentation picks highest coverage
+PASS v253 catalog retains both source barcodes
+PASS v253 normalized equal quantities dedup but sizes remain distinct
+PASS v253 empty basket service text has one minimum label
+PASS v253 restore advances visible workflow from location
+PASS v253 savings header distinguishes relevant networks from catalog
+42 v2.5.3 checks passed; API stubs/CSS constraints, not real phone QA
+
+v254.test.cjs
+PASS v254 Rehovot normalization רחובות
+PASS v254 Rehovot normalization  רחובות 
+PASS v254 Rehovot normalization רחובות (מרכז)
+PASS v254 Rehovot normalization עיריית רחובות
+PASS v254 Rehovot normalization עיר רחובות
+PASS v254 Rehovot normalization רחובות ישראל
+PASS v254 Rehovot normalization Rehovot
+PASS v254 Rehovot normalization Rechovot
+PASS v254 Rehovot normalization Rehovoth
+PASS v254 Rehovot normalization רְחוֹבוֹת
+PASS v254 Rehovot normalization רחובות‏
+PASS v254 RAMI_LEVY configured alias רחובות
+PASS v254 RAMI_LEVY configured alias רחובות (מרכז)
+PASS v254 RAMI_LEVY configured alias Rehovot
+PASS v254 RAMI_LEVY configured alias רחובות‏
+PASS v254 HAZI_HINAM configured alias רחובות
+PASS v254 HAZI_HINAM configured alias רחובות (מרכז)
+PASS v254 HAZI_HINAM configured alias Rehovot
+PASS v254 HAZI_HINAM configured alias רחובות‏
+PASS v254 absent Rehovot stays outside, not invented availability
+PASS v254 empty list remains unknown and unmodified
+PASS v254 warning is first child of comparison, not only at page top
+PASS v254 warning is prominent with contrast tokens
+PASS v254 native basket dialog labelled and close reachable
+PASS v254 background scroll locked while basket modal open
+PASS v254 modal has exactly one scroll owner
+PASS v254 390px safe-area CTA budget 844/0
+PASS v254 390px safe-area CTA budget 844/34
+PASS v254 390px safe-area CTA budget 422/0
+PASS v254 390px safe-area CTA budget 422/34
+PASS v254 390px safe-area CTA budget 320/0
+PASS v254 390px safe-area CTA budget 320/34
+PASS v254 closed phone dock CTA outside constrained drawer with safe area
+PASS v254 empty copy status has no decorative green strip
+PASS v254 order action footer has no decorative shadow or bottom border
+PASS v254 opening phone basket moves same dock into native modal and locks background
+PASS v254 close restores same dock, unlocks page and collapses drawer
+PASS v254 compare handoff can close and unlock modal
+PASS v254 resize to desktop restores sidebar without stranding inert page
+PASS v254 desktop never opens native mobile basket
+PASS v254 unchanged data/pricing core.js
+PASS v254 unchanged data/pricing fees.js
+PASS v254 unchanged data/pricing config.js
+PASS v254 unchanged data/pricing top-ranking.js
+PASS v254 unchanged data/pricing comparison-view.js
+PASS v254 unchanged data/pricing chain-status.js
+PASS v254 unknown city warning rendered at comparison entry
+PASS v254 known city removes comparison warning
+PASS v254 city draft clears both warning copies
+PASS v254 phone route does not automatically open basket modal
+50 v2.5.4 checks passed; code/CSS/DOM stubs, not real phone QA
 
 markup.test.py
 PASS markup has no duplicate IDs
