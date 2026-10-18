@@ -1,3 +1,44 @@
+HomeBasket 2.2.4 — 2026-10-18
+765 PASS, 0 failing suites: Node 756 + Python markup 9.
+All 727 previous cases retained, plus 38 focused v224 cases. Raw output: test-results.txt.
+Previous counter assertions updated only to replace superseded overlapping-group semantics
+with exclusive groups. Canonical version/favicon cache expectations updated. No tests removed.
+
+Exclusive status: one assignment per original data index. Sum of five groups always equals
+total (8 real sources); 512 deterministic mixed scenarios exercise the invariant in one
+aggregate test. Priority is unavailable city/mode/offline > stale scan > checked partial
+original basket > verification (unknown/verify coverage) > complete fresh known-city basket.
+Zero original coverage after checking also counts as partial/unpriced, not a free basket.
+Before data/prices loaded or empty basket, unclassified supported chains await verification.
+Unknown data are not called stale or missing prematurely. Counter uses cached data only.
+Changing city and delivery/pickup changes the display groups but not ranking/filter rules.
+
+Missing product names/normalized sizes/quantities displayed in Top3 and remaining chain
+cards with explicit warning. Full basket has no warning; stale data not definitive missing.
+HTML escaping, BiDi isolation and mobile wrap rules checked. Original-barcode coverage
+unchanged; approved alternatives not silently considered original stock/prices.
+
+404 mitigation: optional service-area file loader only reads a present local File stream;
+no generic JSON network loader call or hosted fetch, even if config names the optional file.
+Absent local file returns quietly. Manual/local areas parsing tested. Production config
+bytes unchanged (preserve custom operator cities/dataBase during upgrade).
+Explicit SVG link plus alternate legacy ICO link. Real favicon.ico at root, valid ICO
+header and every embedded PNG frame bounded by file bytes. All declared favicon hrefs
+resolve to packaged files; implicit /favicon.ico probe has an actual file to serve.
+Asset cache token incremented. No browser HTTP server/console session run here; no claim
+that live hosting or an old deployment/cache was tested. ZIP only, live Site unchanged.
+
+Original 2.2.3 folder verified byte-for-byte against BACKUP_v2.2.3_SHA256.txt; ZIP retained.
+All app JS syntax checked. These files unchanged from 2.2.3: core.js, online-core.js,
+fees.js, top-ranking.js, savings.js, config.js, receipt-core.js, receipt-image.js,
+layout.js, receipt-ui.js. Only status display module, app display/local optional-file
+loader, head/version/icon assets, small missing-list CSS and docs/tests changed.
+No pricing, fee math, ranking, filtering, OCR, checkout/collection or live website changes.
+No real full export file/browser visual/mobile rendering/retailer inventory/price/WhatsApp
+or photo OCR test here. Existing synthetic 97,096-product/60,000-promotion tests retained;
+Node benchmark is not a real-browser guarantee. Data exports are not bundled.
+
+Historical 2.2.3 validation (previous run, old overlap behavior superseded):
 HomeBasket 2.2.3 validation — 2026-10-18
 727 PASS; 0 failures: Node 718 + Python markup audit 9.
 All 680 prior tests retained; 47 focused v223 tests added. Full test-results.txt included.

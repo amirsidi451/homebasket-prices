@@ -54,7 +54,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 775 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 723 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +156,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":158,"search_ms":17.83,"heap_delta_mb":44.4,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":157,"search_ms":18.27,"heap_delta_mb":32.4,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -728,13 +728,13 @@ PASS fee summary wraps at 390px without new fixed width
 
 v223.test.cjs
 PASS single display total includes all eight chain data indexes
-PASS priced means any valid current-cart original product once per chain
-PASS same chain with two products is counted once
-PASS address verification not conflated with price coverage
+PASS partial or verify chains do not masquerade as full priced
+PASS full verify chain counted only in verify
+PASS exclusive full-versus-partial classification
 PASS offline unsupported outside-city chains keep total denominator
 PASS offline unsupported outside-city excluded from verification count
-PASS unavailable chains still count as reference prices like savings
-PASS stale priced chain counted stale, not priced
+PASS unavailable chains assigned unavailable, not priced
+PASS stale eligible chain counted stale, not partial
 PASS missing snapshot counted as stale not inferred fresh from price
 PASS empty basket shows zero priced chains, not zero service coverage
 PASS zero price is a valid price if snapshot fresh
@@ -765,7 +765,7 @@ PASS data reload does not leave stale global statistics
 PASS exactly one shared counter DOM node outside all page sections
 PASS no fixed footer version survives
 PASS release and status scripts ordered before UI initialization
-PASS shared counter labels price scope and overlapping statuses
+PASS shared counter labels exclusive statuses and pending verification
 PASS counter no fetch geolocation or storage and no rank invocation
 PASS 390px touch targets at least 44px
 PASS 390px chart has no intrinsic unshrinkable amount column
@@ -775,6 +775,47 @@ PASS 390px quantity controls wrap instead of extending card
 PASS 390px geometry for full cards chart and quantity controls fits
 PASS long names numbers Latin tokens and large money remain breakable
 47 v2.2.3 focused display tests passed (UI stubs/CSS math, not visual browser QA)
+
+v224.test.cjs
+PASS all eight full known local chains are priced and no other bucket
+PASS reported 8-priced-plus-6-verify overlap becomes exclusive 2 plus 6
+PASS reported empty-cart 0 plus 7 plus 0 accounts for eighth offline chain
+PASS unavailable has priority over stale and not double counted
+PASS stale has priority over partial
+PASS verified-price partial takes priority over unknown service
+PASS one missing product is classified partial not full priced
+PASS zero-coverage checked chain is partial/unpriced, never free complete basket
+PASS before all current-cart prices checked do not assert missing products
+PASS before data load all chains still assigned exactly once
+PASS before network metadata arrives configured eight still count
+PASS pickup-only chain unavailable for delivery counter
+PASS same pickup-only chain available after pickup mode and city switch
+PASS known city exclusion changes counter for all chains
+PASS unknown areas assigned to verification never unavailable by guess
+PASS unselected city never claims confirmed price category
+PASS all five requested Hebrew category labels appear
+PASS deterministic 512 mixed-state scenarios always partition into eight
+PASS partial top card includes missing-products warning
+PASS partial top card explicitly names missing olive oil and normalized size
+PASS missing list excludes available products
+PASS complete chain has no missing list
+PASS same explicit names shown in remaining-network cards
+PASS partial CTA remains secondary with full basket primary
+PASS approved substitutes not silently treated as original coverage
+PASS missing names HTML escaped
+PASS stale data not reported as definitive missing original products
+PASS hosted optional service-area configuration never fetched even when named
+PASS missing optional local areas file is silent and makes no request
+PASS present local area file parsed directly without HTTP fallback
+PASS UI counter sum remains original dataset size on city changes
+PASS SVG favicon explicitly linked with release cache token
+PASS legacy ICO also explicitly linked and present at site root
+PASS every ICO frame within actual file bounds with correct image payload
+PASS all declared favicon file targets resolve locally without missing assets
+PASS area loader has no generic JSON HTTP loader call
+PASS release updated only through canonical version constant
+PASS missing names remain wrap-safe in mobile RTL
+38 v2.2.4 partition/missing-product/no-404 checks passed (offline fixtures)
 
 markup.test.py
 PASS markup has no duplicate IDs

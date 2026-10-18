@@ -164,3 +164,5 @@ button:disabled{opacity:.65;cursor:not-allowed}#comparison .main-comparison smal
  .table-wrap{width:100%;min-width:0;max-width:100%;overflow-x:auto}
  dialog{max-width:calc(100vw - 32px)}.missing-row button{white-space:normal}
 }
+.basket-gaps{padding:12px;border:1px solid #d9c99e;border-radius:10px;background:#fff9eb;overflow-wrap:anywhere;min-width:0}
+.basket-gaps ul{padding-inline-start:20px;margin-block:8px}.basket-gaps bdi{unicode-bidi:isolate}.basket-gaps small{display:block}

@@ -1,9 +1,16 @@
-# HomeBasket 2.2.3
+# HomeBasket 2.2.4
 Buildless Hebrew RTL static comparison app. Read README_HE.html.
-Original 2.2.2 folder/ZIP retained; no hosted-site changes.
-## Focused display fixes in 2.2.3
+Original 2.2.3 folder/ZIP retained; no hosted-site changes.
+## Focused fixes in 2.2.4
+Exclusive chain counter: exactly one assignment per original source index; total remains 8 for real exports. Priority: unavailable in city/mode (including no online ordering) > stale scan > partial checked basket (including zero priced originals) > unknown/verify availability > full fresh known-city priced basket. Before all basket prices/data load, or with an empty cart, remaining fresh supported chains await verification, not a fabricated partial/full price. Totals always sum to original source count. Counter is display-only; no rank/filter arithmetic changed.
+Top3 and remaining chain cards list normalized names and quantities of original products lacking fresh prices, plus a clear missing-products warning. Approved substitutes remain separately labelled; no silent original-barcode coverage changes.
+Optional service areas are NEVER requested over HTTP: direct local-file stream read only when actually present. Production cities remain in config.js; explicit manual import preserved. SVG icon linked explicitly; real favicon.ico at static root plus alternate icon link handles legacy browser probes. Cache tokens updated.
+765 checks = all 727 retained + 38 new. Deterministic 512-scenario partition invariant included as one test. No browser console/live-site or real data run here; tests use static assets, real gzip streams, local-file API and browser API stubs.
+For install: extract to a new folder; KEEP YOUR CURRENT config.js if you already filled real cities/dataBase. This release makes no config changes. Keep your existing data exports. Launch START_LOCAL.bat. Do not overwrite custom data/config with empty example defaults.
+
+## Historical focused display fixes in 2.2.3
 Footer reads immutable HBRelease.VERSION from release.js; no hardcoded footer version.
-One global chain-status strip remains visible on all routes. Original source indexes and filtering unchanged. Total uses the original loaded chain array, including offline/outside-city chains (8 in the real dataset), or config before loading. Priced = fresh price for at least one original product in current basket among loaded cached records; verify = potential online chain requiring address/service confirmation; stale = missing/expired snapshot. Groups may overlap. No network call is added for counters; before loading, status is explicitly unknown rather than stale.
+One global chain-status strip remains visible on all routes. Original source indexes and filtering unchanged. Total uses the original loaded chain array, including offline/outside-city chains (8 in the real dataset), or config before loading. Priced = fresh price for at least one original product in current basket among loaded cached records; verify = potential online chain requiring address/service confirmation; stale = missing/expired snapshot. In 2.2.3 groups overlapped; this is superseded by the exclusive 2.2.4 classification. No network call is added for counters; before loading, status is explicitly unknown rather than stale.
 Search/cart coverage remains per-product relevant-chain count, labelled separately without a conflicting global denominator; manual selected count refers only to the common/promotions group.
 Rank 2/3 descriptions say shipping/pickup estimate, not collected operational fees. No actual collection exists even when fees quotation is enabled.
 Only rank 1 with FULL basket gets primary retailer CTA/style. Every partial card is secondary with a missing-products warning; if all partial, no primary retailer CTA. Sorting/calculations unchanged.
@@ -38,7 +45,7 @@ Rami unknown pickup is verified on the retailer site, not blocked by missing cit
 Search invalidates immediately on input, displays loading, and only renders the last query.
 Natural Hebrew counts, display-only name cleanup and direction-isolated clipboard text.
 Tests use tests/fixtures/config.js, never empty-city assumptions about production config.
-727 checks pass. The prior 2.0 nonempty production city isolation report is retained as historical evidence.
+765 checks pass. The prior 2.0 nonempty production city isolation report is retained as historical evidence.
 No automatic saved downloads, download anchors, file-save APIs or attachment redirects.
 Data is still fetched into browser memory; local OCR resources load on demand as before.
 Actual WhatsApp rendering and actual-phone/visual browser QA remain manual checks.
