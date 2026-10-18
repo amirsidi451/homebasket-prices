@@ -1,10 +1,11 @@
-# HomeBasket 2.3
+# HomeBasket 2.4
 Hebrew RTL, mobile-first static grocery comparison. No server-side processing or payments.
-Backup: original 2.2.4 directory and ZIP retained, hashes in BACKUP_v2.2.4_SHA256.txt.
-No live-site edits or publishing. Keep your existing config.js and data export directory.
+Backup: original 2.3 directory and ZIP retained, hashes in BACKUP_v2.3_SHA256.txt.
+An exact copy of the original 2.3 ZIP is included under backups/.
+No live-site edits or publishing. Data exports remain unchanged. Merge existing serviceAreas/dataBase into the NEW config.js; do not overwrite new fulfilment rules with the old config.
 
 ## Run
-1. Extract to a new folder; keep your filled config.js (cities/dataBase/fees).
+1. Extract to a new folder; copy your filled serviceAreas/dataBase/fees fields into the new config.js (see CONFIG_HE.md); keep its new fulfilment policies.
 2. Double-click START_LOCAL.bat (Python already installed). It serves only static files on 127.0.0.1:8787.
 3. Load the existing export folder if data are not connected. Choose city and delivery/pickup.
 4. Search, choose exact barcode/size and quantity, add. The dock has quantity/remove controls.
@@ -12,7 +13,7 @@ No live-site edits or publishing. Keep your existing config.js and data export d
 Read README_HE.html for the short Hebrew guide. No data exports are bundled.
 
 ## Comparison
-Top 3 and full-basket savings use only complete original-barcode baskets in relevant chains.
+Top 3 and full-basket savings use complete original-barcode baskets meeting chain minimums. Fulfilment fees (including strictly-above thresholds) are included when known. A below-minimum chain stays visible with the exact deficit, without a primary rank or a misleading saving. Thresholds use product subtotal, excluding delivery/pickup and platform fees.
 Partial baskets never disappear: separate visible table, sorted by coverage then available
 product subtotal, explicit missing count/list and opt-in substitute action via similarProducts.
 Zero priced originals is NOT a free basket and has no order CTA. No price is invented.
@@ -54,9 +55,23 @@ Cart service/receipt data are not uploaded. Initial OCR resources need internet 
 configured external product pictures use normal image requests without page referrer.
 
 ## Validation
-855 PASS = 765 prior checks (updated only where 2.3 intentionally changes behavior) + 90 new.
+949 PASS = 855 prior checks + 94 new v2.4 checks. Only prior release/favicon version expectations changed. No tests removed.
 Node/real gzip/browser API stubs, synthetic 97,096 products and 60,000 promotions; 100-item
 low-coverage regression (71 single-chain, 29 shared). Markup/contrast/CSS/390px geometry checks.
 No real browser/mobile screenshots or real full dataset available here; no claim of real
 phone/retailer/WhatsApp/photo OCR validation. Test results and limitations in VALIDATION.txt.
 Run python run_tests.py (free Node.js needed for tests only). No new third-party dependencies.
+
+## 2.4 fulfilment policies
+All config amounts are shekels; calculations return integer agorot. `fulfilment.basis`
+accepts `estimate` or `published`; supplied rates are set to `estimate` and UI always
+labels them estimated. `fulfilment.delivery` and `.pickup` each define `amount`,
+`minimumOrder`, and optional `tiers:[{above:750,amount:0}]`. The tier applies strictly
+above 750, not at 750. User-specified minima apply to BOTH modes until edited separately.
+Rami Levy pickup cost is unknown (not zero); existing common product-price ranking rule
+for unknown pickup fees is retained, with explicit warning. No charge/payment is performed.
+City affects availability only. Basic address extraction uses configured city names locally;
+ambiguous/unknown addresses require entering the city alone. Clearing city removes old results.
+City/mode input rebuilds current results, information, coverage, modal context and dock.
+In-place +/− and amount input persist per product during suggestion rerenders; pack quantities
+must be whole, weighed quantities use kilograms. Substitute close cancels pending responses.

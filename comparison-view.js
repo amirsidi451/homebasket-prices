@@ -4,14 +4,16 @@
   const snapshots=H.snapshots(networks,meta),coverage=H.coverage(cart,records,networks.length,'last',now,snapshots),byChain=new Map(coverage.map(r=>[r.chain,r]));
   const all=networks.map((network,chain)=>{
    const row=byChain.get(chain),state=O.service(network,config,place),age=H.ageHours(snapshots[chain],now),current=H.fresh(snapshots[chain],now);
+   const quote=O.quote(network,config,place?.mode,row.total);
    const missing=cart.filter(i=>H.priceStatus(records.get(i.barcode)?.get(chain),snapshots[chain],'last',now)!=='תקין');
    let reason='';
    if(state.status==='hidden')reason='מוסתרת – אין שירות אונליין';
    else if(!state.eligible)reason=['outside','unsupported'].includes(state.status)?'לא זמינה בעירך או באופן הקבלה שנבחר':O.availabilityLabel(place?.mode);
    else if(!current)reason='לא עדכנית';
    else if(missing.length)reason=missing.length===1?'חסר מוצר אחד':'חסרים '+missing.length+' מוצרים';
+   else if(quote.belowMinimum)reason=O.minimumLabel(quote);
    else reason='סל מלא';
-   return {...row,network,eligible:state.eligible,current,age,snapshot:snapshots[chain],missing,reason,full:cart.length>0&&state.eligible&&current&&!missing.length};
+   return {...row,...quote,network,eligible:state.eligible,current,age,snapshot:snapshots[chain],missing,reason,full:cart.length>0&&state.eligible&&current&&!missing.length};
   });
   const full=all.filter(r=>r.full),partial=all.filter(r=>r.eligible&&r.current&&r.missing.length).sort((a,b)=>b.coverage-a.coverage||a.total-b.total||a.chain-b.chain);
   const usable=all.filter(r=>r.eligible&&r.current&&r.coverage>0).map(r=>r.chain);

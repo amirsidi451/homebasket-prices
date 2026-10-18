@@ -200,3 +200,11 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .basket-settings a[href="#cart"]{display:inline-flex;margin-top:8px}
 @media(max-width:600px){header{padding:12px 18px;gap:8px}header .mark{width:34px;height:34px;font-size:30px;line-height:30px;border-radius:10px}header .logo{font-size:20px}header .logo small{display:none}header nav{grid-template-columns:repeat(3,minmax(0,1fr))}.chain-status-strip{position:relative;padding-inline-end:68px}.status-help>summary{position:absolute;top:0;inset-inline-end:18px;min-width:44px;max-width:44px;padding:10px 0;text-align:center}.status-help[open]{padding-top:8px}.status-help[open] small{display:block}.build-head{scroll-margin-top:60px}}
 #search{scroll-margin-top:64px}.savings-detail>summary{font-weight:bold;min-height:44px;padding-block:10px}
+
+/* 2.4: in-place quantity controls, independent of navigation. */
+.product-card .bottom .quantity-step{flex:0 0 44px;min-width:44px;width:44px;min-height:44px;padding:8px;font-size:20px}
+.minimum-warning{color:#79430c;background:#fff4df;padding:10px;border-radius:8px;overflow-wrap:anywhere}
+#alternative-dialog{max-height:85dvh;overflow:auto}
+#alternative-dialog .dialog-head{position:sticky;top:0;background:white;z-index:3;gap:8px}
+#alternative-close{flex-shrink:0;min-height:44px;min-width:88px;cursor:pointer;position:relative;z-index:4}
+@media(max-width:600px){.product-card .bottom{grid-column:1/-1;gap:6px}.product-card .bottom label{min-width:58px}.product-card .bottom input{width:58px}.product-card .bottom .add-product{min-width:90px}.product-card .bottom small{flex-basis:100%}}

@@ -1,23 +1,1019 @@
-compact.test.cjs: 21 checks; OK
-core.test.cjs: 16 checks; OK
-interface.test.cjs: 9 checks; OK
-large-catalog.test.cjs: 2 checks; OK
-receipt.test.cjs: 41 checks; OK
-refresh.test.cjs: 8 checks; OK
-v12.test.cjs: 25 checks; OK
-v13.test.cjs: 22 checks; OK
-v14.test.cjs: 17 checks; OK
-v15.test.cjs: 21 checks; OK
-v16.test.cjs: 38 checks; OK
-v17.test.cjs: 58 checks; OK
-v18.test.cjs: 76 checks; OK
-v19.test.cjs: 67 checks; OK
-v20.test.cjs: 41 checks; OK
-v21.test.cjs: 45 checks; OK
-v22.test.cjs: 31 checks; OK
-v221.test.cjs: 49 checks; OK
-v222.test.cjs: 84 checks; OK
-v223.test.cjs: 47 checks; OK
-v224.test.cjs: 38 checks; OK
-v23.test.cjs: 90 checks; OK
-TOTAL: 855 PASS; failures: 0
+compact.test.cjs
+PASS compact products decode names and numeric quantity
+PASS chain source stays associated with its index
+PASS compact prices retain agorot and source change date
+PASS old price change date remains valid under fresh network snapshot
+PASS stale network excluded despite recent product change
+PASS missing network scan never falls back to product change
+PASS coverage ranks most complete basket first
+PASS auto selection picks two best covered chains
+PASS eight tied chains still choose only two by default
+PASS common mode calculates identical subset and excludes other products
+PASS cheapest per exact barcode ignores stale cheaper network
+PASS no name-based replacement for absent barcode
+PASS whole word relevance outranks partial matching
+PASS prefix relevance then network coverage breaks ties
+PASS 330.00 100 milliliter normalizes to 330 ml
+PASS weighted product clearly says price per kilogram
+PASS normalizes common Hebrew units
+PASS compact promotions map chain and fields without price deduction
+PASS date-only offer remains valid to end of Israel day
+PASS naive snapshots interpreted as Israel local time
+PASS wrong currency unit rejected
+21 compact-format tests passed
+
+core.test.cjs
+PASS chain index follows array order
+PASS products retain exact barcode and package
+PASS full basket with missing products never wins
+PASS common basket totals use identical subset
+PASS stale price cannot rank
+PASS unknown timestamps cannot rank
+PASS naive timestamp cannot rank
+PASS future timestamps cannot rank
+PASS money must be integer agorot
+PASS invalid chain index rejected
+PASS duplicate prices rejected
+PASS no common products yields no winner
+PASS weighted multiplication rounds per line to agorot
+PASS ties show zero savings
+PASS storage restores only valid positive quantities
+PASS median is explicit and never silently falls back
+16 tests passed
+
+interface.test.cjs
+PASS gzip catalog load and render
+PASS explicit add and quantity persistence
+PASS cart restoration after explicit resume in new page context
+PASS full basket comparison renders
+PASS coverage mode does not invent comparable-basket savings
+PASS per-product cheapest across networks renders
+PASS fractional packaged quantity rejected
+PASS lazy gzip shard comparison
+PASS incompatible schema fails visibly
+9 interface integration tests passed (API stubs; no visual QA)
+
+large-catalog.test.cjs
+PASS synthetic 97,096 product parse + search + units: 812 ms (Node, not phone browser)
+PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
+
+receipt.test.cjs
+PASS three retailer-shaped Hebrew text fixtures parse without external services
+PASS explicit multiplier does not confuse 2L size with quantity
+PASS weighted kg quantity extracted separately from price
+PASS unknown quantity marked uncertain, not claimed as verified
+PASS headers totals payments and discount rows are never auto-matched
+PASS exact source barcode wins receipt matching
+PASS metadata-size search matches 2000ml to 2L
+PASS explicit named quantity parsed
+PASS comma decimal receipt price supported
+PASS weight before product name supported
+PASS unknown product remains unmatched
+PASS all parsed receipt rows start unchecked
+PASS receipt index built once per catalog identity
+PASS only approved rows merge into cart and duplicate barcode adds qty
+PASS invalid packaged fractional quantity rejects entire merge atomically
+PASS approved weight quantity preserved
+PASS unknown product cannot enter cart
+PASS empty approval does not pretend success
+PASS receipt amount never used as catalog price
+PASS oversized text and line counts rejected instead of silently dropped
+PASS review does not mutate cart before confirmation
+PASS review shows uncertainty and historical-price wording
+PASS cancel final confirmation keeps cart empty
+PASS approved review adds only barcode and quantity, navigates to cart
+PASS receipt text cleared after applying; never saved to localStorage
+PASS persistent basket shows product types and quantity
+PASS catalog refresh invalidates old receipt review
+PASS editing row name clears previous selection and approval
+PASS OCR path passes a local canvas to Hebrew worker and releases worker
+PASS OCR result never auto-adds products
+PASS unsupported image gets readable text fallback
+PASS OCR failure leaves text fallback available
+PASS clear receipt removes drafts but keeps cart
+PASS cancelled late worker is terminated without replacing manual text
+PASS clearing while parsing cannot resurrect receipt review
+PASS receipt source text is escaped in review
+PASS opening view exposes both manual and receipt entry paths
+PASS legacy network step redirects to comparison options
+PASS basket amount is labeled single-chain estimate, never mixed minima
+PASS persistent basket changes quantity and saves same cart key
+PASS persistent basket removes item and explains empty state
+41 receipt and UX checks passed
+
+refresh.test.cjs
+PASS pending JSON from previous refresh is rejected
+PASS old price response cannot repopulate cleared caches
+PASS changing original quantity invalidates approved substitute
+PASS adding original product again invalidates substitute
+PASS removing original clears its approvals
+PASS empty cart clears all approvals
+PASS undo substitution removes stored approval
+PASS approval from obsolete quantity dialog is refused
+8 refresh and approval regression tests passed
+
+v12.test.cjs
+PASS missing source gives actionable cache/schema error
+PASS valid sources accepted
+PASS no price message separated from stale chain
+PASS stale chain has its own message even if price exists
+PASS same type and approximate unit size suggested
+PASS compatible 800ml package within tolerance suggested
+PASS original exact barcode never masquerades as alternative
+PASS canola not offered as olive oil alternative
+PASS double size outside tolerance excluded
+PASS mass and volume not mixed
+PASS no approval means original subtotal only
+PASS approved alternative affects only target-chain optional subtotal
+PASS alternative never enters exact-barcode common savings
+PASS fair group same exact quantity across each ranked chain
+PASS zero common group does not fabricate zero-price winner
+PASS HTTP reload policy avoids stale cache path
+PASS files versioned by freshly loaded meta
+PASS fair group column, highlight and standard punctuation
+PASS unrelated promotions hidden and not fetched by default
+PASS separate promotions search filters results
+PASS viewing similar products leaves totals unapproved
+PASS cancelling confirmation never approves substitute
+PASS explicit approval target-chain subtotal, original cart unchanged
+PASS approved substitutions saved with chain-source mapping
+PASS old source-less chains cause visible error rather than stale labels
+25 v1.2 tests passed
+
+v13.test.cjs
+PASS multi-token milk percent and amount gives full matches first
+PASS 2000 ml equals 2 liters
+PASS attached quantity unit spelling matches
+PASS kg query matches gram quantity
+PASS unit abbreviations and pieces match metadata
+PASS partial text results retained rather than empty
+PASS numeric matches do not introduce shampoo into milk results
+PASS exact barcode still first
+PASS shampoo and every requested care/cleaning word excluded
+PASS first-word product type must match
+PASS no reasonable alternative yields empty list
+PASS 60,000 promotion rows indexed once and 8091 matches counted
+PASS result materialization always bounded to 40
+PASS selected-chain filtering uses same index
+PASS expired offers not shown
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":153,"search_ms":16.06,"heap_delta_mb":44.2,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+PASS closed promotion area never fetches even on input
+PASS concurrent opens share one gzip fetch and one index
+PASS 60k real gzip stream produces only 40 result elements
+PASS 300ms debounce searches once without refetch or index rebuild
+PASS promotion typing does not rerender comparison or other views
+PASS reopening reuses existing index
+PASS approved substitute displays actual alternate barcode
+22 v1.3 checks passed
+
+v14.test.cjs
+PASS matching normalized size uses coverage before name placement (v1.6 requested ranking)
+PASS 80g metadata and named matches outrank unknown size; coverage breaks size tie (v1.6)
+PASS unit equivalence retained in priority
+PASS no size query retains name prefix then network coverage
+PASS barcode exact search remains first
+PASS normalized size added if absent from source name
+PASS equivalent size already in name not duplicated
+PASS truncated numeric ending retained and full metadata appended
+PASS barcode-only name clearly identified without inventing name
+PASS blank source name does not reject whole catalog
+PASS weighted title never adds fictitious package size
+PASS names wrap without clipping; amount and count stay together
+PASS clear offers heading and styled accessible native summary, closed initially
+PASS same-line available subtotal explicitly shows 1 of 2 product types
+PASS top3 leads while fair group winner stays in product details
+PASS fair subtotal also shows its item count
+PASS display title used in cart and search; offers still not loaded
+17 v1.4 checks passed
+
+v15.test.cjs
+PASS same-family 80g regular bamba proposed for airy bamba
+PASS one shared family word enough only at identical normalized size
+PASS family-only candidate of different size rejected
+PASS mass versus volume still rejected
+PASS cleaning and shampoo remain rejected
+PASS olive oil never relaxed to canola
+PASS coverage breaks ties between equally good name and size matches
+PASS greater coverage never promotes wrong size over requested size
+PASS offers standalone highlighted section precedes all comparison results
+PASS automatic selection text is accurate and never claims manual selection
+PASS price detail table contains all 8 networks and marks selected pair
+PASS default comparison does not fetch promotions
+PASS manual selection and fair-group wording remain consistent
+PASS bamba 80g alternative found in target chain at 640 agorot
+PASS bamba approval keeps original barcode and uses separate target subtotal
+PASS search shows coverage even when item is already in cart
+PASS wider coverage suggests same-size olive oil and excludes 1L oil
+PASS viewing wider-coverage offers never modifies cart
+PASS cancel leaves original and stored cart untouched
+PASS explicit confirmation replaces exact barcode and preserves quantity
+PASS changed cart invalidates old replacement offer
+21 v1.5 checks passed
+
+v16.test.cjs
+PASS 8-chain milk metadata size beats explicit-name 1-chain equivalent
+PASS requested matching size remains before wrong-size high coverage
+PASS olive oil six-chain metadata size beats two-chain named size
+PASS correct oil family outranks high-coverage shampoo
+PASS egg L is grade and never a liquid unit
+PASS real L eggs outrank liqueur, noodles and salad even at lower coverage
+PASS L grade beats M grade within real egg family
+PASS explicit salad query still prefers salad over shell eggs
+PASS numeric 2 L still parses volume
+PASS exact barcode search preserved
+PASS glued decimal price gains spacing and shekel
+PASS 3 for 12 offer has semantic RTL phrase and shekel
+PASS existing currency is not duplicated
+PASS percent offer never converted to shekel
+PASS round robin shows selected minority chain in first two results
+PASS all selected source counts reported while DOM remains capped at 40
+PASS explicit Israel 03:00 timed expiration removed after deadline
+PASS date-only expiration stays active until Israel day end
+PASS expired between first open and next search is removed from same index
+PASS cart automatically suggests specific highest-coverage same-size oil
+PASS cart has one missing-network button instead of seven target buttons
+PASS automatic suggestion never changes original barcode before approval
+PASS single replace button still requires user confirmation
+PASS confirmed inline replacement persists highest-coverage barcode
+PASS single missing-networks button opens all seven missing chains
+PASS approved cart line shows alternate name, 12.80 quantity total and barcode
+PASS approved missing-network row no longer claims no price
+PASS offer currency shown and numbers isolated in bidi markup
+PASS zero club field hidden but nonzero club id retained
+PASS rendered results include both selected sources rather than first-source domination
+PASS expired promotion never appears in rendered HTML
+PASS description is escaped rather than interpreted as HTML
+PASS date-only offer label says end of day, not misleading 03:00
+PASS naive offer display uses same Israel timezone parser as filter
+PASS quoted names keep escaped punctuation intact
+PASS open panel schedules expiration refresh without whole-page render
+PASS expiry refresh is scheduled at upcoming deadline rather than 30 seconds later
+PASS open panel automatically removes a just-expired timed offer
+38 v1.6 checks passed
+
+v17.test.cjs
+PASS non-product never automatically matched: קבלה מס' 12345
+PASS non-product never automatically matched: חשבונית 123
+PASS non-product never automatically matched: חנות נסיונית
+PASS non-product never automatically matched: רחוב הדקל 14 אור יהודה
+PASS non-product never automatically matched: תאריך 17/10/2026
+PASS non-product never automatically matched: סה"כ 55.80
+PASS non-product never automatically matched: מע"מ 8.00
+PASS non-product never automatically matched: אמצעי תשלום אשראי
+PASS non-product never automatically matched: מזומן 60.00
+PASS garbled Latin suffix preserves inferred egg L grade
+PASS garbled MIX ignored; good Basmati token maps to rice, not shampoo
+PASS one-character Hebrew typo corrected before matching
+PASS 12 units parsed explicitly and converted to one 12-egg carton
+PASS piece count cannot silently become kilograms
+PASS x2 suffix parsed as purchase quantity
+PASS 2 * multiplier parsed as purchase quantity
+PASS multipack 2 * 200g is not counted as two purchases
+PASS pack size in grams never becomes purchase quantity
+PASS receipt candidates use network coverage for equally good Bamba fits
+PASS unspecified egg pack favors high-coverage 12 over low-coverage 18
+PASS explicit egg pack 18 still respected
+PASS egg L substitution rejects M and unknown grade
+PASS same-grade same-size egg alternative can be proposed
+PASS egg alternatives also keep exact package count
+PASS duplicate exact barcode merges quantities
+PASS different barcodes with same visible name never silently merge
+PASS trailing currency dash removed
+PASS small image enlarged with bounded output
+PASS large image capped at 3 megapixels and 3000px
+PASS adaptive grayscale threshold produces monochrome opaque pixels
+PASS 390px main table columns fit content width and buttons remain 44px
+PASS layout width budget stays within viewport 320
+PASS layout width budget stays within viewport 360
+PASS layout width budget stays within viewport 390
+PASS layout width budget stays within viewport 414
+PASS short mobile viewport drawer remains bounded
+PASS first visit starts empty despite stored basket
+PASS no opt-in means new basket does not overwrite prior saved basket
+PASS explicit resume restores previous cart and opts into saving
+PASS typing zero asks and cancellation keeps product
+PASS typing zero with approval removes product
+PASS minus at one requires removal approval
+PASS plus increments quantity
+PASS empty-basket cancellation preserves current cart
+PASS confirmed clear also removes stored basket
+PASS navigation clears stale add status
+PASS basket mutation clears obsolete status text
+PASS replacement into existing exact barcode merges quantities
+PASS replacement provenance badge visible in cart
+PASS comparison uses one primary table and closed detailed sections
+PASS all product-price tables are closed behind disclosures
+PASS one concise summary names price and coverage
+PASS receipt editing automatically closes obstructing drawer
+PASS all OCR stages show percentage, elapsed time and estimated remaining time
+PASS OCR preprocess enlarges small input before local recognition
+PASS OCR success explicitly shows 100 percent
+PASS mobile keyboard never closes drawer containing the focused input
+PASS short keyboard viewport can close a drawer not being edited
+58 v1.7 checks passed
+
+v18.test.cjs
+PASS normalizes Hebrew niqqud and whitespace
+PASS delivery matches configured full city
+PASS pickup uses its own areas
+PASS pickup permits configured city
+PASS partial city cannot silently match
+PASS street address cannot masquerade as city
+PASS unknown source fails closed
+PASS no location fails closed
+PASS invalid fulfillment fails closed
+PASS non-boolean service flag is unknown: null
+PASS non-boolean service flag is unknown: undefined
+PASS non-boolean service flag is unknown: true
+PASS non-boolean service flag is unknown: 1
+PASS false overrides configured area
+PASS empty areas never mean nationwide
+PASS explicit wildcard supported
+PASS unknown fee remains null
+PASS zero fee is explicitly free
+PASS fee shekels converts once to agorot
+PASS delivery fee not misused as pickup fee
+PASS invalid fee stays unknown: -1
+PASS invalid fee stays unknown: 35.90
+PASS invalid fee stays unknown: Infinity
+PASS invalid fee stays unknown: NaN
+PASS homepage destination supports HTTPS
+PASS static deep link on same origin supported
+PASS unsafe order destination blocked: javascript:alert(1)
+PASS unsafe order destination blocked: http://shop.example.test/
+PASS unsafe order destination blocked: https://user:password@shop.example.test/
+PASS unsafe order destination blocked: 
+PASS cross-origin deep link blocked
+PASS relative javascript deep link blocked
+PASS city suggestions contain no wildcard or duplicates
+PASS aggregate price labelled unverified online
+PASS online label only explicit config
+PASS comparison blocked until city selected
+PASS only eligible chain selected
+PASS no winner claim with only one eligible chain
+PASS unavailable chain excluded consistently from selector
+PASS only relevant chains have handoff buttons
+PASS no per-branch price presentation
+PASS matching handoff opens disclaimer dialog
+PASS unavailable handoff cannot open
+PASS clipboard list plain name and purchase quantity
+PASS copy button copies rendered list
+PASS URL has no city/query data
+PASS changing city invalidates modal
+PASS location not persisted even when cart saving enabled
+PASS search coverage recomputed for eligible chain only
+PASS two eligible networks compare same scalar
+PASS known delivery fee displayed separately
+PASS fee not added to fair products total
+PASS estimated price label always visible for default export
+PASS hidden legacy metric cannot switch canonical chain price
+PASS cart edits invalidate handoff list
+PASS unconfigured area cannot rank any chain
+PASS explicit approved substitute used for missing original in handoff
+PASS city never included in versioned data URLs
+PASS all eight fixture chains retain empty areas until supplied; service policy explicit
+PASS first receipt/build route goes via location
+PASS invalid blank city rejected
+PASS location does not survive reload with saved basket
+PASS actual production startup has no remembered city
+PASS actual production cannot rank unknown coverage
+PASS production location remains outside saved-cart consent
+PASS weighted list preserves fractional kilograms
+PASS service availability does not override 72h freshness
+PASS old product update still valid in fresh chain
+PASS refresh closes stale handoff and clears list
+PASS disclaimer exact requested text present
+PASS external navigation suppresses Referrer and opener
+PASS location required max length and no autocomplete
+PASS no branch metric choice in UI
+PASS mobile mode selector labels retain touch target
+PASS mobile modal and four steps adapt at 390px
+PASS service core has no network/storage/geolocation access
+76 v1.8 checks passed; API stubs and CSS audit, not visual browser QA
+
+v19.test.cjs
+PASS verify with empty list stays eligible
+PASS verify exact warning present
+PASS verify with nonmatching list still eligible
+PASS verify does not mean nationwide known service
+PASS verify still requires location choice
+PASS verify explicit unsupported delivery excluded
+PASS pickup-only verify included for pickup
+PASS hidden verify excluded
+PASS known empty city list stays unavailable
+PASS known matching city included
+PASS known nonmatching city excluded
+PASS pickup fee converted once to agorot
+PASS pickup fee never used for delivery
+PASS delivery fee never used for pickup
+PASS suggested cities omit hidden and verify city lists
+PASS 1.8 receipt/layout dependency byte-for-byte preserved: receipt-core.js
+PASS 1.8 receipt/layout dependency byte-for-byte preserved: receipt-image.js
+PASS 1.8 receipt/layout dependency byte-for-byte preserved: layout.js
+PASS 1.8 receipt/layout dependency byte-for-byte preserved: vendor/tesseract.min.js
+PASS all original eight source positions retained
+PASS RAMI_LEVY known mode configured
+PASS HAZI_HINAM known mode configured
+PASS VICTORY_NEW_SOURCE verify mode configured
+PASS SHUFERSAL verify mode configured
+PASS YOHANANOF verify mode configured
+PASS YAYNO_BITAN_AND_CARREFOUR verify mode configured
+PASS TIV_TAAM verify mode configured
+PASS RAMI_LEVY requested estimated delivery fee
+PASS HAZI_HINAM requested estimated delivery fee
+PASS SHUFERSAL requested estimated delivery fee
+PASS YAYNO_BITAN_AND_CARREFOUR requested estimated delivery fee
+PASS VICTORY_NEW_SOURCE requested estimated delivery fee
+PASS TIV_TAAM requested estimated delivery fee
+PASS Yohananof pickup-only config costs 15 shekels
+PASS Osher Ad hidden without a fabricated online URL
+PASS test fixture known city lists intentionally empty
+PASS service areas accept source+mode schema
+PASS shared source array accepted
+PASS serviceAreas wrapper accepted
+PASS rejects invalid area JSON: null
+PASS rejects invalid area JSON: array
+PASS rejects invalid area JSON: unknown source
+PASS rejects invalid area JSON: invalid city
+PASS rejects invalid area JSON: wildcard
+PASS rejects invalid area JSON: malformed modes
+PASS invalid second source cannot partially update first
+PASS JSON import cannot replace order URL, price basis or fees
+PASS delivery includes four verify chains without areas file
+PASS verify warning visible in main comparison
+PASS hidden chain absent from network selector
+PASS hidden chain absent from comparison and order cards
+PASS hidden cheapest price cannot win
+PASS unmodified eight indexes still decode TivTaam index 7
+PASS hidden chain absent from info
+PASS handoff repeats exact verify availability warning
+PASS handoff explains estimates and confirmation
+PASS pickup includes Yohananof and all verify chains
+PASS Yohananof 15 shekel pickup fee visible
+PASS unknown pickup ranking uses products; known fee total still calculated
+PASS local file import applies known mode areas
+PASS known city match adds both known networks
+PASS known networks filtered again after city change
+PASS bad import reports error and preserves last config
+PASS oversized service file rejected before parse
+PASS missing optional city file does not disable verify
+PASS optional areas JSON loads from existing local export directory
+PASS service config import never writes customer location into storage
+67 v1.9 availability/config/receipt-preservation checks passed (API stubs, not browser QA)
+
+v20.test.cjs
+PASS leading punctuation display-only cleanup -
+PASS leading punctuation display-only cleanup '
+PASS leading punctuation display-only cleanup .
+PASS leading punctuation display-only cleanup ’
+PASS leading punctuation display-only cleanup  - . ’ '
+PASS internal apostrophes and decimal name data untouched
+PASS one piece uses natural Hebrew
+PASS multiple pieces preserve package count
+PASS single pack label
+PASS multiple packs label
+PASS single basket product label
+PASS multiple basket products label
+PASS clipboard has one RTL-isolated line per product
+PASS clipboard numbers and Latin M D independently isolated
+PASS clipboard has balanced nested isolates
+PASS clipboard natural quantity labels retain meaning
+PASS existing malicious bidi controls stripped before wrapping
+PASS pending search shows loading instead of products
+PASS old response cannot render during next debounce interval
+PASS latest query alone renders after debounce
+PASS loading clears after latest response
+PASS six rapid inputs settle on final query
+PASS empty search gives guidance, never arbitrary storage containers
+PASS search price failure shows error, not stale unrelated products
+PASS Yohananof absent from delivery comparison, cards, selectors
+PASS Yohananof no delivery handoff button or URL opening
+PASS original eighth chain index retained after mode filtering
+PASS Yohananof included for pickup availability verification
+PASS Rami unknown pickup has explicit retailer verification message
+PASS unknown pickup handoff repeats pickup check
+PASS cart copy uses same isolated formatter as order handoff
+PASS five equal single packs shown simply as five products
+PASS single actual basket row uses singular summary
+PASS production pickup mode remains explicitly unknown for Rami
+PASS nonempty production cities do not conflict with matching behavior
+PASS test harness reads separate fixed config file
+PASS v18.test.cjs reads fixture, not production config
+PASS v19.test.cjs reads fixture, not production config
+PASS no download anchors, attachment redirects or save picker in app
+PASS external retailer navigation remains user-click link with noreferrer
+PASS clipboard textarea has explicit RTL
+41 v2.0 checks passed; clipboard logical Unicode tested, not actual WhatsApp rendering
+
+v21.test.cjs
+PASS fee changes winner relative to products alone
+PASS agorot total adds fee exactly once
+PASS ranks use original source indexes and explicit 1..3
+PASS full coverage explanation generated
+PASS savings explanation correct for full baskets including fees
+PASS lower shipping explanation names visible peer rank
+PASS cheap partial basket never outranks full basket
+PASS partial missing count explicitly explains incomplete price
+PASS partial total remains subtotal plus fee, not full basket total
+PASS partial comparisons prefer coverage, then total at equal coverage
+PASS all-partial leader never claims full-basket savings
+PASS plural missing count shown
+PASS unknown service cost never assumed zero
+PASS known full total before unknown full; partial still after full
+PASS unknown fee explanation warns provisional ranking
+PASS winner cannot claim numeric savings against unknown total
+PASS no savings inferred against partial second place
+PASS ties stable and explicitly explained without fake zero savings
+PASS pickup uses pickup fee and can reverse order
+PASS pickup explanations never call fee delivery
+PASS hidden, unsupported and outside city all excluded
+PASS stale cheaper chain excluded
+PASS zero priced products cannot enter ranking
+PASS empty basket cannot produce top results
+PASS invalid subtotal rejected -1
+PASS invalid subtotal rejected NaN
+PASS invalid subtotal rejected Infinity
+PASS invalid subtotal rejected 0.5
+PASS duplicate source not ranked twice
+PASS invalid coverage cannot overstate full basket
+PASS top3 main content precedes product-only details
+PASS top cards ordered by full total including delivery
+PASS exactly one primary order button for place 1
+PASS other top ranks get secondary order buttons
+PASS known full winner summary includes delivery
+PASS per-card full total, delivery fee and coverage visible
+PASS partial result hidden in collapsed remaining chains
+PASS irrelevant networks do not get any order buttons
+PASS availability comparison note present
+PASS product-only prior comparison retained inside folded details
+PASS unknown-fee main UI has no fabricated total
+PASS fewer than three supported results are not padded
+PASS all-partial UI labels amount as partial
+PASS 390px top cards become single-column with 48px buttons
+PASS explanations entirely deterministic without network or AI dependencies
+45 v2.1 ranking/explanation/UI checks passed (Node API stubs, not visual QA)
+
+v22.test.cjs
+PASS Eilat pickup regression: Carrefour and Victory not penalized
+PASS entire mixed-fee pickup comparison uses uniform products basis
+PASS unknown pickup grand totals stay null, not zero-fee totals
+PASS pickup unknown-fee warning explicit
+PASS place 2 has correct 2.30 shekel products difference
+PASS place 3 has correct 13.50 shekel products difference
+PASS winner products savings excludes unknown pickup fees
+PASS known pickup fee also kept out of mixed-fee ranking baseline
+PASS all-known pickup fees still included in rank total
+PASS delivery differences include known delivery fees
+PASS unknown shipping fee policy unchanged
+PASS equal products prices do not claim dearer by zero
+PASS partial basket never gets misleading numeric full-basket delta
+PASS central availability label pickup
+PASS central availability label delivery
+PASS Eilat real-value UI top order is 89.83, 92.13, 103.33
+PASS unknown pickup UI shows product price and separate unknown fee
+PASS pickup summary honest about pre-pickup product price
+PASS zero-of-five chain has no handoff CTA
+PASS zero-price chain cannot open handoff programmatically
+PASS priced pickup winner still opens handoff
+PASS pickup availability identical in handoff and compare
+PASS saved basket count hidden and cleared when active basket exists
+PASS saved basket offer still available for empty current cart
+PASS pickup relevant count identical across home, location and selector
+PASS delivery counts consistently change to four without changing indexes
+PASS delivery availability says delivery to address everywhere
+PASS no service-area HTTP request in hosted mode
+PASS favicon explicit same-origin SVG file exists
+PASS 390px cards use one column and bounded 48px controls
+PASS 390px unknown-fee grid cells can wrap without intrinsic overflow
+31 v2.2 pickup-ranking, deltas, status/counts, favicon/no-404 and 390px checks passed (not visual browser QA)
+
+v221.test.cjs
+PASS all eight chains preserved in reference model
+PASS known fees use grand totals uniformly
+PASS highest savings exact agorot and reference percentage
+PASS average includes all eight full rows
+PASS per-chain savings reference each chain not selected price
+PASS bar widths bounded 0 to 100; largest is 100
+PASS comparison inputs remain unchanged
+PASS one unknown fee switches EVERY full row to products basis
+PASS unknown grand total stays null
+PASS known subtotal fee and grand total still displayed separately
+PASS unknown-fee fallback stated explicitly in rendered content
+PASS partial cheap basket never enters full savings
+PASS partial rows excluded from average
+PASS zero coverage never becomes free basket
+PASS partial display clearly noncomparable and no savings value
+PASS stale snapshot excluded even if price present
+PASS stale display distinct from missing price
+PASS offline and city-unavailable networks remain in all-eight comparison
+PASS offline cheapest never nominated for purchase
+PASS outside-city label is explicit
+PASS offline chain is reference-only
+PASS no order CTA for unavailable references
+PASS maximum-saving headline uses cheapest relevant full basket
+PASS selected Top3 chain used for per-chain and average savings
+PASS cheaper reference rows report cost increase honestly
+PASS Top3 selected provenance stated
+PASS unavailable chosen id rejected
+PASS all unavailable still shows full reference table without recommending
+PASS all partial gives no savings, average or misleading bar chart
+PASS one full chain not enough for savings claim
+PASS missing rows still preserve all eight source identities
+PASS zero-cost complete basket avoids NaN or infinity
+PASS zero saving text says tie
+PASS invalid difference arguments are rejected
+PASS negative average difference shown as expense not fake savings
+PASS invalid price and impossible coverage excluded
+PASS pickup unknown fee same uniform products policy
+PASS network names escaped in rows and chart
+PASS fractional weighted quantities included via coverage core
+PASS existing Top3 policy untouched by savings model
+PASS comparison screen mounts savings without changing main comparison
+PASS retains cached gzip data and lazy promotions
+PASS even no eligible service still renders reference savings table
+PASS cart edits invalidate old savings immediately
+PASS empty cart has no stale savings
+PASS new script loaded before app and separate accessible container
+PASS chart has text equivalents and no external library or network
+PASS 390px responsive chart uses shrinkable columns; table scroll localized
+PASS all eight exact rows appear once per table even if outside Top3
+49 savings v2.2.1 checks passed (offline fixtures, not browser visual QA)
+
+v222.test.cjs
+PASS two fixed fees stay independent; total is customer cost only
+PASS fixed ignores percent field
+PASS percent ignores fixed field
+PASS mixed adds fixed and percent
+PASS independent percent commission not included in customer total
+PASS fixed minimum below floor
+PASS fixed maximum above cap
+PASS fixed zero maximum allowed
+PASS percent minimum below floor
+PASS percent maximum above cap
+PASS percent zero maximum allowed
+PASS mixed minimum below floor
+PASS mixed maximum above cap
+PASS mixed zero maximum allowed
+PASS percent above minimum
+PASS percent exactly minimum
+PASS percent exactly maximum
+PASS percent below maximum untouched
+PASS null maximum really unbounded
+PASS commission applies independent min and max
+PASS customer override by source
+PASS unmatched source retains base
+PASS override merges partial fields rather than replacing policy
+PASS override can change type
+PASS override null removes cap
+PASS override zero values are respected
+PASS commission override independent from customer override
+PASS inherited override key never applied
+PASS disabled returns zero fees with original basket
+PASS disabled ignores malformed dormant policies
+PASS absent block is disabled
+PASS only literal true enables fee block
+PASS missing individual side defaults to zero
+PASS empty basket never accrues either minimum or fixed fee
+PASS small positive basket rounds to zero and remains free
+PASS small bill at one agora gets configured fixed fee
+PASS 1.005 fixed rounds half up exactly to 1.01
+PASS 2.675 fixed rounds half up exactly to 2.68
+PASS fractional percent rounded to agora
+PASS mixed rounded once after combining components
+PASS half-agora percentage rounds up
+PASS fractional min rounded to agora
+PASS input basket normalized to cents before computing percentage
+PASS decimal exponent supported without binary cent artifact
+PASS negative basket rejected even if disabled
+PASS invalid basket rejected: NaN
+PASS invalid basket rejected: Infinity
+PASS invalid basket rejected: 100
+PASS invalid basket rejected: null
+PASS invalid active policy rejected: type
+PASS invalid active policy rejected: fixedAmount
+PASS invalid active policy rejected: percent
+PASS invalid active policy rejected: minAmount
+PASS invalid active policy rejected: maxAmount
+PASS invalid active policy rejected: perChain
+PASS maximum below minimum rejected
+PASS invalid override rejected without silent zero
+PASS huge unsafe amount rejected
+PASS pure function leaves frozen config unchanged
+PASS disabled ranking identical to absent block
+PASS customer overrides change total and reorder Top3 honestly
+PASS no commission propagated to customer-facing rank model
+PASS rank difference incorporates customer fee
+PASS changing chain commission cannot affect rank or explanations
+PASS unknown pickup remains null, while product ranking includes customer fee
+PASS no price baseline markup is rewritten by fee addition
+PASS savings uses same customer fee with unknown shipping fallback
+PASS savings exposes separate customer fee column
+PASS savings never exposes commission amount or label
+PASS known shipping totals include customer fee once
+PASS partial with fee never outranks full
+PASS no prices still does not acquire a fee-only fake total
+PASS disabled UI byte-identical in all comparison sections
+PASS enabled summary displays separate customer fee line
+PASS Top3 fee line and total match products plus fee
+PASS commission never reaches customer HTML or summary
+PASS handoff clearly says fee not collected or sent to chain
+PASS turning off restores old totals and hides fee summary
+PASS bad active config fails clearly without stale quote
+PASS production shipped disabled with both five-shekel examples
+PASS test production config independently from synthetic service fixture
+PASS calculator no network DOM storage or payment SDK
+PASS startup loads calculator before ranking and savings
+PASS fee summary wraps at 390px without new fixed width
+84 fee-calculation and integration checks passed (offline, no collection)
+
+v223.test.cjs
+PASS single display total includes all eight chain data indexes
+PASS partial or verify chains do not masquerade as full priced
+PASS full verify chain counted only in verify
+PASS exclusive full-versus-partial classification
+PASS offline unsupported outside-city chains keep total denominator
+PASS offline unsupported outside-city excluded from verification count
+PASS unavailable chains assigned unavailable, not priced
+PASS stale eligible chain counted stale, not partial
+PASS missing snapshot counted as stale not inferred fresh from price
+PASS empty basket shows zero priced chains, not zero service coverage
+PASS zero price is a valid price if snapshot fresh
+PASS expired snapshots change counters using supplied now
+PASS before load never claims price freshness or stale data
+PASS production-config total used before catalog arrives
+PASS status computation does not reorder or mutate datasets
+PASS release has one immutable canonical version
+PASS rank explanations never imply collected operational fees, enabled=false
+PASS delivery explanation retains actual comparison basis, enabled=false
+PASS partial still ranks below full, enabled=false
+PASS rank explanations never imply collected operational fees, enabled=true
+PASS delivery explanation retains actual comparison basis, enabled=true
+PASS partial still ranks below full, enabled=true
+PASS footer populated from canonical constant not index literal
+PASS global counter valid with actual loaded dataset size
+PASS same shared counter on home
+PASS same shared counter on cart
+PASS same shared counter on info
+PASS same shared counter on networks
+PASS same shared counter on compare
+PASS global total does not replace original chain indexes or filtering
+PASS full basket keeps only primary recommendation
+PASS partial recommendation is secondary with missing-products message
+PASS all-partial results never show primary CTA or winner styling
+PASS counter refreshed when last cart item removed
+PASS data reload does not leave stale global statistics
+PASS exactly one shared counter DOM node outside all page sections
+PASS no fixed footer version survives
+PASS release and status scripts ordered before UI initialization
+PASS shared counter labels exclusive statuses and pending verification
+PASS counter no fetch geolocation or storage and no rank invocation
+PASS 390px touch targets at least 44px
+PASS 390px chart has no intrinsic unshrinkable amount column
+PASS 390px pages and cards bounded without hiding horizontal overflow
+PASS 390px wide tables scroll inside bounded region not page
+PASS 390px quantity controls wrap instead of extending card
+PASS 390px geometry for full cards chart and quantity controls fits
+PASS long names numbers Latin tokens and large money remain breakable
+47 v2.2.3 focused display tests passed (UI stubs/CSS math, not visual browser QA)
+
+v224.test.cjs
+PASS all eight full known local chains are priced and no other bucket
+PASS reported 8-priced-plus-6-verify overlap becomes exclusive 2 plus 6
+PASS reported empty-cart 0 plus 7 plus 0 accounts for eighth offline chain
+PASS unavailable has priority over stale and not double counted
+PASS stale has priority over partial
+PASS verified-price partial takes priority over unknown service
+PASS one missing product is classified partial not full priced
+PASS zero-coverage checked chain is partial/unpriced, never free complete basket
+PASS before all current-cart prices checked do not assert missing products
+PASS before data load all chains still assigned exactly once
+PASS before network metadata arrives configured eight still count
+PASS pickup-only chain unavailable for delivery counter
+PASS same pickup-only chain available after pickup mode and city switch
+PASS known city exclusion changes counter for all chains
+PASS unknown areas assigned to verification never unavailable by guess
+PASS unselected city never claims confirmed price category
+PASS all five requested Hebrew category labels appear
+PASS deterministic 512 mixed-state scenarios always partition into eight
+PASS partial top card includes missing-products warning
+PASS partial top card explicitly names missing olive oil and normalized size
+PASS missing list excludes available products
+PASS complete chain has no missing list
+PASS same explicit names shown in remaining-network cards
+PASS partial CTA remains secondary with full basket primary
+PASS approved substitutes not silently treated as original coverage
+PASS missing names HTML escaped
+PASS stale data not reported as definitive missing original products
+PASS hosted optional service-area configuration never fetched even when named
+PASS missing optional local areas file is silent and makes no request
+PASS present local area file parsed directly without HTTP fallback
+PASS UI counter sum remains original dataset size on city changes
+PASS SVG favicon explicitly linked with release cache token
+PASS legacy ICO also explicitly linked and present at site root
+PASS every ICO frame within actual file bounds with correct image payload
+PASS all declared favicon file targets resolve locally without missing assets
+PASS area loader has no generic JSON HTTP loader call
+PASS release updated only through canonical version constant
+PASS missing names remain wrap-safe in mobile RTL
+38 v2.2.4 partition/missing-product/no-404 checks passed (offline fixtures)
+
+v23.test.cjs
+PASS one canonical age limit is 72 hours
+PASS accept valid source scan at 0 hours
+PASS accept valid source scan at 24 hours
+PASS accept valid source scan at 48 hours
+PASS accept valid source scan at 49 hours
+PASS accept valid source scan at 65 hours
+PASS accept valid source scan at 71.999 hours
+PASS accept valid source scan at 72 hours
+PASS reject more than 72 hours by one millisecond
+PASS reject 73h stale source even with prices
+PASS age notice explicitly names age in Hebrew
+PASS unknown scan not called zero hours
+PASS ambiguous naive date and excessive future timestamp still rejected
+PASS complete baskets all eight remain intact
+PASS partial ordered first by coverage then price
+PASS missing originals exactly reported
+PASS partial not silently removed in full-basket presentation model
+PASS partial total is just original priced quantities
+PASS same coverage sorted by available subtotal, not chain index
+PASS offline chain explained, never disappears
+PASS outside city explained
+PASS stale explained with original last-scan timestamp retained
+PASS partial reason carries explicit missing count
+PASS all original eight source indexes preserved even when unavailable
+PASS 65-hour partial still participates, with exact age for warning
+PASS no complete chain in large low-coverage basket
+PASS fallback chooses real shared group instead of disjoint two highest coverages
+PASS common subtotals contain same four original products
+PASS zero-price chains retained in partial explanations
+PASS common comparison changes neither input cart nor raw prices
+PASS no full-basket savings calculated from shared subset
+PASS manual common choice honored when it has an intersection
+PASS manual zero intersection visibly falls back to a real auto group
+PASS no intersection returns no invented comparable basket
+PASS unsupported delivery absent from ranked groups but remains explained
+PASS 100-item basket with 71 single-chain products keeps all eight partial and compares 29 shared
+PASS image placeholder deterministic and always nonempty
+PASS safe HTTPS map keeps original barcode string
+PASS unsafe image URL rejected javascript:alert(1)
+PASS unsafe image URL rejected data:image/svg+xml,test
+PASS unsafe image URL rejected http://insecure.test/a.png
+PASS unsafe image URL rejected //cdn.test/a.png
+PASS unsafe image URL rejected https://u:p@cdn.test/a.png
+PASS unsafe image URL rejected images/../private.png
+PASS unsafe image URL rejected images/%2e%2e/private.png
+PASS invalid image metadata does not break products
+PASS product data shape is unchanged by separate image map
+PASS search card includes quantity input and large add control
+PASS product with no image has initial-letter placeholder, no blank image
+PASS selected quantity used on add instead of always one
+PASS fractional packaged quantity rejected without modifying cart
+PASS zero quantity rejected
+PASS quantity greater than total cart limit rejected
+PASS weighted quantity stored as kilograms with three decimal places
+PASS weighted sub-gram quantity cannot be rounded into fake item
+PASS no optional map configured means no request or 404 probe
+PASS declared image map loaded once and cached lazily
+PASS image presentation lazy and no-referrer without upload
+PASS broken image hides raster, leaving initial underneath
+PASS optional image failure degrades to placeholder rather than blocking prices
+PASS missing local image map never falls back to network
+PASS concurrent image-map reads share one fetch
+PASS old image response cannot poison a newer dataset cache
+PASS Top3 only includes original full basket chain
+PASS partial table kept visible even when full mode selected
+PASS all eight chains appear with unique reason rows
+PASS offline chain explicitly explained
+PASS older-than-72 chain explicitly dated and not priced
+PASS 65h source shown with warning and partial prices
+PASS suggest substitute action exposed and wired in missing UI
+PASS opening suggestions cannot alter cart or approved fees/prices
+PASS no full basket clear headline and no Top3 partial ranks
+PASS fallback shared ranking visible rather than trapped in folded details
+PASS fallback explicitly excludes shipping fees and full-basket savings
+PASS partial rows never primary purchase recommendations
+PASS full-basket savings remain absent on no-full fallback
+PASS basket visible and editable while building
+PASS persistent basket main action goes directly to comparison
+PASS receipt review does not get covered by auto-open drawer
+PASS three actual step links in visible stepper
+PASS advanced chain controls inside collapsed comparison details
+PASS technical global status explanation collapses behind why
+PASS optional image map is not a startup script/download
+PASS mobile cards and main add button have 44px controls
+PASS desktop basket is side panel while mobile stays bottom
+PASS 390px quantity, card and chart widths fit without clipped labels
+PASS keyboard focus remains conspicuous across new controls
+PASS main brand button contrast meets 4.5 to 1
+PASS secondary text contrast on paper meets 4.5 to 1
+PASS schema examples original compact exports still accepted
+90 v2.3 comparison/72h/cart-workspace/lazy-image checks passed (offline, not visual browser QA)
+
+v24.test.cjs
+PASS RAMI_LEVY delivery estimated base quote in agorot
+PASS RAMI_LEVY pickup estimated base quote in agorot
+PASS SHUFERSAL delivery estimated base quote in agorot
+PASS SHUFERSAL pickup estimated base quote in agorot
+PASS VICTORY_NEW_SOURCE delivery estimated base quote in agorot
+PASS VICTORY_NEW_SOURCE pickup estimated base quote in agorot
+PASS YOHANANOF delivery estimated base quote in agorot
+PASS YOHANANOF pickup estimated base quote in agorot
+PASS YAYNO_BITAN_AND_CARREFOUR delivery estimated base quote in agorot
+PASS YAYNO_BITAN_AND_CARREFOUR pickup estimated base quote in agorot
+PASS HAZI_HINAM delivery estimated base quote in agorot
+PASS HAZI_HINAM pickup estimated base quote in agorot
+PASS TIV_TAAM delivery estimated base quote in agorot
+PASS TIV_TAAM pickup estimated base quote in agorot
+PASS VICTORY_NEW_SOURCE delivery minimum boundary 24999
+PASS VICTORY_NEW_SOURCE delivery minimum boundary 25000
+PASS VICTORY_NEW_SOURCE delivery minimum boundary 25001
+PASS VICTORY_NEW_SOURCE pickup minimum boundary 24999
+PASS VICTORY_NEW_SOURCE pickup minimum boundary 25000
+PASS VICTORY_NEW_SOURCE pickup minimum boundary 25001
+PASS YAYNO_BITAN_AND_CARREFOUR delivery minimum boundary 19999
+PASS YAYNO_BITAN_AND_CARREFOUR delivery minimum boundary 20000
+PASS YAYNO_BITAN_AND_CARREFOUR delivery minimum boundary 20001
+PASS YAYNO_BITAN_AND_CARREFOUR pickup minimum boundary 19999
+PASS YAYNO_BITAN_AND_CARREFOUR pickup minimum boundary 20000
+PASS YAYNO_BITAN_AND_CARREFOUR pickup minimum boundary 20001
+PASS HAZI_HINAM delivery minimum boundary 49999
+PASS HAZI_HINAM delivery minimum boundary 50000
+PASS HAZI_HINAM delivery minimum boundary 50001
+PASS HAZI_HINAM pickup minimum boundary 49999
+PASS HAZI_HINAM pickup minimum boundary 50000
+PASS HAZI_HINAM pickup minimum boundary 50001
+PASS TIV_TAAM delivery minimum boundary 29999
+PASS TIV_TAAM delivery minimum boundary 30000
+PASS TIV_TAAM delivery minimum boundary 30001
+PASS TIV_TAAM pickup minimum boundary 29999
+PASS TIV_TAAM pickup minimum boundary 30000
+PASS TIV_TAAM pickup minimum boundary 30001
+PASS Shufersal strictly-over-750 pickup tier 0
+PASS Shufersal strictly-over-750 pickup tier 74999
+PASS Shufersal strictly-over-750 pickup tier 75000
+PASS Shufersal strictly-over-750 pickup tier 75001
+PASS Shufersal strictly-over-750 pickup tier 90000
+PASS Tiv Taam strictly-over-750 free delivery 0
+PASS Tiv Taam strictly-over-750 free delivery 74999
+PASS Tiv Taam strictly-over-750 free delivery 75000
+PASS Tiv Taam strictly-over-750 free delivery 75001
+PASS Tiv Taam strictly-over-750 free delivery 90000
+PASS free delivery does not alter pickup
+PASS unknown subtotal never triggers free delivery
+PASS no stale city value in quote API and rules have no city override
+PASS legacy fee configuration remains compatible
+PASS published basis supported while labels still say estimated
+PASS policy description includes strict threshold and minimum before basket is priced
+PASS minimum message contains deficit in shekels not agorot
+PASS minimum met produces no misleading deficit label
+PASS invalid subtotal cannot unlock free delivery -1
+PASS invalid subtotal cannot unlock free delivery NaN
+PASS invalid subtotal cannot unlock free delivery Infinity
+PASS invalid subtotal cannot unlock free delivery 75001
+PASS invalid subtotal cannot unlock free delivery 0.1
+PASS invalid tier and negative amount do not unlock free service
+PASS lower price below minimum never outranks eligible full basket
+PASS minimum-failing explanation is deficit not cheapest claim
+PASS only-full-but-all-below-minimum yields no valid primary rank
+PASS ranking includes fulfilment cost rather than just item price
+PASS city does not change any chain monetary quote
+PASS switching to pickup applies selected mode fee and thresholds
+PASS platform customer fee cannot satisfy chain minimum or free delivery threshold
+PASS savings excludes baskets below minimum and keeps labelled row
+PASS savings and Top3 use same subtotal-aware free delivery total
+PASS Yohananof remains pickup only and OsherAd offline
+PASS quote is pure and production data schema unchanged
+PASS basic address resolves a configured city locally
+PASS ambiguous multi-city text never invents a location
+PASS minimum audit visible but not primary card
+PASS location updates all comparison and audit content without navigation
+PASS radio selection applies pickup immediately and recalculates total
+PASS city input debounce commits latest text without submit
+PASS chosen add quantity survives suggestion rerender
+PASS inline add merges quantity without moving screens
+PASS quantity plus operates in the same result
+PASS quantity minus operates in the same result
+PASS invalid exact-pack draft cannot modify cart
+PASS close button clears modal and invalidates choices/session
+PASS Escape closes modal with same cancellation logic
+PASS late alternative response cannot reopen or repopulate closed dialog
+PASS close is non-submit, sticky and 44px reachable
+PASS mobile input and plus minus add row fit 390px without navigation
+PASS purchase budget field and code absent
+PASS search retains latest request guard and from-first-letter debounce
+PASS cache protections still use reload and snapshot freshness
+PASS dock picks same all-in cheapest chain instead of cheapest product subtotal
+PASS clearing location cannot leave old priced recommendation or order modal
+94 v2.4 fulfilment/minima/live-location/inline-add/modal checks passed
+
+markup.test.py
+PASS markup has no duplicate IDs
+PASS all entry, step and persistent-basket controls exist
+PASS chain selection tucked into comparison options
+PASS RTL document preserved
+PASS every startup script exists locally
+PASS OCR dependency not loaded at startup
+PASS no household or AI cart-builder flow in UI
+PASS mobile 390px applicable layout rules present (static audit only)
+PASS mobile text-entry fields use 16px to avoid iOS focus zoom

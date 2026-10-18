@@ -22,9 +22,9 @@ function update(){updateChainSummary();
  el('basket-estimate').textContent='בודקים הערכת מחיר לסל…';
  (async()=>{try{
  const records=new Map();for(const item of cart.map(i=>({...i}))){const chunk=await getChunk(item.barcode);if(request!==summaryRequest||my!==generation)return;records.set(item.barcode,chunk.get(item.barcode)||new Map());}
- const stamps=HB.snapshots(networks,meta),rows=HB.coverage(cart,records,networks.length,'last',Date.now(),stamps).filter(r=>isEligible(r.chain)&&r.coverage===cart.length).sort((a,b)=>a.total-b.total);
+ const stamps=HB.snapshots(networks,meta),coverage=HB.coverage(cart,records,networks.length,'last',Date.now(),stamps),rows=HBTop.rank({rows:coverage,cartSize:cart.length,networks,config:HB_CONFIG,place:servicePlace,snapshots:stamps}).filter(r=>r.full&&!r.belowMinimum);
  if(request!==summaryRequest||my!==generation)return;
- el('basket-estimate').textContent=rows.length?money(rows[0].total)+' · הערכת סל מלא ב־'+networks[rows[0].chain].name+' · מחיר מוצרים, לפני משלוח ודמי שירות':'אין כרגע מחיר לסל מלא ברשת אחת; אפשר להשוות את המוצרים המשותפים';
+ el('basket-estimate').textContent=rows.length?money(rows[0].rankAmount??rows[0].itemsTotal)+' · הערכת סל מלא ב־'+networks[rows[0].chain].name+(rows[0].basis==='products'?' · לפני דמי איסוף לא ידועים':rows[0].feeKnown?' · כולל '+(servicePlace.mode==='pickup'?'איסוף':'משלוח')+' משוער':' · לפני עלות קבלה לא ידועה'):'אין כרגע סל מלא שעומד במינימום ברשת רלוונטית; בדקו פרטים בהשוואה';
  }catch{if(request===summaryRequest)el('basket-estimate').textContent='לא הצלחנו לחשב כרגע. הסל נשמר; נסו שוב בהשוואה.';}})();
 }
 window.HB_UX={update};
