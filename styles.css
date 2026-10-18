@@ -122,3 +122,27 @@ body:has(#basket-drawer[open]){padding-bottom:calc(130px + min(42dvh,320px))}
 button:disabled{opacity:.65;cursor:not-allowed}#comparison .main-comparison small{overflow-wrap:anywhere}
 @media(max-width:600px){.stepper{flex-wrap:wrap}.stepper li{flex:1 1 calc(50% - 6px)}.service-strip .button{min-height:44px}.online-chains .grid{grid-template-columns:minmax(0,1fr)}#order-dialog .actions{display:grid;grid-template-columns:minmax(0,1fr)}}
 @media print{.service-strip,#location-form,.online-chains button{display:none}}
+/* 2.1: full-basket totals before product-only details. */
+.top-three{margin-block:18px}.top-three-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));list-style:none;gap:16px;padding:0;margin:20px 0 0}
+.top-chain{min-width:0;border:1px solid var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:10px}.top-first{border:2px solid var(--green);background:#f0faf5}
+.top-place{font-weight:800;color:var(--green)}.top-chain h3{margin:0;font-size:24px}.top-total{font-size:23px;font-weight:800;line-height:1.5;overflow-wrap:anywhere;margin:0}
+.top-breakdown{margin:0}.top-breakdown>div{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px;margin-bottom:8px}.top-breakdown dd{margin:0}.top-reasons{padding-inline-start:20px;margin:0;line-height:1.8}.top-chain button{margin-top:auto;min-height:48px;width:100%;white-space:normal;line-height:1.5}
+.other-networks,.product-details{margin-block:18px}.other-networks>summary{min-height:48px;padding:14px;background:#f1f5f3;border-radius:12px;cursor:pointer;font-weight:bold}
+@media(max-width:850px){.top-three-grid{grid-template-columns:minmax(0,1fr)}.top-chain{padding:16px}.top-chain h3{font-size:22px}.top-total{font-size:22px}}
+/* 2.2 mobile: constrain long fee notices and Hebrew reasons to the card. */
+.top-chain,.top-breakdown,.top-reasons{overflow-wrap:anywhere}.top-chain{box-sizing:border-box;max-width:100%}.top-breakdown dt,.top-breakdown dd{min-width:0;max-width:100%}.top-chain bdi{unicode-bidi:isolate}.top-breakdown dd{white-space:normal}
+@media(max-width:480px){.top-three{padding:14px}.top-three-grid{gap:12px}.top-breakdown>div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}.top-breakdown dd{text-align:end}.top-chain button{box-sizing:border-box}.top-reasons{font-size:15px}}
+/* Savings audit: all chains remain visible, independently of Top 3 eligibility. */
+.savings-section{margin-block:1.5rem;border:2px solid var(--brand,#126a50);min-width:0}
+.savings-headline{font-size:clamp(1.15rem,3vw,1.5rem);font-weight:750;line-height:1.5}
+.savings-highlights{display:flex;flex-wrap:wrap;gap:.5rem 2rem;background:#eef8f3;padding:1rem;border-radius:12px}
+.savings-table{min-width:780px;width:100%;font-variant-numeric:tabular-nums}
+.savings-table td,.savings-table th{white-space:normal;vertical-align:top;padding:.85rem}
+.savings-table th{min-width:170px}.savings-table small{display:block;font-weight:400;line-height:1.5;margin-top:.4rem}
+.savings-chosen{background:#eef8f3}.savings-chart{margin:1.5rem 0;min-width:0}
+.savings-chart ul{list-style:none;padding:0;display:grid;gap:.85rem}
+.savings-chart li{display:grid;grid-template-columns:minmax(90px,1fr) minmax(0,3fr) auto;align-items:center;gap:.7rem;font-variant-numeric:tabular-nums}
+.savings-chart li>span{overflow-wrap:anywhere;min-width:0}.savings-chart bdi{unicode-bidi:isolate}
+.savings-track{background:#edf0ee;border-radius:5px;height:20px;overflow:hidden;min-width:0}
+.savings-bar{height:100%;background:#789b8d;border-radius:5px}.savings-bar.chosen{background:#126a50}
+@media(max-width:480px){.savings-section{padding:1rem}.savings-chart li{grid-template-columns:minmax(72px,1fr) minmax(0,1.5fr) auto;gap:.4rem;font-size:.85rem}.savings-highlights{display:block}.savings-section .table-wrap{max-width:100%;overflow-x:auto}.savings-headline{overflow-wrap:anywhere}}

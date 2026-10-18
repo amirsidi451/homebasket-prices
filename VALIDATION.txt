@@ -1,41 +1,112 @@
-HomeBasket 2.0 validation
-471 PASS; 0 failures: Node 462 + Python markup/CSS 9.
-All previous 430 cases retained, with requested UI wording/clipboard assertions updated.
-New v20 suite: 41 cases. Test run output: test-results.txt.
-FULL SECOND RUN with nonempty synthetic production city lists: same 471 PASS.
-Production config restored byte-for-byte afterward. See TEST_CONFIG_ISOLATION.txt.
-Tests v18/v19/support read tests/fixtures/config.js, no production-empty-city assumption.
-Production smoke in v20 does not assert empty service areas.
-Fixture helper explicitly starts a query before checking product rendering; blank search
-now intentionally displays guidance, not arbitrary catalog results. No tests removed.
+HomeBasket 2.2.2 — fees quotation validation, 2026-10-18
+680 PASS, zero failed suites: Node 671 + Python markup 9.
+All 596 existing cases retained; 84 new v222 fee-calculation/integration cases.
+Full output in test-results.txt. Only the old favicon version expectation updated.
 
-New coverage: delivery exclusion from Yohananof selectors, cards, tables, handoff;
-pickup verify inclusion and unknown Rami pickup warning; stable original source indexes;
-old search resolution during new debounce window; last query only; six rapid inputs;
-empty search guidance; loading state/aria-busy; failure without stale results;
-singular/plural pieces/packs/product summary; actual five/single basket summary;
-display-only leading punctuation cleanup and internal punctuation preservation;
-RLM + balanced nested isolates; per-number/Latin M/D/80/1000 isolation;
-weighted and natural quantities; cart and handoff use identical clipboard formatter;
-separate config fixture; production with nonempty lists; no file download triggers.
+Calculator: fixed, percent, mixed; separate customer/chain rules; below/at/above minima
+and maxima; zero max; null max; partial per-source overrides; type and cap overrides;
+independent sides; inherited override keys ignored; disabled/absent block; only literal
+true enables; malformed dormant rules ignored; zero basket no fee; exact decimal half-up
+rounding (1.005, 2.675, fractional percent, mixed single rounding); input normalization;
+invalid numbers/types/negative amounts/unsafe totals rejected; frozen config unchanged.
 
-Existing tests retain real gzip parsing, compact exports, shard loading, cache reload and
-meta version, 48h chain freshness, old product dates allowed, substitution approvals,
-size/grade matching, receipt text/pixel/worker stubs, progress/cancel, privacy/consent,
-RTL/390px CSS layout, lazy promotions, 300ms debounce and 40-result maximum.
-Synthetic catalog 97,096 products; promotions 60,000. BENCHMARK.json is Node-only.
-Syntax checked for application modules. Backup 1.9 hashes and ZIP CRC verified.
-No visual browser/phone QA or actual-photo OCR retest. No actual WhatsApp rendering
-verification: Unicode logical content/isolation was tested, manual draft-paste steps
-provided. No WhatsApp message sent.
-No download anchors, automatic save picker/saveAs/download attribute assignment in app.
-Normal JSON/code/OCR resource fetching into browser memory is still required and retained.
-No external cart filling, payment, location upload or server added.
+Contract: public calculator amounts are SHEKELS, not agorot. Basket base is PRODUCTS
+before shipping/pickup and fees. total = basket + customerFee ONLY. Chain commission
+is independent and not added to customer total or propagated to customer-facing models.
+It is not deducted from retailer prices and cannot change rank or explanations.
+Internal ranking/savings still use integer agorot; customer fee is included exactly once.
 
-MISSING INPUT: chain_service_areas.json was described as attached but did not appear in
-received local files or filename searches. Actual known delivery cities are NOT populated.
-Importer remains ready for documented JSON schemas. PENDING_SERVICE_AREAS.txt explains it.
-Rami unknown pickup now available for retailer verification, even without that file.
-No live retailer price/stock/coverage/fee verification; existing scalar prices are estimates.
-Delivery/pickup estimates remain separate from product ranking.
-1.9 original directory/ZIP unchanged; hosted website unchanged.
+Integration: per-chain customer overrides reorder rank; known shipping added separately;
+unknown pickup total stays null; products-basis ranking includes customer fee while
+omitting unknown pickup uniformly; savings/chart uses same customer fee; no-price rows
+never turn into fee-only baskets; partial cannot outrank full; customer fee separate
+summary/Top3/table line; disabled UI comparison/savings/summary byte-equal to no block;
+turning off restores original UI; bad enabled config gives error and clears stale quote;
+handoff states service fees are neither collected nor sent to retailer; production flag
+false and both five-shekel examples present; no network/payment/DOM in pure calculator;
+startup script order; 390px applicable wrapping markup/CSS. Synthetic tests only.
+
+Production files changed surgically: config.js, new fees.js, top-ranking.js, savings.js,
+app.js, index.html, plus documentation/test harness and version expectation. No receipt,
+search, catalog data, core price logic or stylesheet changes. No payment SDK/server,
+collection, retailer agreement, publishing or live website edits.
+
+Original 2.2.1 folder and ZIP retained. Original source bytes checked against
+BACKUP_v2.2.1_SHA256.txt; all app JS syntax checked. Prior 2.2 backup also retained.
+No browser screenshot/real phone, live dataset/retailer, WhatsApp or photo OCR check here.
+390px is static markup/CSS math and UI API stubs, not visual browser QA.
+The static config is publicly readable; hidden commission means absent from customer UI,
+not encrypted/secret client-side data. Never put credentials or confidential terms there.
+
+Historical 2.2.1 validation (previous run, not another current test count):
+HomeBasket 2.2.1 validation — 2026-10-18
+596 PASS, 0 failures: Node 587 + Python markup audit 9.
+All 547 previous cases retained; 49 new v221 savings cases. Raw output: test-results.txt.
+Only old test expectation changed: the explicit favicon cache version now 2.2.1.
+
+Savings cases: all eight indexes preserved, all-known grand-total comparison, one-unknown
+uniform product-subtotal fallback, fees/grand totals null rather than zero, exact agorot
+and percent denominator, arithmetic average including chosen chain, negative savings,
+ties/zero prices, partial/zero/stale coverage exclusions, valid snapshots, no full basket,
+one full basket, unknown service areas, outside-city and offline reference rows, selected
+Top3 identity with relevant fallback, no unavailable-chain recommendation, no new order
+CTA, HTML escaping, bounded CSS bars, weighted original quantities, input immutability,
+Top3 rank unchanged, lazy promotions still unopened, data cache reused, no eligible service
+still renders price references, invalidation on cart/service/data edits, empty cart, local
+script order and accessible section, 390px CSS and width arithmetic, no network/chart library.
+
+Only fresh complete original-barcode baskets enter savings/average/chart. Partial rows
+remain visible separately. A city-ineligible/offline price is reference-only and labelled.
+Selected full Top3 winner is used for per-row/average/highest savings; headline refers to
+cheapest relevant full chain under the explicit uniform savings basis. If this differs
+from Top3 because service fees are missing, text discloses that distinction.
+No substitutions or unlinked promotions deducted. Minimum-order completion not inferred.
+
+Original v2.2 folder retained byte-for-byte; original ZIP retained. Backup file hashes
+verified against BACKUP_v2.2_SHA256.txt. All app JavaScript syntax and favicon SVG checked.
+No live website change, retailer purchase, deployment or paid service.
+No real browser/mobile rendering, full real export dataset, real WhatsApp, photo OCR or
+live retailer stock/price/fee verification here. UI uses API stubs; 390px checks static
+CSS/layout math. Existing synthetic 97,096-product/60,000-promotion suites run unchanged;
+BENCHMARK.json records this run's Node performance and is not a Chrome timing guarantee.
+
+Historical v2.2 validation (unchanged background):
+HomeBasket 2.2 validation
+547 PASS; 0 failures: Node 538 + Python markup/CSS 9.
+All 516 previous cases retained; new v22 suite: 31 cases. Raw output: test-results.txt.
+Updated legacy expectations only for requested availability labels, relevant-only selectors,
+pickup product-ranking baseline, and dynamically worded handoff warning. No tests removed.
+
+New ranking coverage: reported Eilat totals represented by synthetic five-product prices
+89.83 / 92.13 / 103.33 / 104.63. Unknown pickup chains rank by products alongside known-fee
+chains without penalty. Uniform products basis for the entire mixed-fee pickup group,
+known totals still calculated separately; unknown grand totals stay null, never zero.
+All-known pickup uses fee-inclusive totals. Shipping policy unchanged. Places 2/3 have
+correct positive delta from place 1; ties and partial baskets do not fabricate a delta.
+
+New UI coverage: Eilat order, fee label, subtotal warning, zero-price CTA absence and
+programmatic blocking; priced handoff; saved-count hidden+cleared with active cart but
+resume preserved for empty cart; shared pickup/delivery wording across comparison/handoff;
+city/mode chain counts same in home, selector, location, information; stable original indexes;
+no hosted HTTP fetch for optional service-area JSON; local SVG favicon exists; 390px single
+column, 48px controls, bounded/wrapping unknown-fee cells, content-width arithmetic.
+The no-price handoff guard also accepts explicitly approved, currently priced alternatives;
+no unpriced basket can open the handoff. Original-barcode Top 3 policy is unchanged.
+
+Retained gzip/shard/schema/cache/freshness tests, local receipt text/pixel/worker tests,
+image preprocessing/progress/cancel, quantity/grade/size substitution checks, consent/cart
+persistence, search race tests, Unicode clipboard tests, no automatic file saving and
+bounded lazy promotions. Synthetic catalog 97,096 products; 60,000 promotions.
+BENCHMARK.json is Node timing/memory, not browser/mobile measurement.
+Syntax checks for all app modules; SVG XML and original backup hashes checked at packaging.
+
+Verification limit: no actual browser/phone screenshot or visual rendering test here.
+390px checked through markup/CSS/layout math and UI API stubs. No real WhatsApp rendering,
+real-photo OCR accuracy, full real export file or live retailer price/stock/fee check.
+Reported Eilat values used as regression fixtures, not claimed as newly verified prices.
+Fee estimates remain operator configuration. Minimum-order completion/additional fees and
+unlinked promotions are not inferred. Partial baskets remain below full baskets.
+Actual chain_service_areas.json still not supplied; manual/local-file import remains,
+but no hosted HTTP request or optional 404. No real cities invented.
+No location upload, external AI, server, automatic retailer cart or purchase added.
+Backup original 2.1 directory/ZIP unchanged; hosted website unchanged.

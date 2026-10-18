@@ -34,8 +34,8 @@ test('online label only explicit config',()=>assert.match(O.priceLabel(chain,{ch
  await e.run('renderCompare()');test('comparison blocked until city selected',()=>assert.match(e.get('result-summary').textContent,/בחרו עיר/));
  e.run("applyService('עיר א','delivery')");await e.run('renderCompare()');test('only eligible chain selected',()=>assert.deepEqual(Array.from(e.run('eligibleIds()')),[0]));
  test('no winner claim with only one eligible chain',()=>assert.doesNotMatch(e.get('result-summary').textContent,/הרשת הזולה ביותר:/));
- test('unavailable chain checkbox disabled',()=>assert.match(e.get('chain-select').innerHTML,/data-chain="1"[^>]*disabled/));
- test('all chains have handoff buttons, blocked chain disabled',()=>{const s=e.get('comparison').innerHTML;assert.match(s,/data-order="0"/);assert.match(s,/data-order="1" disabled/);});
+ test('unavailable chain excluded consistently from selector',()=>assert.doesNotMatch(e.get('chain-select').innerHTML,/data-chain="1"/));
+ test('only relevant chains have handoff buttons',()=>{const s=e.get('comparison').innerHTML;assert.match(s,/data-order="0"/);assert.doesNotMatch(s,/data-order="1"/);});
  test('no per-branch price presentation',()=>assert.doesNotMatch(e.get('comparison').innerHTML,/סניפים|טווח ליחידה|חציון/));
  test('matching handoff opens disclaimer dialog',()=>{assert.equal(e.run('openOrder(0)'),true);assert.equal(e.get('order-dialog').open,true);});
  test('unavailable handoff cannot open',()=>assert.equal(e.run('openOrder(1)'),false));
@@ -46,7 +46,7 @@ test('online label only explicit config',()=>assert.match(O.priceLabel(chain,{ch
  test('location not persisted even when cart saving enabled',()=>{e.run('saveCartEnabled=true;save()');assert.doesNotMatch(JSON.stringify(e.storage),/עיר א|עיר ב|delivery|servicePlace/);});
  test('search coverage recomputed for eligible chain only',()=>assert.equal(e.run("coverageIndex.get('3073781199918')"),1));
  e.run("HB_CONFIG.chains.A.serviceAreas=['עיר ב'];HB_CONFIG.chains.B.estimatedDeliveryFee=35.9;applyService('עיר ב','delivery')");await e.run('renderCompare()');
- test('two eligible networks compare same scalar',()=>{assert.match(e.get('result-summary').textContent,/הרשת הזולה ביותר: רשת א/);assert.match(e.get('result-summary').textContent,/20/);});
+ test('two eligible networks compare same scalar',()=>{assert.match(e.get('result-summary').textContent,/הרשת הזולה ביותר לסל המלא: רשת א/);assert.match(e.get('result-summary').textContent,/20/);});
  test('known delivery fee displayed separately',()=>assert.match(e.get('comparison').innerHTML,/35[.,]90/));
  test('fee not added to fair products total',()=>assert.match(e.get('result-summary').textContent,/20/));
  test('estimated price label always visible for default export',()=>assert.match(e.get('comparison').innerHTML,/לא אומת כמחיר אונליין/));

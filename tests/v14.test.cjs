@@ -22,7 +22,7 @@ test('clear offers heading and styled accessible native summary, closed initiall
  e.run("cart=[{barcode:'3073781199918',qty:2},{barcode:'12345678',qty:1}];catalog.set('12345678',{barcode:'12345678',name:'שמן זית',unit:'מיליליטר',quantity:750,weighted:false});");
  await e.run('renderCompare()');const out=e.get('comparison').innerHTML;
  test('same-line available subtotal explicitly shows 1 of 2 product types',()=>assert.match(out,/מחיר חלקי: .*ל־1 מתוך 2 סוגי מוצרים/));
- test('fair group winner precedes partial coverage table',()=>{assert.ok(out.indexOf('comparison-main')<out.indexOf('comparison-extra'));assert.match(out,/הזולה בקבוצה המשותפת/);});
+ test('top3 leads while fair group winner stays in product details',()=>{assert.ok(out.indexOf('top-three')<out.indexOf('product-details'));assert.match(out,/הזולה בקבוצה המשותפת/);});
  test('fair subtotal also shows its item count',()=>assert.match(out,/ל־1 מוצרים זהים/));
  test('display title used in cart and search; offers still not loaded',async()=>{e.run("renderCart()");assert.match(e.get('cart-items').innerHTML,/שמן זית · 750 מ״ל/);assert.equal(e.run('offers'),null);});
  console.log(count+' v1.4 checks passed');

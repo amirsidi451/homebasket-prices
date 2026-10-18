@@ -13,7 +13,7 @@ test('olive oil never relaxed to canola',()=>assert.equal(H.similarProducts(oil,
 test('coverage breaks ties between equally good name and size matches',()=>{const a={...oil,name:'שמן זית אלפא 750 מ״ל'},b={...oil,barcode:'201',name:'שמן זית ביתא 750 מ״ל'};assert.equal(H.search(new Map([['200',a],['201',b]]),'שמן זית 750 מ״ל',new Map([['200',1],['201',3]]))[0].barcode,'201');});
 test('greater coverage never promotes wrong size over requested size',()=>{const a={...oil},b={...oil,barcode:'201',quantity:1000,name:'שמן זית 1 ליטר'};assert.equal(H.search(new Map([['200',a],['201',b]]),'שמן זית 750 מ״ל',new Map([['200',1],['201',8]]))[0].barcode,'200');});
 const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8');
-test('offers standalone highlighted section precedes all comparison results',()=>{assert.ok(html.indexOf('class="panel offers-section"')<html.indexOf('id="comparison"'));assert.match(html,/<details id="offers-panel">/);});
+test('offers standalone highlighted section precedes all comparison results',()=>{assert.ok(html.indexOf('class="panel offers-section"')>html.indexOf('id="comparison"'));assert.match(html,/<details id="offers-panel">/);});
 (async()=>{
  const e=setup();const stamp=new Date().toISOString();const networks=Array.from({length:8},(_,i)=>({source:'C'+i,name:i===7?'טיב טעם':'רשת '+i}));
  const mkrows=cs=>cs.map(c=>[c,c===7?640:1000,640,1000,1200,1,'2020-01-01']);

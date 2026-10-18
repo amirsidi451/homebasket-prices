@@ -2,15 +2,16 @@
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.HBOnline=factory();})(typeof globalThis!=='undefined'?globalThis:this,function(){'use strict';
  const normalize=s=>String(s||'').normalize('NFKC').replace(/[\u0591-\u05C7]/g,'').replace(/["'׳״.,־–-]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
  function settings(chain,config){return config?.chains?.[chain.source]||{};}
+ function availabilityLabel(mode){return mode==='pickup'?'יש לבדוק זמינות איסוף באתר הרשת':'יש לבדוק זמינות משלוח לכתובת באתר הרשת';}
  function service(chain,config,place){
   const c=settings(chain,config);if(c.visible===false)return {eligible:false,status:'hidden',label:'לא מוצגת — אין הזמנות אונליין'};if(!place?.city||!['delivery','pickup'].includes(place.mode))return {eligible:false,status:'location',label:'בחרו עיר ואופן קבלה'};
   const enabled=c[place.mode];if(enabled===false)return {eligible:false,status:'unsupported',label:place.mode==='delivery'?'אין משלוח לפי ההגדרות':'אין איסוף עצמי לפי ההגדרות'};
-  if(place.mode==='pickup'&&enabled!==true)return {eligible:true,status:'verify',label:'יש לבדוק זמינות איסוף באתר הרשת'};
-  if(c.availability==='verify')return {eligible:true,status:'verify',label:'יש לבדוק זמינות לכתובת באתר הרשת'};
+  if(place.mode==='pickup'&&enabled!==true)return {eligible:true,status:'verify',label:availabilityLabel(place.mode)};
+  if(c.availability==='verify')return {eligible:true,status:'verify',label:availabilityLabel(place.mode)};
   const areas=Array.isArray(c.serviceAreas)?c.serviceAreas:c.serviceAreas?.[place.mode];
   if(enabled!==true||!Array.isArray(areas)||!areas.length)return {eligible:false,status:'unknown',label:'אזורי השירות טרם הוגדרו'};
   if(!areas.some(a=>a==='*'||normalize(a)===normalize(place.city)))return {eligible:false,status:'outside',label:'לא משרתת את העיר לפי ההגדרות'};
-  return {eligible:true,status:'available',label:place.mode==='delivery'?'משלוח לפי ההגדרות':'איסוף עצמי לפי ההגדרות'};
+  return {eligible:true,status:'available',label:availabilityLabel(place.mode)};
  }
  function fee(chain,config,mode){if(!['delivery','pickup'].includes(mode))return null;const c=settings(chain,config),v=mode==='delivery'?c.estimatedDeliveryFee:c.estimatedPickupFee;return typeof v==='number'&&Number.isFinite(v)&&v>=0?Math.round(v*100):null;}
  function destination(chain,config){const c=settings(chain,config);try{const base=new URL(c.orderUrl);if(base.protocol!=='https:'||base.username||base.password)return null;const deep=c.deepLink?new URL(c.deepLink,base):base;if(deep.protocol!=='https:'||deep.origin!==base.origin||deep.username||deep.password)return null;return deep.href;}catch{return null;}}
@@ -38,5 +39,5 @@
   return output;
  }
  function applyAreas(raw,config){const output=parseAreas(raw);for(const [source,areas]of Object.entries(output)){if(settings({source},config).availability==='known')config.chains[source].serviceAreas=areas;}return Object.keys(output);}
- return {normalize,settings,service,fee,destination,cities,priceLabel,list,packs,productsCount,bidiText,parseAreas,applyAreas};
+ return {availabilityLabel,normalize,settings,service,fee,destination,cities,priceLabel,list,packs,productsCount,bidiText,parseAreas,applyAreas};
 });

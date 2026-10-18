@@ -7,9 +7,9 @@ function setup(storage={},options={consent:true}){
  get('metric').value='last';get('mode').value='full';
  const views=['search','cart','compare','info'].map(get),nav=views.map(v=>({hash:'#'+v.id,setAttribute(){},removeAttribute(){}}));
  const ctx={console,setTimeout,clearTimeout,URL,AbortSignal,Response,ReadableStream,TextDecoder,DecompressionStream,Blob,Date,Map,Set,Intl,JSON,Number,Math,String,Error,confirm:()=>true,navigator:{clipboard:{writeText:async()=>{}}},location:{hash:'#search',href:'file:///test/index.html',protocol:'file:'},localStorage:{getItem:k=>storage[k]??null,setItem:(k,v)=>storage[k]=v,removeItem:k=>delete storage[k]},document:{getElementById:get,querySelectorAll:s=>s==='.view'?views:nav,addEventListener(){}},addEventListener(){},print(){}};
- ctx.window=ctx;vm.createContext(ctx);for(const file of ['tests/fixtures/config.js','core.js','online-core.js','app.js'])vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx,{filename:file});
+ ctx.window=ctx;vm.createContext(ctx);for(const file of ['tests/fixtures/config.js','core.js','online-core.js','fees.js','top-ranking.js','savings.js','app.js'])vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx,{filename:file});
  // Explicit synthetic service configuration, never production defaults.
- if(options.service!==false)vm.runInContext("for(const source of ['A','B','C',...Array.from({length:8},(_,i)=>'C'+i)])HB_CONFIG.chains[source]={orderUrl:'https://shop.example.test/',delivery:true,pickup:true,serviceAreas:['עיר בדיקה'],estimatedDeliveryFee:null};servicePlace={city:'עיר בדיקה',mode:'delivery'};",ctx);
+ if(options.service!==false)vm.runInContext("for(const source of ['A','B','C',...Array.from({length:8},(_,i)=>'C'+i)])HB_CONFIG.chains[source]={orderUrl:'https://shop.example.test/',delivery:true,pickup:true,serviceAreas:['עיר בדיקה'],estimatedDeliveryFee:0};servicePlace={city:'עיר בדיקה',mode:'delivery'};",ctx);
  if(options.consent){vm.runInContext('if(pendingSavedCart.length)resumeSavedCart();saveCartEnabled=true;',ctx);} // Explicit test-user consent; production starts empty.
  return{ctx,get,storage,run:s=>vm.runInContext(s,ctx)};
 }

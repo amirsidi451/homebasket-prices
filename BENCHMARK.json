@@ -1,8 +1,8 @@
 {
   "rows": 60000,
   "matches": 8091,
-  "index_ms": 163,
-  "search_ms": 17.63,
-  "heap_delta_mb": 50.7,
+  "index_ms": 616,
+  "search_ms": 92.58,
+  "heap_delta_mb": 51.2,
   "environment": "Node synthetic, not Chrome peak-memory measurement"
 }

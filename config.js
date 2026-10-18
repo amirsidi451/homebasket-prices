@@ -13,7 +13,15 @@
  * It does not transfer a cart automatically. Never insert a location into URLs.
  */
 window.HB_CONFIG = {
- serviceAreasFile:'chain_service_areas.json', dataBase:'./data/', maxInflatedBytes:160*1024*1024,
+ // Quotation only, disabled. All amounts below are SHEKELS; percent: 5 means 5%.
+ // perChain uses source keys (e.g. RAMI_LEVY), not a numeric chain index.
+ // See FEES_README_HE.md. No collection or retailer agreement exists here.
+ fees:{
+  enabled:false,
+  customerFee:{type:'fixed',fixedAmount:5,percent:0,minAmount:0,maxAmount:null,perChain:{}},
+  chainCommission:{type:'fixed',fixedAmount:5,percent:0,minAmount:0,maxAmount:null,perChain:{}}
+ },
+ serviceAreasFile:null, dataBase:'./data/', maxInflatedBytes:160*1024*1024,
  chains:{
   VICTORY_NEW_SOURCE:{availability:'verify',visible:true,name:'ויקטורי',orderUrl:'https://www.victoryonline.co.il/',deepLink:null,serviceAreas:{delivery:[],pickup:[]},delivery:null,pickup:null,estimatedDeliveryFee:35.9,priceBasis:'estimate'},
   RAMI_LEVY:{availability:'known',visible:true,name:'רמי לוי',orderUrl:'https://www.rami-levy.co.il/he',deepLink:null,serviceAreas:{"delivery": ["מבשרת ציון", "פסגת זאב", "מעלה אדומים", "מודיעין", "שוהם", "רחובות", "נס ציונה", "תל אביב (מרכז וצפון, עד ארלוזורוב)", "פתח תקווה", "ראש העין", "גבעתיים", "רמת גן", "חולון", "בת ים", "אזור", "גבעת שמואל", "גני תקווה", "קריית אונו", "הרצליה", "רמת השרון", "הוד השרון", "כפר סבא", "רעננה", "אבן יהודה", "אשדוד", "גן יבנה", "אלקנה", "חדרה", "קיסריה", "אור עקיבא", "פרדס חנה כרכור", "זכרון יעקב", "בנימינה", "כפר יונה", "תל מונד", "נתניה", "חיפה", "עכו", "נשר", "נהריה", "כרמיאל", "קריית שמונה", "קצרין", "שדרות", "מעלות תרשיחא"], "pickup": []},delivery:true,pickup:null,estimatedDeliveryFee:35.9,priceBasis:'estimate'},

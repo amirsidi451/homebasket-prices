@@ -1,3 +1,4 @@
+Historical 2.0 isolation run retained. Current 2.1 regression results: test-results.txt.
 Full test rerun with non-empty synthetic city lists TEMPORARILY in production config.
 Production bytes restored before packaging. These cities are not real service data.
 compact.test.cjs: 21 checks; OK
