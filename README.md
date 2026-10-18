@@ -1,57 +1,56 @@
-# HomeBasket 2.5
-Presentation redesign of 2.4. Static, Hebrew RTL, mobile-first. No live-site deployment.
-No changes to export schemas, chain order, ranking, fulfilment/minimum rules or cart matching.
-Exact original 2.4 ZIP included in backups/. Original source hashes: BACKUP_v2.4_SHA256.txt.
+# HomeBasket 2.5.1 — order-flow fixes
+Static Hebrew RTL app, no live-site edits or deployment. Original 2.5 ZIP is in backups/;
+BACKUP_v2.5_SHA256.txt verifies the unchanged original source. This ZIP is named with _flow
+to distinguish this order-flow build from other same-version design-only packages.
 
-## Run on your Windows computer
-1. Extract the ZIP to a NEW folder and keep your 2.4 copy.
-2. You may copy your filled config.js FROM 2.4 unchanged: no config field changed in 2.5.
-   Keep the same real exports; none are bundled or modified. For versions older than 2.4,
-   follow CONFIG_HE.md to retain cities and add the 2.4 fulfilment policies.
-3. Close the previous START_LOCAL window (port 8787), double-click START_LOCAL.bat here.
-   Python is needed for the static local launcher; no new installation for the app.
-4. Load the existing export folder in הנתונים שלנו if needed. Enter city/delivery or pickup.
-5. Scroll/click between 1 city, 2 build, 3 compare on the SAME workspace. Receipt, cart editing
-   and data information remain available as auxiliary screens. No new receipt/cart logic.
-6. Compare, then use the existing retailer handoff. Payments remain on retailer sites only.
-Hebrew instructions: README_HE.html. Do not replace real data with schema examples.
+## Windows: three steps
+1. Extract to a NEW folder. Copy your filled config.js from 2.5 (or 2.4) unchanged.
+2. Close the previous launcher window; double-click START_LOCAL.bat here (same Python).
+3. Use the same real exports, choose/confirm city and mode, add products and compare.
+No data exports are bundled, altered or converted. See README_HE.html.
 
-## Presentation changes
-Local variable Heebo font (WOFF, OFL included), turquoise primary + lime saving accent,
-rounded cards, compact headers, visible three-stage navigation and progress. Explanations
-behind native keyboard-accessible disclosures. Progress marks only genuinely completed
-location/build steps; opening comparison with an empty cart does not mark building complete.
+## Confirmation and navigation
+City/address is a draft until selecting an autocomplete option or clicking confirmation.
+Typing again revokes the old approval immediately and removes old success/results/order context.
+Changing fulfilment mode immediately updates an already confirmed city; it never confirms a
+new city draft. Free text/addresses are accepted with explicit confirmation. Suggestions are
+local configured city names plus a small common-city display list; NOT service coverage.
+No geocoder, GPS, location storage or location network request was added.
 
-Product search, quantity +/−, inline add and optional lazy images retain their original
-handlers. Letter placeholders remain. Persistent cart docks to bottom on mobile and left
-side of RTL desktop at >=1100px. Editable list scrolls internally so compare CTA remains visible.
-Primary full-basket winner spans both columns; runners-up use secondary cards. Amounts and
-saving explanations are the existing computed values, not a new calculation. Unknown fees
-and minimum restrictions keep the same warnings/qualification as 2.4.
+All compare links, including the always-active cart button, guide a missing-city user to the
+city field with an embedded alert, highlighted input/confirm and keyboard focus. Empty submit
+uses inline validation (novalidate prevents native validation swallowing submit). Combobox
+supports partial names, punctuation-insensitive matching, ArrowUp/Down, Enter, Escape, Tab and
+pointer selection; closes outside. Before approval product cards say price follows city choice.
+Repeated compare on the current comparison route scrolls up and actually recomputes, marking
+מעודכן only after a successful current result. Failure, edit and late stale response cannot
+leave a false updated label.
 
-Savings chart lists every original network, including partial/stale/offline reference rows.
-Only complete qualified reference baskets get scaled price bars. Others have explicit text
-and dashed placeholders, never an invented zero price. Reference availability remains visible.
-The detailed price table and source/status reasons are collapsible. Full-basket savings,
-shared/partial baskets, confirmed alternatives and unlinked promotions remain separate.
+## Consistent savings without changing product-price arithmetic
+Ranking/fees/minimum/threshold functions, source indexes and compact schemas are unchanged.
+Savings REFERENCE COHORT is intentionally corrected: only eligible full baskets in the same
+price basis as Top3 enter the maximum/mean. Unavailable networks remain visibly separate as
+unavailable placeholders/information, never cheaper comparison bars. Unknown fulfilment fees
+are not zero. Ties show equality instead of save-up-to-0.00. This changes comparison membership,
+not product prices, fulfilment amounts or the pure saving/rounding formulas.
+All currency labels use ₪. Copied product lists are plain logical text with no hidden BiDi
+controls, preserving quantities/weighted units. Readability in external messaging apps should
+still be checked manually; no WhatsApp/browser test was performed here.
 
-Automatic dark theme via prefers-color-scheme; no theme preference is stored. Focus rings,
-44px+ controls, actual native file inputs reachable from keyboard, reduced-motion support,
-correct Hebrew/shekel/Latin font glyphs. Receipt OCR retains its existing on-demand resources.
-
-## Performance
-No new JS or CSS framework, no extra price/promotion fetch, no full-page render on search.
-Local font is 76,684 bytes. Startup assets estimated under Node gzip: 158,593 bytes vs
-74,361 in 2.4; +84,232 bytes (mostly the self-hosted font). This is a packaging estimate,
-not a measured network waterfall. Data exports and first-use OCR are excluded.
-The same cached/lazy loading and bounded 40-promotion rendering remain unchanged.
+## Layout
+Centered 1200px shell; adjacent 288px RTL sidebar, 24px gap at wide widths. Single or two-chain
+results occupy the row. Compact nonsticky mobile steps hide on downward scrolling and return
+on upward scrolling; focused navigation is kept visible. Dock uses visual viewport height,
+including zoom, with an approximately 25% height cap and a minimum 82px to retain touch access
+on exceptionally short viewports. Compare target remains at least 44px. Dock contents scroll
+internally; safe-area insets may affect physical measurements.
 
 ## Tests
-1,055 PASS = all 949 prior checks + 106 new design/accessibility/invariant checks.
-Test-results.txt contains the full output. Run python run_tests.py with free Node.js.
-New checks cover 360,390,768,1280 geometry/CSS contracts, light/dark contrast, variable WOFF
-Hebrew/shekel glyphs, keyboard upload, focus/reduced motion, one-page workflow, winner/runner
-hierarchy, all-network chart, no fake partial bars, startup transfer bound, unchanged files
-and functions. See VALIDATION.txt and DESIGN_SIZE_REPORT.json.
-No visual browser/mobile test or screenshots were run in this environment. CSS/math tests
-do not guarantee an actual browser has no overflow; validate with your real data before launch.
+1,126 PASS = 1,055 prior checks + 71 new cases for all requested sections.
+No tests deleted. Old expectations updated for explicit confirmation instead of debounce
+approval, plain instead of isolated copy, eligible instead of offline reference rows, currency,
+version, centered geometry and explicitly authorized flow/UI changes. Price/service hash
+contracts use ORIGINAL 2.5 functions and unchanged modules; no new price engine.
+Run python run_tests.py (free Node.js for tests only). Complete output in test-results.txt.
+CSS/math/DOM API stubs do not measure real browser overflow/zoom or mobile screenshots.
+Manual real-data browser checklist is in README_HE.html; see VALIDATION.txt for limits.

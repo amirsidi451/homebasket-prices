@@ -28,7 +28,7 @@
   const deficit=amountKnown&&minimumOrder!==null?Math.max(0,minimumOrder-subtotal):null;
   return {fee:amount,minimumOrder,deficit,belowMinimum:deficit!==null&&deficit>0,basis:policy?.basis==='published'?'published':'estimate',subtotal:amountKnown?subtotal:null};
  }
- function minimumLabel(q){return q?.belowMinimum?'מתחת למינימום הזמנה (חסרים '+new Intl.NumberFormat('he-IL',{maximumFractionDigits:2}).format(q.deficit/100)+' ש"ח)':'';}
+ function minimumLabel(q){return q?.belowMinimum?'מתחת למינימום הזמנה (חסרים '+new Intl.NumberFormat('he-IL',{maximumFractionDigits:2}).format(q.deficit/100)+' ₪)':'';}
  function policyLabel(chain,config,mode){
   const r=settings(chain,config).fulfilment?.[mode],q=quote(chain,config,mode);
   const money=n=>new Intl.NumberFormat('he-IL',{style:'currency',currency:'ILS'}).format(n/100);
@@ -49,8 +49,9 @@
  function priceLabel(chain,config){return settings(chain,config).priceBasis==='online'?'מחיר ממקור אונליין שהוגדר':'מחיר להשוואה — לא אומת כמחיר אונליין';}
  function packs(n){return n===1?'אריזה אחת':n+' אריזות';}
  function productsCount(n){return n===1?'מוצר אחד':n+' מוצרים';}
- function bidiText(text){return String(text).replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g,'').replace(/([A-Za-z]+|\d+(?:[.,]\d+)?%?)/g,'\u2066$1\u2069');}
- function list(items,catalog,displayName){return items.map(i=>{const p=catalog.get(i.barcode),name=p?displayName(p):'מוצר '+i.barcode,amount=p?.weighted?i.qty+' ק״ג':packs(i.qty);return '\u200F\u2067'+bidiText(name)+'\u2069 — \u2067'+bidiText(amount)+'\u2069\u200F';}).join('\n');}
+ function bidiText(text){return String(text).replace(/[\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g,'').replace(/\u00a0/g,' ');}
+ function list(items,catalog,displayName){return items.map(i=>{const p=catalog.get(i.barcode),name=p?displayName(p):'מוצר '+i.barcode,amount=p?.weighted?i.qty+' ק״ג':packs(i.qty);return bidiText(name+' — '+amount);}).join('\n');}
+
 
  function parseAreas(raw){
   if(!raw||typeof raw!=='object'||Array.isArray(raw))throw Error('קובץ אזורי השירות חייב להכיל אובייקט לפי מזהה רשת.');

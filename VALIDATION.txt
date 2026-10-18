@@ -1,34 +1,33 @@
-HomeBasket 2.5 — 2026-10-18
-1,055 PASS, 0 failing suites: Node 1,046 + Python markup audit 9.
-All 949 prior tests retained; 106 new checks in v25.test.cjs.
-Prior expectations changed only for release/favicon version, redesigned heading/cost wording,
-and the explicitly requested all-network chart: all-partial rows have no comparable bar,
-but their labelled placeholder rows are now shown. No prior tests deleted.
+HomeBasket 2.5.1 flow build — 2026-10-18
+1,126 PASS, 0 failing suites: all 1,055 prior checks plus 71 new cases.
+Complete final output is in test-results.txt. No cases removed.
 
-New: SHA256 equality of 10 business/data modules and 20 application functions against 2.4,
-plus unchanged savings model. Product/data schemas, config, fee/minimum/threshold rules,
-rank/order qualifications, cart persistence, search, alternative approval, real gzip and
-first-use OCR/lazy promotion logic retained. All original regression suites executed.
-Synthetic 97,096-product and 60,000-promotion workloads included in existing tests.
+Coverage: all no-city comparison entry points, active cart CTA, inline blank-form validation,
+field focus/highlighting, no misleading missing-price labels before confirmation, immediate
+revocation on draft input, explicit form/keyboard/pointer/free-address approval, ARIA combobox,
+quote/hyphen/partial matching, Escape/Tab/arrow behavior, clean plain clipboard, eligible-only
+savings reference cohorts, Top3 price-basis alignment, ties without zero-saving headlines,
+unknown-fee qualification, separate unavailable rows, centered desktop/card geometry,
+visual-viewport quarter-height dock/zoom contracts, scroll hiding with keyboard protection,
+repeat compare refresh/status and late response invalidation.
 
-CSS and geometry contracts cover 360,390,768,1280 viewport widths, quantity controls fitting
-cards, shrinkable chart columns, three step controls, dock/CTA/list bounds, responsive winner
-and secondary cards. Light/dark foreground/background and focus contrast computed from tokens.
-Native file inputs remain keyboard-reachable, focus/reduced-motion rules checked. WOFF header,
-Hebrew alphabet, shekel, digit and Latin size glyphs decoded and verified from actual font bytes.
-Single-workspace visibility, prerequisites, progress, no false completed empty basket, one
-primary CTA, all-network chart placeholders and no rendering-side data mutation tested with
-browser API stubs. The static HTML was additionally checked for nested tag balance/duplicate IDs.
-All JavaScript files pass node --check. Whole original 2.4 source hash manifest verified unchanged.
+Price engine: core.js, fees.js, top-ranking.js, config.js, comparison-view.js and receipt/data
+modules retained. Original 2.5 online quote/fee/service/destination/area functions and pure
+saving difference formula are hash guarded. Savings MODEL cohort membership intentionally
+changed to eligible full baskets in the Top3 basis, as requested. This changes the comparison
+reference population, not product prices, delivery amounts, minimums, tiers or rounding.
+App flow/render functions that intentionally changed have explicit, versioned UI exceptions;
+other prior function hashes and regression cases remain. Byte backups verify original 2.5.
 
-Performance budget: Node gzip estimated startup 158,593 bytes vs previous 74,361 (+84,232).
-Local WOFF 76,684 bytes. No new framework, icon library or font CDN. Detailed data exports,
-restoration archives and first-use OCR resources are outside this estimate. No real network
-waterfall, paint/CLS/scroll performance or Chrome heap measurement was performed.
+Prior assertions intentionally updated for plain rather than isolated clipboard, explicit
+rather than debounce location approval, unavailable prices excluded from savings tables,
+current symbol/version and centered geometry. Browser API stubs + real gzip streams,
+synthetic 97,096-product and 60,000-promotion regression workloads retained.
 
-LIMITS: no control-browser capability available in this managed environment. Following the
-Sites workflow, no preview server/browser installation or alternative browser automation was
-used. No visual browser QA, actual phone screenshot, 360px browser overflow measurement,
-retailer checkout, real receipt photo or full real export was run here. CSS/math tests are
-not a guarantee of real rendering; run the supplied real-data/manual checklist before launch.
-No live deployment or data changes. Backup: backups/HomeBasket_Static_v2.4.zip plus full hashes.
+LIMITATIONS: no supported control-browser skill in this managed environment. No preview
+server, alternate browser automation, browser installation, real visual/phone/WhatsApp test
+or physical zoom measurement was performed. Layout/zoom tests are code/CSS/geometric
+contracts, not proof of zero real-browser overflow. Dock minimum 82px preserves touch controls
+on exceptionally short viewports and may exceed 25%; real safe-area behavior needs device QA.
+No real full export or live retailer checkout was supplied. No live-site edits/publication.
+Local manual checklist: README_HE.html. Restorable ZIP: backups/HomeBasket_Static_v2.5.zip.
