@@ -1,18 +1,22 @@
-HomeBasket 2.5.2 — 2026-10-18
-FINAL: 1196 PASS; 0 failed suites.
-All previous 1126 checks plus 70 new regression checks.
-Full output: test-results.txt. JavaScript syntax: 16 files OK.
-Unchanged data directory: byte-for-byte against 2.5.1.
-Backup: backups/HomeBasket_Static_v2.5.1.zip and BACKUP_v2.5.1_SHA256.txt.
+HomeBasket 2.5.3 — 2026-10-18
+FINAL: 1238 PASS; 0 failed suites.
+1196 previous checks retained + 42 new targeted regression checks.
+All suites run using python run_tests.py; complete output: test-results.txt.
+Syntax checks: all 16 root JavaScript files passed node --check.
+Data directory remains byte-identical to 2.5.2; pricing/config modules have original hashes.
+Backup: backups/HomeBasket_Static_v2.5.2.zip and BACKUP_v2.5.2_SHA256.txt.
 
-Tests run in Node with browser API stubs, gzip fixtures and Python HTML audit.
-Coverage: cart change invalidation and automatic repricing; city aliases and unknown cities;
-free delivery boundary/null/pickup; storage and one-click restore; coverage ordering and safe
-presentation dedup; quantities, copy text, missing quantities, banner, menu, navigation,
-CSS geometry/contrast contracts, existing pricing, minimum orders, caching, lazy promotions,
-synthetic large-catalog and promotion performance tests.
+Test coverage: persistent unlisted-city warning and mode-specific service lists;
+known/unknown/unavailable labels; draft/suggestion/native-change invalidation;
+paused comparison cancellation and late-response guards; weighted and packaged duplicate
+presentation with highest-coverage selection and preservation of catalog barcodes;
+minimum label dedup; restore step; relevant versus catalog network counts;
+desktop CTA grid, one mobile dock scroll owner, opaque dialog actions, bounded tables;
+free delivery at threshold-1 agorot, exactly threshold, threshold+1 agorot for both
+freeAbove and the existing tier path. No price arithmetic changes.
 
-No real-browser visual QA was performed in this environment. No full real client exports
-were supplied here. Real phone checks still required: 390px and 200% text/zoom, keyboard,
-city dropdown and errors, anchors/reload/scroll navigation, safe areas/dock, sticky modal
-buttons and WhatsApp clipboard. No live deployment or external data requests were made.
+Validation uses Node API/DOM stubs, synthetic data, gzip fixtures, CSS constraints and
+Python HTML audit. This is not real browser or physical phone visual verification.
+Real phone checks: 390px, 200% zoom/text, keyboard/city menu, warning persistence,
+open/closed dock scroll and safe areas, sticky modal action background. Also check
+640px price tables and desktop CTA using your full real data. No live deployment.
