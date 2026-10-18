@@ -43,7 +43,7 @@ test('existing malicious bidi controls stripped before wrapping',()=>{const s=O.
  vm.runInContext(fs.readFileSync(path.join(__dirname,'../receipt-ui.js'),'utf8'),summary.ctx);
  test('five equal single packs shown simply as five products',()=>assert.equal(summary.get('basket-count').textContent,'5 מוצרים'));
  summary.run('cart=[cart[0]];HB_UX.update()');test('single actual basket row uses singular summary',()=>assert.equal(summary.get('basket-count').textContent,'מוצר אחד'));
- const production={};production.window=production;vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../config.js'),'utf8'),production);const pc=production.HB_CONFIG;
+ const production={};production.window=production;vm.runInNewContext(fs.readFileSync(path.join(__dirname,'fixtures/production-v251.js'),'utf8'),production);const pc=production.HB_CONFIG;
  test('production pickup mode remains explicitly unknown for Rami',()=>assert.equal(pc.chains.RAMI_LEVY.pickup,null));
  pc.chains.RAMI_LEVY.serviceAreas={delivery:['עיר אמת'],pickup:['עיר אמת']};pc.chains.HAZI_HINAM.serviceAreas=['עיר אמת'];
  test('nonempty production cities do not conflict with matching behavior',()=>{assert.equal(O.service({source:'RAMI_LEVY'},pc,{city:'עיר אמת',mode:'delivery'}).eligible,true);assert.equal(O.service({source:'HAZI_HINAM'},pc,{city:'עיר אמת',mode:'delivery'}).eligible,true);});

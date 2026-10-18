@@ -21,7 +21,7 @@ test('expired snapshots change counters using supplied now',()=>assert.equal(C.s
 test('before load never claims price freshness or stale data',()=>{const x=C.summarize({...fixture(),loaded:false});assert.equal(x.priced,0);assert.equal(x.stale,0);assert.equal(x.verify,8);});
 test('production-config total used before catalog arrives',()=>assert.equal(C.summarize({config:fixture().config}).total,8));
 test('status computation does not reorder or mutate datasets',()=>{const ff=fixture(),before=JSON.stringify(ff);C.summarize(ff);assert.equal(JSON.stringify(ff),before);});
-test('release has one immutable canonical version',()=>{assert.equal(R.VERSION,'2.5.5');assert.equal(Object.isFrozen(R),true);});
+test('release has one immutable canonical version',()=>{assert.equal(R.VERSION,'2.5.6');assert.equal(Object.isFrozen(R),true);});
 let ff=fixture();const rankInput={rows:[{chain:0,coverage:2,total:10000},{chain:1,coverage:2,total:11000},{chain:2,coverage:1,total:1}],cartSize:2,networks:ff.networks,config:ff.config,place:ff.place,snapshots:Array(8).fill(stamp)};
 for(const enabled of [false,true]){rankInput.config.fees={enabled,customerFee:{type:'fixed',fixedAmount:5},chainCommission:{type:'fixed',fixedAmount:5}};const ranked=T.rank(rankInput);
  test('rank explanations never imply collected operational fees, enabled='+enabled,()=>assert.ok(ranked.every(r=>!r.explanations.join(' ').includes('כולל דמי שירות ידועים'))));

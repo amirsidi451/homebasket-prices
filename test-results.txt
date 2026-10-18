@@ -54,7 +54,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 641 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 785 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +156,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":142,"search_ms":17.21,"heap_delta_mb":30.8,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":165,"search_ms":24.29,"heap_delta_mb":32.1,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -1362,7 +1362,6 @@ PASS v254 phone route does not automatically open basket modal
 50 v2.5.4 checks passed; code/CSS/DOM stubs, not real phone QA
 
 v255.test.cjs
-PASS production config: exactly the 4 verified chains visible (serve)
 PASS only the 4 shown chains are selectable/eligible
 PASS Top 3 with 4 chains shows exactly 3, cheapest first, no hidden chain
 PASS chain-summary counts the visible chains only
@@ -1378,7 +1377,59 @@ PASS only 1 shown chain with full coverage: Top list has 1, honest note, no hidd
 PASS below-minimum chain not in Top 3 and clearly marked; hidden still absent
 PASS pickup + one chain without prices: partial handled, 4 shown max, hidden absent
 PASS revert: with visible:true for all, 8 chains counted and ranked again (config/data intact)
-TOTAL 16
+TOTAL 15
+
+v256.test.cjs
+PASS v256 uploaded file byte-exact config.js
+PASS v256 uploaded file byte-exact legal.html
+PASS v256 exact uploaded 2.5.5 source retained config.js
+PASS v256 exact uploaded 2.5.5 source retained core.js
+PASS v256 exact uploaded 2.5.5 source retained online-core.js
+PASS v256 exact uploaded 2.5.5 source retained fees.js
+PASS v256 exact uploaded 2.5.5 source retained top-ranking.js
+PASS v256 exact uploaded 2.5.5 source retained comparison-view.js
+PASS v256 exact uploaded 2.5.5 source retained savings.js
+PASS v256 exact uploaded 2.5.5 source retained chain-status.js
+PASS v256 production four visible flags preserved
+PASS v256 production service areas preserved including Rehovot
+PASS v256 legal next to index has required targets and placeholder
+PASS v256 footer contains both legal links
+PASS v256 price disclosure linked inside order warning block
+PASS v256 all municipalities/local councils included in static suggestions
+PASS v256 complete locality snapshot is local and immutable
+PASS v256 static city script loads before autocomplete
+PASS v256 suggestion independent of service coverage מצפה רמון
+PASS v256 suggestion independent of service coverage קצרין
+PASS v256 suggestion independent of service coverage אילת
+PASS v256 suggestion independent of service coverage ירוחם
+PASS v256 suggestion independent of service coverage דימונה
+PASS v256 suggestion independent of service coverage מטולה
+PASS v256 suggestion independent of service coverage מגאר
+PASS v256 suggestion independent of service coverage אום אל-פחם
+PASS v256 suggestion independent of service coverage רהט
+PASS v256 suggestion independent of service coverage בית אל
+PASS v256 same canonical alias suggestions Rehovot
+PASS v256 same canonical alias suggestions רחובות (מרכז)
+PASS v256 same canonical alias suggestions תל-אביב
+PASS v256 same canonical alias suggestions תל אביב-יפו
+PASS v256 locality list cannot grant service coverage
+PASS v256 autocomplete still limited to eight suggestions plus free address
+PASS v256 order-open class hides dock immediately
+PASS v256 order window owns full scroll including actions and safe area
+PASS v256 390px order scroll budget 844/34
+PASS v256 390px order scroll budget 422/34
+PASS v256 390px order scroll budget 320/0
+PASS v256 order sync locks background
+PASS v256 order close restores page and dock class state
+PASS v256 order opening closes basket before modal and syncs layout
+PASS v256 explicit order close syncs layout restoration
+PASS v256 four shown chains, none known available, still gets comparison
+PASS v256 verify chains rank without claiming confirmed availability
+PASS v256 full comparable basket totals remain original arithmetic
+PASS v256 known outside area remains separate, hidden chains absent
+PASS v256 nonservice municipality has true autocomplete option
+PASS v256 autocomplete-only city retains unlisted-area warning
+49 v2.5.6 fixture-backed checks passed; not real phone visual QA
 
 markup.test.py
 PASS markup has no duplicate IDs

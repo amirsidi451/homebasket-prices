@@ -1,9 +1,13 @@
-# HomeBasket 2.5.5
-Static Hebrew RTL app. See START_HERE_v2.5.4_HE.txt and CHANGELOG_HE.txt (2.5.5: verified chains only).
-1304 automated checks passed. Full log: test-results.txt.
-Backup: backups/HomeBasket_Static_v2.5.3.zip. No live deployment.
-Keep your full production config.js and data exports when upgrading.
-Pricing/data formats unchanged. Rehovot aliases do not invent service coverage.
-Mobile basket opens a native dialog with a locked background and one scroll owner.
-Real phone/visual QA still required; see VALIDATION.txt.
-Run locally: START_LOCAL.bat. Run tests with Python and Node: python run_tests.py.
+# HomeBasket 2.5.6
+Built from the supplied upload_v255_base.zip (2.5.5), not from an older template.
+Keep the included config.js: it is byte-identical to your uploaded full production config.
+Four shown chains and all service lists are preserved. Pricing/data formats unchanged.
+Supplied legal.html and email placeholder preserved, linked from footer and order warning.
+Autocomplete uses a bundled government locality snapshot, independent of retailer coverage.
+Order modal hides the basket dock and scrolls all content/actions with safe-area padding.
+
+Windows: extract to a new folder, keep your existing data/dataBase, run START_LOCAL.bat.
+No real price data is bundled. No live-site changes.
+1352 automated checks passed; see test-results.txt and VALIDATION.txt for QA limits.
+Run tests with Python and Node: python run_tests.py. Scenarios use tests/fixtures.
+Start with START_HERE_v2.5.6_HE.txt. Original archive in backups/upload_v255_base.zip.

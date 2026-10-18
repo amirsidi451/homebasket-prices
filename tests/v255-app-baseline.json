@@ -1,0 +1,24 @@
+{
+  "functions": {
+    "dataURL": "8ddabb0931d870008fc660cc0382916ebd91d3abec5879cb2d8460d9ab445c24",
+    "jsonFile": "3557eeb7abf7bba765e25517bfb2e58c77497a843698ef9cd59632473fc71740",
+    "load": "6f41309994553c5b8d8be8276aaa53f2915cacc61548741667429205d3ff0bf6",
+    "getChunk": "b846e403a4aa32951ddfd95ad7cd36fb8deaf06d3eee0566a6c65ed1b0285f36",
+    "renderProducts": "963f97ed5ea6dd04f9900669ee7a3d0addfe46842cf3446fdcfe3b10d8373d63",
+    "renderCart": "91991d9179a1756a2bb237f56342cbb0ce4aa6304373446805fcb2bd21fc9634",
+    "renderCompare": "20106c9fab295dffb9dc11ecd7578488bf8772d49fcb4258f4bd56a996341d6d",
+    "renderOffers": "589b578d2ccde86b1ec8b82591a294fbd373189e10f28886e9cd8b87948deb75",
+    "openAlternatives": "0196ff0f13678c057d4c47e08078f75e64abf76a2a3eb130fd145993bbe6b1e1",
+    "approveAlternative": "784d4a7b3463d446973dcf589bb594a29a72acb3db62cab0032078f39d104331",
+    "coverageOptions": "aec03fd4cadb03109a96713a03af00e82542ec4123bd44e521940f363de712f1",
+    "approveCoverage": "532dc1a6334efbb153ce695505ee1fab6b7bd5dbaa15228ad8a500a4ccd6f221",
+    "setQuantity": "7a7610b55aa2fa4b9b1dcdec12767abd7671738c2b90c978039e70a90db5c8da",
+    "addProduct": "ff1c74833eb955ab140d070b0dee454fcdaa061fae1226ee3913aeea37c753be",
+    "applyService": "38d5d51d363fda09ef835c30e0665c1eb45a4f338a9acbc5e89ad72514eaa7e8",
+    "clearService": "379e247a0f3613554e61124b7edbf1c770f20c0efb5b7bd2ba055c623b7d2aa5",
+    "openOrder": "d1ea73a3569e60f7e7c27a349b3468a6a130d7cc868eec768449db1267d0ab23",
+    "updateChainSummary": "ab5f5629657eff1bad9d8fb5a7788bac5b4d925a6839091c0d7d5d915f01e974",
+    "renderCartMissing": "c82ac01a178dd371e2a82d28a46224359058436c49359191f6660a7ca39d56ad",
+    "closeAlternatives": "f2ae70107be66bd34b9daf23453969b19b9b25943ac5a99b9b80c1f1fd39d292"
+  }
+}

@@ -323,7 +323,7 @@ function openOrder(c){
  $('order-title').textContent='המשך להזמנה ב־'+n.name;$('order-service').textContent=serviceText(n);$('order-warning').textContent='המחירים הם הערכה. יש לאמת מחיר באתר הרשת. '+HBOnline.availabilityLabel(servicePlace.mode)+'.'+(HB_CONFIG.fees?.enabled===true?' דמי השירות בהשוואה הם לדוגמה בלבד, לא נגבים כאן ואינם מועברים לאתר הרשת.':'');
  $('order-list').value=HBOnline.list(HB.validCart(items),catalog,HB.displayName);
  $('order-missing').textContent='העתקת הרשימה אינה מאשרת מלאי, מחירים או הזמנה. ייתכנו מוצרים ללא מחיר ותחליפים שאישרתם; בדקו את כולם באתר הרשת.';
- $('order-copy-status').textContent='';$('order-continue').href=url;orderRevision=serviceRevision;$('order-dialog').showModal();return true;
+ $('order-copy-status').textContent='';$('order-continue').href=url;orderRevision=serviceRevision;window.HB_LAYOUT?.closeBasket?.();$('order-dialog').showModal();window.HB_LAYOUT?.syncOrderModal?.();return true;
 }
 $('location-form').addEventListener('submit',e=>{e.preventDefault();if(applyService($('service-city').value,$('service-pickup').checked?'pickup':'delivery')){location.hash=eligibleIds().length?'#search':'#location';route();}});
 let serviceInputTimer;
@@ -344,7 +344,8 @@ for(const id of ['service-delivery','service-pickup'])$(id).addEventListener('ch
 function requestComparison(e){e?.preventDefault?.();window.HB_LAYOUT?.closeBasket?.();if(!servicePlace){location.hash='#location';route();showCityRequirement('כדי להשוות צריך לבחור עיר ואופן קבלה');return false;}if(location.hash==='#compare'){window.HB_LAYOUT?.lockScrollChrome?.();$('compare').scrollIntoView?.({block:'start'});renderCompare();}else{location.hash='#compare';}return true;}
 for(const id of ['step-compare','nav-compare','basket-next'])$(id).onclick=requestComparison;
 document.addEventListener('click',e=>{if(e.defaultPrevented)return;const a=e.target.closest?.('a[href="#compare"]');if(a)requestComparison(e);if(!e.target.closest?.('.city-combobox'))closeCityOptions();});
-$('order-close').onclick=()=>{$('order-dialog').close();$('order-list').value='';};
+$('order-close').onclick=()=>{$('order-dialog').close();$('order-list').value='';window.HB_LAYOUT?.syncOrderModal?.();};
+$('order-dialog').addEventListener('close',()=>window.HB_LAYOUT?.syncOrderModal?.());
 $('order-copy').onclick=async()=>{if(orderRevision!==serviceRevision)return;try{await navigator.clipboard.writeText($('order-list').value);$('order-copy-status').textContent='הרשימה הועתקה. אפשר להדביק אותה או להיעזר בה באתר הרשת.';}catch{$('order-copy-status').textContent='הדפדפן חסם העתקה. סמנו את הטקסט והעתיקו ידנית.';}};
 $('order-continue').onclick=e=>{if(orderRevision!==serviceRevision){e.preventDefault();$('order-dialog').close();}};
 

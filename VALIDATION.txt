@@ -1,23 +1,21 @@
-HomeBasket 2.5.4
-FINAL: 1288 PASS; 0 failed suites.
-1238 previous checks retained; 50 targeted regression checks added.
-Run: python run_tests.py. Full output: test-results.txt.
-16 JavaScript files passed node --check. Data directory byte-identical to 2.5.3.
-Config.js and service area lists byte-identical to 2.5.3.
-Original pricing modules and online API except canonicalCity protected by hashes.
-No live deployment. No external verification of retailer address coverage.
+HomeBasket 2.5.6 — supplied 2.5.5 baseline
+FINAL: 1352 PASS; 0 failed suites.
+49 new focused checks; historical suites preserved and run.
+Full log: test-results.txt. 17 root JS files passed node --check.
+config.js and supplied legal.html are byte-identical to the uploaded originals.
+Pricing/data parsers, ranking, fee arithmetic and service policy are byte-identical to 2.5.5.
+No price data bundled; no data schema changes; no live deployment.
 
-Coverage: comparison-local unlisted-city warning; native mobile dialog dock relocation,
-page scroll lock and restore, close/resize behavior, no automatic mobile opening;
-safe-area padding and fixed footer geometry; empty copy status and decorative strip;
-Rehovot aliases and unmodified known/unknown service lists; all previous arithmetic,
-cache, basket persistence, free-delivery boundaries and large-data regressions.
+New coverage: legal anchors/footer/order warning and unchanged email placeholder;
+order modal dock hiding, page lock, scrolling actions and safe area;
+static locality source coverage (all 205 municipal/local councils in source), aliases,
+no implicit retailer service; fixture-based full comparison with four shown chains
+when none has confirmed coverage; verify versus known-outside distinction; hidden
+chain protection and original agorot totals; actual production config hash guard.
 
-This is Node/DOM-stub, synthetic-data, HTML and CSS-constraint validation.
-It is NOT real browser layout or real phone validation.
-Real phone checks required: 390px and 200% zoom, software keyboard/visual viewport,
-safe-area/home indicator, visible compare CTA, one scroll owner and locked background,
-modal close/focus restoration, warning at comparison top and order footer rendering.
-Rehovot still requires a matching entry in the operator's actual service-area config.
-The bundled production template has empty Rami Levy and Hazi Hinam service lists;
-no coverage has been fabricated and no cities have been added.
+Historical tests use tests/fixtures rather than changing production configuration.
+Tests use Node API/DOM stubs, synthetic gzip data, Python HTML audits and CSS constraints.
+They are NOT a real browser visual check or a real phone test.
+Real phone QA: 390px, safe-area/home indicator, software keyboard, 200% zoom,
+long order list scroll and both action buttons, hidden dock during order, restoring
+dock after close/Escape, legal links and no-service city autocomplete/comparison.

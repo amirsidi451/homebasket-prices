@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),vm=require('node:vm'),fs=require('node:fs'),path=require('node:path');
 const O=require('../online-core.js'),T=require('../top-ranking.js'),S=require('../savings.js'),H=require('../core.js'),{setup,loadFixture}=require('./support.cjs');
 let count=0;function test(name,fn){fn();count++;console.log('PASS '+name);}
-const root=path.join(__dirname,'..'),ctx={};ctx.window=ctx;vm.createContext(ctx);vm.runInContext(fs.readFileSync(path.join(root,'config.js'),'utf8'),ctx);const config=JSON.parse(JSON.stringify(ctx.HB_CONFIG));
+const root=path.join(__dirname,'..'),ctx={};ctx.window=ctx;vm.createContext(ctx);vm.runInContext(fs.readFileSync(path.join(__dirname,'fixtures/production-v251.js'),'utf8'),ctx);const config=JSON.parse(JSON.stringify(ctx.HB_CONFIG));
 const chain=source=>({source,name:source}),q=(source,mode,amount)=>O.quote(chain(source),config,mode,amount);
 const rates={RAMI_LEVY:[3590,null],SHUFERSAL:[3590,1500],VICTORY_NEW_SOURCE:[3590,1200],YOHANANOF:[null,1500],YAYNO_BITAN_AND_CARREFOUR:[3590,1500],HAZI_HINAM:[3590,3590],TIV_TAAM:[2990,1500]};
 for(const [source,pair]of Object.entries(rates))for(const [j,mode]of ['delivery','pickup'].entries())test(source+' '+mode+' estimated base quote in agorot',()=>{const quote=q(source,mode,50000);assert.equal(quote.fee,pair[j]);assert.equal(quote.basis,'estimate');});

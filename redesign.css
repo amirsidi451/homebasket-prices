@@ -293,3 +293,14 @@ html.basket-modal-open,html.basket-modal-open body{overflow:hidden;overscroll-be
 .design-v25 #order-copy-status:not(:empty){background:var(--surface);color:var(--ink);border:0;padding:8px 0;box-shadow:none}
 .design-v25 #order-dialog .actions{background:var(--surface);box-shadow:none;border-bottom:0;outline:0}
 @media(max-width:1099px){.design-v25>.basket-dock{max-height:none;overflow:visible;padding:6px 12px calc(8px + env(safe-area-inset-bottom));gap:4px}.design-v25>.basket-dock>.dock-actions{flex-shrink:0;align-items:stretch}.design-v25>.basket-dock #basket-next{min-height:48px;margin:0;line-height:1.4}.design-v25>.basket-dock #basket-drawer:not([open]){flex:0 0 auto;min-height:24px;max-height:none;overflow:visible}}
+/* 2.5.6: legal links, order modal owns scrolling, dock cannot overlay checkout handoff. */
+.design-v25 .footer-legal{display:flex;gap:12px;flex-wrap:wrap;margin-top:12px}
+.design-v25 .footer-legal a,.design-v25 .price-disclosure-link{min-height:44px;display:inline-flex;align-items:center;text-decoration:underline;overflow-wrap:anywhere}
+html.order-modal-open,html.order-modal-open body{overflow:hidden;overscroll-behavior:none}
+html.order-modal-open .basket-dock{display:none!important}
+.design-v25:has(#order-dialog[open]) .basket-dock{display:none!important}
+.design-v25 #order-dialog{box-sizing:border-box;max-width:min(700px,calc(100% - 20px));max-height:calc(var(--visual-height,100dvh) - 20px);overflow-y:auto;overscroll-behavior:contain;padding-bottom:calc(20px + env(safe-area-inset-bottom));scroll-padding-bottom:calc(20px + env(safe-area-inset-bottom))}
+.design-v25 #order-dialog .actions{position:static;bottom:auto;display:flex;flex-wrap:wrap;background:var(--surface);padding:12px 0 0;box-shadow:none;gap:8px}
+.design-v25 #order-dialog .actions>*{min-height:44px;min-width:0;white-space:normal;flex:1 1 180px}
+.design-v25 #order-list{box-sizing:border-box;max-width:100%;width:100%}
+@media(max-width:600px){.design-v25 #order-dialog{width:calc(100% - 20px);margin:auto;padding:14px 14px calc(16px + env(safe-area-inset-bottom))}.design-v25 #order-dialog .actions{display:grid;grid-template-columns:minmax(0,1fr)}.design-v25 #order-dialog .actions>*{width:100%}}
