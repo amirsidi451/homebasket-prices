@@ -48,7 +48,7 @@ test('product data shape is unchanged by separate image map',()=>{const raw={fie
 (async()=>{
  const e=setup();await loadFixture(e);
  test('search card includes quantity input and large add control',()=>{assert.match(e.get('products').innerHTML,/id="add-qty-3073781199918"/);assert.match(e.get('products').innerHTML,/class="primary add-product"/);});
- test('product with no image has initial-letter placeholder, no blank image',()=>{assert.match(e.get('products').innerHTML,/product-letter">ג/);assert.doesNotMatch(e.get('products').innerHTML,/<img/);});
+ test('product with no image has initial-letter placeholder, no blank image',()=>{assert.match(e.get('products').innerHTML,/product-letter"[^>]*>ג/);assert.doesNotMatch(e.get('products').innerHTML,/<img/);});
  e.get('add-qty-3073781199918').value='3';e.get('products').onclick({target:{closest:()=>({dataset:{add:'3073781199918'}})}});
  test('selected quantity used on add instead of always one',()=>assert.equal(e.run('cart[0].qty'),3));
  test('fractional packaged quantity rejected without modifying cart',()=>{assert.equal(e.run("addProduct('3073781199918',1.5)"),false);assert.equal(e.run('cart[0].qty'),3);});
@@ -58,9 +58,9 @@ test('product data shape is unchanged by separate image map',()=>{const raw={fie
  test('weighted quantity stored as kilograms with three decimal places',()=>{assert.equal(e.run("addProduct('400',.375)"),true);assert.equal(e.run("cart.find(i=>i.barcode==='400').qty"),.375);});
  test('weighted sub-gram quantity cannot be rounded into fake item',()=>assert.equal(e.run("addProduct('400',.0001)"),false));
  let reads=0;e.ctx.readImages=async()=>{reads++;return{'3073781199918':'https://cdn.example.test/cheese.webp'};};e.run('jsonFile=readImages;productImages=null;imagePromise=null;files=null;delete HB_CONFIG.imagesFile');await e.run('loadProductImages()');
- test('no optional map configured means no request or 404 probe',()=>assert.equal(reads,0));
+ test('default optional gzip map is discovered without config changes',()=>assert.equal(reads,1));
  e.run("HB_CONFIG.imagesFile='images.json';productImages=null");await e.run('loadProductImages()');await e.run('loadProductImages()');
- test('declared image map loaded once and cached lazily',()=>assert.equal(reads,1));
+ test('declared legacy map loaded once and cached lazily',()=>assert.equal(reads,2));
  test('image presentation lazy and no-referrer without upload',()=>{const h=e.run("productVisual(catalog.get('3073781199918'))");assert.match(h,/loading="lazy" decoding="async" referrerpolicy="no-referrer"/);assert.match(h,/product-letter/);assert.match(h,/https:\/\/cdn.example.test/);});
  const broken={tagName:'IMG',hidden:false};e.get('products').listeners.error({target:broken});test('broken image hides raster, leaving initial underneath',()=>assert.equal(broken.hidden,true));
  e.ctx.readImages=async()=>{reads++;throw Error('bad optional map');};e.run('jsonFile=readImages;productImages=null;imagePromise=null');

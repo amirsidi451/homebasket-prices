@@ -304,3 +304,12 @@ html.order-modal-open .basket-dock{display:none!important}
 .design-v25 #order-dialog .actions>*{min-height:44px;min-width:0;white-space:normal;flex:1 1 180px}
 .design-v25 #order-list{box-sizing:border-box;max-width:100%;width:100%}
 @media(max-width:600px){.design-v25 #order-dialog{width:calc(100% - 20px);margin:auto;padding:14px 14px calc(16px + env(safe-area-inset-bottom))}.design-v25 #order-dialog .actions{display:grid;grid-template-columns:minmax(0,1fr)}.design-v25 #order-dialog .actions>*{width:100%}}
+/* 2.5.7: a single order scroll area; stable optional thumbnails in all basket views. */
+.design-v25 #order-list{overflow:visible;overflow-y:hidden;resize:none;max-height:none;min-height:96px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere}
+.design-v25 .product-symbol{display:inline-grid;flex-shrink:0;vertical-align:middle;width:50px;height:50px;min-width:50px;min-height:50px}
+.design-v25 .product-symbol img{width:50px;height:50px;object-fit:contain}
+.design-v25 .cart-row .product-symbol,.design-v25 .mini-row .product-symbol{margin-inline-end:8px}
+.design-v25 .order-images{list-style:none;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.design-v25 .order-images[hidden]{display:none}
+.design-v25 .order-images li{display:flex;align-items:center;gap:8px;min-width:0;max-width:100%;overflow-wrap:anywhere}
+.design-v25 .product-symbol[hidden]{display:none}

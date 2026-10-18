@@ -2,6 +2,7 @@
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.HBOnline=factory();})(typeof globalThis!=='undefined'?globalThis:this,function(){'use strict';
  const normalize=s=>String(s||'').normalize('NFKC').replace(/־/g,' ').replace(/[\u0591-\u05C7]/g,'').replace(/["'׳״.,־–-]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
  function canonicalCity(value){const raw=String(value||'').normalize('NFKC').replace(/[\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g,'').replace(/\([^)]*\)/g,'').trim(),key=normalize(raw).replace(/^עיריית\s+|^עיר\s+/,'');if(['רחובות','רחובות העיר','רחובות ישראל','rehovot','rechovot','rehovoth'].includes(key))return 'רחובות';return ['תל אביב','תל אביב יפו'].includes(key)?'תל אביב-יפו':raw;}
+ function cityKey(value){return normalize(canonicalCity(value)).replace(/יי+/g,'י').replace(/[\s־–—-]+/g,'');}
  function settings(chain,config){return config?.chains?.[chain.source]||{};}
  function availabilityLabel(mode){return mode==='pickup'?'יש לבדוק זמינות איסוף באתר הרשת':'יש לבדוק זמינות משלוח לכתובת באתר הרשת';}
  function service(chain,config,place){
@@ -11,7 +12,7 @@
   if(c.availability==='verify')return {eligible:true,status:'verify',label:availabilityLabel(place.mode)};
   const areas=Array.isArray(c.serviceAreas)?c.serviceAreas:c.serviceAreas?.[place.mode];
   if(enabled!==true||!Array.isArray(areas)||!areas.length)return {eligible:false,status:'unknown',label:'זמינות לא ידועה — יש לבדוק באתר הרשת'};
-  if(!areas.some(a=>a==='*'||normalize(canonicalCity(a))===normalize(canonicalCity(place.city))))return {eligible:false,status:'outside',label:'לא משרתת את העיר לפי ההגדרות'};
+  if(!areas.some(a=>a==='*'||cityKey(a)===cityKey(place.city)))return {eligible:false,status:'outside',label:'לא משרתת את העיר לפי ההגדרות'};
   return {eligible:true,status:'available',label:availabilityLabel(place.mode)};
  }
  function fee(chain,config,mode){if(!['delivery','pickup'].includes(mode))return null;const c=settings(chain,config),v=mode==='delivery'?c.estimatedDeliveryFee:c.estimatedPickupFee;return typeof v==='number'&&Number.isFinite(v)&&v>=0?Math.round(v*100):null;}
@@ -46,8 +47,8 @@
  // Only extract an unambiguous configured city; no network geocoding or price selection.
  function cityFromText(text,config){
   const raw=canonicalCity(String(text||'').trim().replace(/\s+/g,' ')),value=normalize(raw.replace(/תל[\s־–-]+אביב(?:[\s־–-]+יפו)?/g,'תל אביב-יפו')),known=cities(config).map(canonicalCity);
-  const exact=known.find(city=>normalize(city)===value);if(exact)return exact;
-  const matches=known.filter(city=>(' '+value+' ').includes(' '+normalize(city)+' ')).sort((a,b)=>b.length-a.length);
+  const exact=known.find(city=>cityKey(city)===cityKey(raw));if(exact)return exact;
+  const matches=known.filter(city=>(' '+value.replace(/יי+/g,'י')+' ').includes(' '+normalize(city).replace(/יי+/g,'י')+' ')).sort((a,b)=>b.length-a.length);
   return matches.length&&matches.every(city=>normalize(matches[0]).includes(normalize(city)))?matches[0]:raw;
  }
  function priceLabel(chain,config){return settings(chain,config).priceBasis==='online'?'מחיר ממקור אונליין שהוגדר':'מחיר להשוואה — לא אומת כמחיר אונליין';}
@@ -74,5 +75,5 @@
   return output;
  }
  function applyAreas(raw,config){const output=parseAreas(raw);for(const [source,areas]of Object.entries(output)){if(settings({source},config).availability==='known')config.chains[source].serviceAreas=areas;}return Object.keys(output);}
- return {canonicalCity,availabilityLabel,normalize,settings,service,fee,quote,minimumLabel,policyLabel,destination,cities,cityFromText,priceLabel,list,packs,productsCount,bidiText,parseAreas,applyAreas};
+ return {cityKey,canonicalCity,availabilityLabel,normalize,settings,service,fee,quote,minimumLabel,policyLabel,destination,cities,cityFromText,priceLabel,list,packs,productsCount,bidiText,parseAreas,applyAreas};
 });

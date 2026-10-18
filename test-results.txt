@@ -54,7 +54,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 785 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 883 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +156,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":165,"search_ms":24.29,"heap_delta_mb":32.1,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":172,"search_ms":17.89,"heap_delta_mb":44.4,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -873,8 +873,8 @@ PASS zero quantity rejected
 PASS quantity greater than total cart limit rejected
 PASS weighted quantity stored as kilograms with three decimal places
 PASS weighted sub-gram quantity cannot be rounded into fake item
-PASS no optional map configured means no request or 404 probe
-PASS declared image map loaded once and cached lazily
+PASS default optional gzip map is discovered without config changes
+PASS declared legacy map loaded once and cached lazily
 PASS image presentation lazy and no-referrer without upload
 PASS broken image hides raster, leaving initial underneath
 PASS optional image failure degrades to placeholder rather than blocking prices
@@ -1182,13 +1182,14 @@ PASS Enter selects draft city pending explicit approval
 PASS ArrowUp from closed selection starts with last/free-address option
 PASS Escape dismisses without approving draft
 PASS pointer chooses free address pending explicit approval
+PASS comparison dock navigates to cart editing
 PASS repeat compare click scrolls and marks successful comparison updated
 PASS repeat top step triggers a fresh comparison even when hash is unchanged
 PASS failed or empty comparison never claims updated
 PASS real handoff copy path is clean, readable and excludes invisible controls
 PASS location changes never erase basket or approve substitutions
 PASS late comparison response cannot restore success for an unconfirmed city
-71 v2.5.1 flow/location/copy/savings/layout checks passed (code/CSS, not visual browser QA)
+72 v2.5.1 flow/location/copy/savings/layout checks passed (code/CSS, not visual browser QA)
 
 v252.test.cjs
 PASS v252 canonical city תל אביב
@@ -1382,14 +1383,14 @@ TOTAL 15
 v256.test.cjs
 PASS v256 uploaded file byte-exact config.js
 PASS v256 uploaded file byte-exact legal.html
-PASS v256 exact uploaded 2.5.5 source retained config.js
-PASS v256 exact uploaded 2.5.5 source retained core.js
-PASS v256 exact uploaded 2.5.5 source retained online-core.js
-PASS v256 exact uploaded 2.5.5 source retained fees.js
-PASS v256 exact uploaded 2.5.5 source retained top-ranking.js
-PASS v256 exact uploaded 2.5.5 source retained comparison-view.js
-PASS v256 exact uploaded 2.5.5 source retained savings.js
-PASS v256 exact uploaded 2.5.5 source retained chain-status.js
+PASS v256 pricing retained, explicit city normalization allowed config.js
+PASS v256 pricing retained, explicit city normalization allowed core.js
+PASS v256 pricing retained, explicit city normalization allowed online-core.js
+PASS v256 pricing retained, explicit city normalization allowed fees.js
+PASS v256 pricing retained, explicit city normalization allowed top-ranking.js
+PASS v256 pricing retained, explicit city normalization allowed comparison-view.js
+PASS v256 pricing retained, explicit city normalization allowed savings.js
+PASS v256 pricing retained, explicit city normalization allowed chain-status.js
 PASS v256 production four visible flags preserved
 PASS v256 production service areas preserved including Rehovot
 PASS v256 legal next to index has required targets and placeholder
@@ -1430,6 +1431,64 @@ PASS v256 known outside area remains separate, hidden chains absent
 PASS v256 nonservice municipality has true autocomplete option
 PASS v256 autocomplete-only city retains unlisted-area warning
 49 v2.5.6 fixture-backed checks passed; not real phone visual QA
+
+v257.test.cjs
+PASS v257 uploaded source unchanged config.js
+PASS v257 uploaded source unchanged core.js
+PASS v257 uploaded source unchanged fees.js
+PASS v257 uploaded source unchanged top-ranking.js
+PASS v257 uploaded source unchanged savings.js
+PASS v257 uploaded source unchanged comparison-view.js
+PASS v257 uploaded source unchanged chain-status.js
+PASS v257 uploaded source unchanged legal.html
+PASS v257 equivalent city key הרצליה/הרצלייה
+PASS v257 config spelling preferred הרצליה
+PASS v257 equivalent city key נהריה/נהרייה
+PASS v257 config spelling preferred נהריה
+PASS v257 equivalent city key קרית אונו/קריית אונו
+PASS v257 config spelling preferred קרית אונו
+PASS v257 equivalent city key קרית שמונה/קריית שמונה
+PASS v257 config spelling preferred קרית שמונה
+PASS v257 equivalent city key פרדסיה/פרדסייה
+PASS v257 config spelling preferred פרדסיה
+PASS v257 equivalent city key דבוריה/דבורייה
+PASS v257 config spelling preferred דבוריה
+PASS v257 equivalent city key פרדס חנה כרכור/פרדס-חנה-כרכור
+PASS v257 config spelling preferred פרדס חנה כרכור
+PASS v257 equivalent city key גבעת שמואל/גבעת־שמואל
+PASS v257 config spelling preferred גבעת שמואל
+City source/service equivalent pairs checked: 95
+PASS v257 every static equivalent of configured service city has identical availability
+PASS v257 suggestion prefixes never return duplicate city keys
+PASS v257 Rami government spelling served הרצלייה
+PASS v257 Rami government spelling served נהרייה
+PASS v257 Rami government spelling served קרית אונו
+PASS v257 Rami government spelling served קרית שמונה
+PASS v257 unrelated cities do not become equal
+PASS v257 single order scroll CSS hides textarea internal scroll
+PASS v257 fixed image layout has explicit dimensions and fallback
+PASS v257 example gzip image map parses as documented standalone format
+PASS v257 unsafe image URL rejected javascript:alert(1)
+PASS v257 unsafe image URL rejected data:image/png;base64,a
+PASS v257 unsafe image URL rejected http://cdn.example.test/a.jpg
+PASS v257 unsafe image URL rejected file:///a.jpg
+PASS v257 unsafe image URL rejected images/../x.png
+PASS v257 comparison dock action is cart editing
+PASS v257 editing action navigates without re-comparing
+PASS v257 other screens retain compare action
+PASS v257 order textarea keeps clean copy text and expands to measured full height
+PASS v257 long order list uses measured height rather than nested scroll
+PASS v257 missing local image map preserves no-image behavior and prices
+PASS v257 gzip image map read once without changing products schema
+PASS v257 image in card has lazy loading fixed size alt and fallback
+PASS v257 image in cart has lazy loading fixed size alt and fallback
+PASS v257 image in order has lazy loading fixed size alt and fallback
+PASS v257 failed image is removed and not retried on rerender
+PASS v257 corrupt gzip map does not break catalog cart or totals
+PASS v257 bad JSON map falls back without throwing
+PASS v257 pending optional network image file never delays search/catalog
+PASS v257 404 optional map is cached as absent with no JS error logging
+54 v2.5.7 targeted checks passed; code/fixtures/CSS, not real phone visual QA
 
 markup.test.py
 PASS markup has no duplicate IDs
