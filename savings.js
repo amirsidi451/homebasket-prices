@@ -6,7 +6,7 @@
  function difference(reference,chosen){if(!Number.isFinite(reference)||!Number.isFinite(chosen)||reference<0||chosen<0)return null;const amount=reference-chosen;return {amount,percent:reference>0?100*amount/reference:null};}
  function model({rows,cartSize,networks,config,place,snapshots,now=Date.now(),chosenChain,comparisonBasis}){
   const source=new Map((rows||[]).map(r=>[r.chain,r]));
-  const all=(networks||[]).map((n,chain)=>{
+  const all=(networks||[]).map((n,chain)=>({n,chain})).filter(({n})=>O.settings(n,config).visible!==false).map(({n,chain})=>{
    const r=source.get(chain),fresh=H.fresh(snapshots?.[chain],now),valid=!!r&&Number.isInteger(r.coverage)&&r.coverage>=0&&r.coverage<=cartSize&&Number.isSafeInteger(r.total)&&r.total>=0;
    const coverage=fresh&&valid?r.coverage:0,itemsTotal=coverage>0?r.total:null,quote=O.quote(n,config,place?.mode,itemsTotal),fee=quote.fee;
    const feesEnabled=config?.fees?.enabled===true,customerFee=feesEnabled&&itemsTotal!==null?Math.round(F.computeFees(itemsTotal/100,n.source,config).customerFee*100):0;

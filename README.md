@@ -1,6 +1,6 @@
-# HomeBasket 2.5.4
-Static Hebrew RTL app. See START_HERE_v2.5.4_HE.txt.
-1288 automated checks passed. Full log: test-results.txt.
+# HomeBasket 2.5.5
+Static Hebrew RTL app. See START_HERE_v2.5.4_HE.txt and CHANGELOG_HE.txt (2.5.5: verified chains only).
+1304 automated checks passed. Full log: test-results.txt.
 Backup: backups/HomeBasket_Static_v2.5.3.zip. No live deployment.
 Keep your full production config.js and data exports when upgrading.
 Pricing/data formats unchanged. Rehovot aliases do not invent service coverage.

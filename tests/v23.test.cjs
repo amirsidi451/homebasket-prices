@@ -76,9 +76,9 @@ test('product data shape is unchanged by separate image map',()=>{const raw={fie
  await ui.run('renderCompare()');let html=ui.get('comparison').innerHTML,audit=ui.get('all-chain-explanations').innerHTML;
  test('Top3 only includes original full basket chain',()=>{assert.equal((html.match(/data-top-chain=/g)||[]).length,1);assert.match(html,/data-top-chain="0"/);assert.doesNotMatch(html,/data-top-chain="1"/);});
  test('partial table kept visible even when full mode selected',()=>{assert.match(html,/<table class="partial-table">/);assert.match(html,/data-partial-chain="1"/);assert.match(html,/חסר מוצר אחד/);});
- test('all eight chains appear with unique reason rows',()=>{assert.equal((audit.match(/data-audit-chain=/g)||[]).length,8);for(let i=0;i<8;i++)assert.ok(audit.includes('data-audit-chain="'+i+'"'));});
- test('offline chain explicitly explained',()=>assert.match(audit,/מוסתרת – אין שירות אונליין/));
- test('older-than-72 chain explicitly dated and not priced',()=>{const stale=audit.slice(audit.indexOf('data-audit-chain="6"'),audit.indexOf('data-audit-chain="7"'));assert.match(stale,/לא עדכנית \(עודכנה לאחרונה ב־/);assert.doesNotMatch(stale,/מחיר מוצרים בלבד/);});
+ test('v2.5.5: all shown (visible) chains appear with unique reason rows; hidden C7 does not',()=>{assert.equal((audit.match(/data-audit-chain=/g)||[]).length,7);for(let i=0;i<7;i++)assert.ok(audit.includes('data-audit-chain="'+i+'"'));assert.ok(!audit.includes('data-audit-chain="7"'));});
+ test('v2.5.5: hidden chain is not listed in the audit',()=>assert.doesNotMatch(audit,/מוסתרת – אין שירות אונליין/));
+ test('older-than-72 chain explicitly dated and not priced',()=>{const stale=audit.slice(audit.indexOf('data-audit-chain="6"'));assert.match(stale,/לא עדכנית \(עודכנה לאחרונה ב־/);assert.doesNotMatch(stale,/מחיר מוצרים בלבד/);});
  test('65h source shown with warning and partial prices',()=>{assert.match(html,/הנתונים בני 65/);assert.match(html,/data-partial-chain="5"/);});
  test('suggest substitute action exposed and wired in missing UI',()=>{assert.match(html,/>הצע תחליף<\/button>/);assert.match(html,/data-alt="300" data-target-chain="1"/);assert.equal(typeof ui.get('all-chain-explanations').listeners.click,'function');});
  const original=ui.run('JSON.stringify(cart)');await ui.run("openAlternatives('300',1)");

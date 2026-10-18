@@ -54,7 +54,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 691 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 641 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +156,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":159,"search_ms":18.57,"heap_delta_mb":32.1,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":142,"search_ms":17.21,"heap_delta_mb":30.8,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -605,10 +605,10 @@ PASS zero coverage never becomes free basket
 PASS partial display clearly noncomparable and no savings value
 PASS stale snapshot excluded even if price present
 PASS stale display distinct from missing price
-PASS offline and unavailable retained as separate all-eight information, outside savings
+PASS v2.5.5: hidden chain C0 is removed from savings entirely; unavailable-by-area retained, outside savings
 PASS offline cheapest never nominated for purchase
 PASS outside-city label is explicit
-PASS offline chain is reference-only
+PASS v2.5.5: hidden (offline) chain is not shown at all
 PASS no order CTA for unavailable references
 PASS maximum-saving headline uses cheapest relevant full basket
 PASS selected Top3 chain used for per-chain and average savings
@@ -636,7 +636,7 @@ PASS empty cart has no stale savings
 PASS new script loaded before app and separate accessible container
 PASS chart has text equivalents and no external library or network
 PASS 390px responsive chart uses shrinkable columns; table scroll localized
-PASS available rows stay in price table; offline source explicitly separated
+PASS v2.5.5: available rows stay in price table; hidden source is not shown at all
 49 savings v2.2.1 checks passed (offline fixtures, not browser visual QA)
 
 v222.test.cjs
@@ -883,8 +883,8 @@ PASS concurrent image-map reads share one fetch
 PASS old image response cannot poison a newer dataset cache
 PASS Top3 only includes original full basket chain
 PASS partial table kept visible even when full mode selected
-PASS all eight chains appear with unique reason rows
-PASS offline chain explicitly explained
+PASS v2.5.5: all shown (visible) chains appear with unique reason rows; hidden C7 does not
+PASS v2.5.5: hidden chain is not listed in the audit
 PASS older-than-72 chain explicitly dated and not priced
 PASS 65h source shown with warning and partial prices
 PASS suggest substitute action exposed and wired in missing UI
@@ -1360,6 +1360,25 @@ PASS v254 known city removes comparison warning
 PASS v254 city draft clears both warning copies
 PASS v254 phone route does not automatically open basket modal
 50 v2.5.4 checks passed; code/CSS/DOM stubs, not real phone QA
+
+v255.test.cjs
+PASS production config: exactly the 4 verified chains visible (serve)
+PASS only the 4 shown chains are selectable/eligible
+PASS Top 3 with 4 chains shows exactly 3, cheapest first, no hidden chain
+PASS chain-summary counts the visible chains only
+PASS audit lists 4 chains and a dynamic count
+PASS savings compares across all 4 shown chains and never mentions hidden ones
+PASS savings amount is highest minus cheapest among shown (not hidden 50.00)
+PASS order cards only for shown chains
+PASS network info and chain selector list only the shown chains
+PASS Tel Aviv: still 3 of 4, hidden never ranked
+PASS unknown city: verify chains remain (3), Rami excluded by known areas, availability note present
+PASS unknown city: Top 3 with exactly 3 eligible chains
+PASS only 1 shown chain with full coverage: Top list has 1, honest note, no hidden filler
+PASS below-minimum chain not in Top 3 and clearly marked; hidden still absent
+PASS pickup + one chain without prices: partial handled, 4 shown max, hidden absent
+PASS revert: with visible:true for all, 8 chains counted and ranked again (config/data intact)
+TOTAL 16
 
 markup.test.py
 PASS markup has no duplicate IDs
