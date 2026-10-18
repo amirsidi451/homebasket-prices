@@ -1,0 +1,18 @@
+Full test rerun with non-empty synthetic city lists TEMPORARILY in production config.
+Production bytes restored before packaging. These cities are not real service data.
+compact.test.cjs: 21 checks; OK
+core.test.cjs: 16 checks; OK
+interface.test.cjs: 9 checks; OK
+large-catalog.test.cjs: 2 checks; OK
+receipt.test.cjs: 41 checks; OK
+refresh.test.cjs: 8 checks; OK
+v12.test.cjs: 25 checks; OK
+v13.test.cjs: 22 checks; OK
+v14.test.cjs: 17 checks; OK
+v15.test.cjs: 21 checks; OK
+v16.test.cjs: 38 checks; OK
+v17.test.cjs: 58 checks; OK
+v18.test.cjs: 76 checks; OK
+v19.test.cjs: 67 checks; OK
+v20.test.cjs: 41 checks; OK
+TOTAL: 471 PASS; failures: 0

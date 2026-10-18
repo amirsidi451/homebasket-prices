@@ -1,0 +1,16 @@
+const assert=require('node:assert/strict'),{setup}=require('./support.cjs');let count=0;
+const pass=name=>{count++;console.log('PASS',name);};
+(async()=>{
+ const e=setup();e.ctx.location={hash:'#info',protocol:'https:',href:'https://example.test/index.html'};
+ let release;e.ctx.fetch=()=>new Promise(resolve=>{release=resolve;});
+ const original=e.run("jsonFile('chains.json').catch(e=>e.message)");e.run('generation++');release(Response.json([{source:'OLD',name:'ישן'}]));const message=await original;assert.match(message,/קודמת בוטלה/);pass('pending JSON from previous refresh is rejected');
+ const p=setup();p.ctx.location={hash:'#info',protocol:'https:',href:'https://example.test/index.html'};let releasePrices;p.ctx.fetch=()=>new Promise(resolve=>{releasePrices=resolve;});
+ const pending=p.run("getChunk('3073781199918').catch(e=>e.message)");p.run('generation++;priceCache.clear();coverageIndex.clear()');releasePrices(Response.json({fields:['chain','last','min','median','max','stores','last_updated'],unit:'agorot',p:{'3073781199918':[[0,9900,9900,9900,9900,1,'2020-01-01']]}}));assert.match(await pending,/קודמת בוטלה/);assert.equal(p.run('priceCache.size'),0);assert.equal(p.run('coverageIndex.size'),0);pass('old price response cannot repopulate cleared caches');
+ const b=setup();b.run("catalog=new Map([['123',{name:'מוצר',unit:'יחידות',weighted:false}]]);cart=[{barcode:'123',qty:1}];networks=[{index:0,source:'A',name:'A'}];approved.set('0:123',{barcode:'456',qty:1})");b.get('cart-items').listeners.change({target:{dataset:{qty:'123'},value:'2'}});assert.equal(b.run('approved.size'),0);assert.equal(b.run('cart[0].qty'),2);pass('changing original quantity invalidates approved substitute');
+ b.run("approved.set('0:123',{barcode:'456',qty:1})");b.get('products').onclick({target:{closest:()=>({dataset:{add:'123'}})}});assert.equal(b.run('approved.size'),0);pass('adding original product again invalidates substitute');
+ b.run("approved.set('0:123',{barcode:'456',qty:1})");b.get('cart-items').onclick({target:{closest:selector=>selector==='[data-remove]'?{dataset:{remove:'123'}}:null}});assert.equal(b.run('approved.size'),0);assert.equal(b.run('cart.length'),0);pass('removing original clears its approvals');
+ b.run("cart=[{barcode:'123',qty:1}];approved.set('0:123',{barcode:'456',qty:1})");b.get('clear').onclick();assert.equal(b.run('approved.size'),0);assert.equal(b.run('cart.length'),0);pass('empty cart clears all approvals');
+ b.run("cart=[{barcode:'123',qty:1}];approved.set('0:123',{barcode:'456',qty:1})");b.get('comparison').listeners.click({target:{closest:selector=>selector==='[data-undo-alt]'?{dataset:{undoAlt:'123',targetChain:'0'}}:null}});assert.equal(b.run('approved.size'),0);pass('undo substitution removes stored approval');
+ const s=setup();s.run("networks=[{index:0,source:'A',name:'A'}];cart=[{barcode:'123',qty:3}];alternativeContext={barcode:'123',chain:0,qty:2,generation};alternativeChoices=[{barcode:'456',weighted:false}]");s.get('alt-qty-0').value='2';await s.run('approveAlternative(0)');assert.equal(s.run('approved.size'),0);assert.match(s.get('toast').textContent,/הסל השתנה/);pass('approval from obsolete quantity dialog is refused');
+ console.log(count+' refresh and approval regression tests passed');
+})().catch(e=>{console.error(e);process.exitCode=1;});

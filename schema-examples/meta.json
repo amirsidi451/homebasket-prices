@@ -1,0 +1,11 @@
+{
+  "generated_at": "2026-10-16T18:00:00+03:00",
+  "per_chain_freshness": {
+    "DEMO": {
+      "latest_snapshot_at": "2026-10-16T17:00:00+03:00"
+    }
+  },
+  "price_files": [
+    "prices.json.gz"
+  ]
+}

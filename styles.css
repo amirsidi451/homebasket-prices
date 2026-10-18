@@ -110,3 +110,15 @@ body:has(#basket-drawer[open]){padding-bottom:calc(130px + min(42dvh,320px))}
 @media print{.basket-preferences,.saved-banner{display:none}.comparison-extra{display:block}}
 /* Avoid iOS auto-zoom while editing quantities or receipt matches. */
 .receipt-row input:not([type=checkbox]),.receipt-row select,#receipt-text,.mini-row input,.cart-row input{font-size:16px}
+/* 1.8 online handoff: compact, local service choice, no branch controls. */
+.service-strip{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;flex-wrap:wrap}
+#location-form{max-width:680px;margin-inline:auto}#service-city{width:100%;min-height:48px;font-size:16px;margin:8px 0 16px}
+#location-form fieldset{border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;flex-wrap:wrap;gap:20px;margin-bottom:16px}
+#location-form fieldset label{min-height:44px;display:flex;align-items:center;gap:8px}#service-availability p{overflow-wrap:anywhere}
+.online-chains{margin-block:28px}.online-chain{min-width:0}.online-chain button{white-space:normal;min-height:48px;width:100%;line-height:1.45}
+.checks label{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.checks label small{width:100%;color:var(--muted)}
+#order-dialog{width:min(640px,calc(100vw - 32px));max-height:85dvh;overflow:auto;box-sizing:border-box}
+#order-list{box-sizing:border-box;width:100%;font-size:16px;line-height:1.7;margin:10px 0;resize:vertical}#order-dialog .actions>*{min-height:48px;white-space:normal;overflow-wrap:anywhere}
+button:disabled{opacity:.65;cursor:not-allowed}#comparison .main-comparison small{overflow-wrap:anywhere}
+@media(max-width:600px){.stepper{flex-wrap:wrap}.stepper li{flex:1 1 calc(50% - 6px)}.service-strip .button{min-height:44px}.online-chains .grid{grid-template-columns:minmax(0,1fr)}#order-dialog .actions{display:grid;grid-template-columns:minmax(0,1fr)}}
+@media print{.service-strip,#location-form,.online-chains button{display:none}}

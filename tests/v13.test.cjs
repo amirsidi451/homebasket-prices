@@ -1,0 +1,35 @@
+const assert=require('node:assert/strict'),H=require('../core.js'),{setup}=require('./support.cjs'),zlib=require('node:zlib');let count=0;const pass=n=>{count++;console.log('PASS',n);},test=(n,f)=>{f();pass(n);};
+const products=H.products({fields:['name','unit','quantity','weighted'],p:{'10000001':['חלב 3%','ליטר',2,0],'10000002':['חלב 3% רגיל','מיליליטר',2000,0],'10000003':['חלב 3% קטן','ליטר',1,0],'10000004':['חלב 1%','ליטר',2,0],'10000005':['חלב סויה','ליטר',1,0],'10000006':['שמפו','ליטר',2,0],'10000007':['קמח','קילוגרם',1,0],'10000008':['קמח','גרם',1000,0],'10000009':['נייר','יחידות',4,0]}});
+test('multi-token milk percent and amount gives full matches first',()=>{const r=H.search(products,'חלב 3% 2 ליטר');assert.deepEqual(r.slice(0,2).map(p=>p.barcode).sort(),['10000001','10000002']);assert.ok(r.some(p=>p.barcode==='10000003'));});
+test('2000 ml equals 2 liters',()=>assert.deepEqual(H.search(products,'חלב 3% 2000 מ״ל').slice(0,2).map(p=>p.barcode).sort(),['10000001','10000002']));
+test('attached quantity unit spelling matches',()=>assert.ok(['10000001','10000002'].includes(H.search(products,'חלב 3 % 2ליטר')[0].barcode)));
+test('kg query matches gram quantity',()=>assert.deepEqual(H.search(products,'קמח 1 ק״ג').slice(0,2).map(p=>p.barcode).sort(),['10000007','10000008']));
+test('unit abbreviations and pieces match metadata',()=>assert.equal(H.search(products,"נייר 4 יח'")[0].barcode,'10000009'));
+test('partial text results retained rather than empty',()=>assert.ok(H.search(products,'חלב 9% 5 ליטר').length>0));
+test('numeric matches do not introduce shampoo into milk results',()=>assert.ok(!H.search(products,'חלב 3% 2 ליטר').some(p=>p.barcode==='10000006')));
+test('exact barcode still first',()=>assert.equal(H.search(products,'10000002')[0].barcode,'10000002'));
+const original={barcode:'1',name:'שמן זית 750 מ״ל',unit:'מיליליטר',quantity:750,weighted:false};const alternatives=new Map(['שמן זית כתית','שמפו שמן זית','שמן זית שמפו','שמן זית מרכך','שמן זית סבון','שמן זית קרם','שמן זית ג׳ל','שמן זית כביסה','שמן זית ניקוי','קרם שמן זית','שמן קנולה'].map((name,i)=>[String(i+2),{...original,barcode:String(i+2),name}]));
+test('shampoo and every requested care/cleaning word excluded',()=>assert.deepEqual(H.similarProducts(original,alternatives).map(p=>p.name),['שמן זית כתית']));
+test('first-word product type must match',()=>assert.equal(H.similarProducts(original,new Map([['x',{...original,barcode:'x',name:'תערובת שמן זית'}]])).length,0));
+test('no reasonable alternative yields empty list',()=>assert.equal(H.similarProducts(original,new Map([['x',{...original,barcode:'x',name:'שמפו שמן זית'}]])).length,0));
+const fields=['promotion_id','description','starts','ends','club_id','stores'];const raw={fields,by_chain:{}};
+for(let i=0;i<60000;i++){const c=String(i%8);(raw.by_chain[c]??=[]).push(['id-'+i,(i<8091?'מבצע שמן זית ':'מבצע חלב ')+i,'2020-01-01','2099-12-31','0',20]);}
+const before=process.memoryUsage().heapUsed,start=performance.now();const index=H.createPromotionIndex(raw),buildMs=performance.now()-start,searchStart=performance.now(),result=H.findPromotions(index,new Set([0,1,2,3,4,5,6,7]),'שמן זית'),searchMs=performance.now()-searchStart;const memoryMB=(process.memoryUsage().heapUsed-before)/1024/1024;
+test('60,000 promotion rows indexed once and 8091 matches counted',()=>{assert.equal(index.rows.length,60000);assert.equal(result.total,8091);});
+test('result materialization always bounded to 40',()=>assert.equal(result.results.length,40));
+test('selected-chain filtering uses same index',()=>assert.ok(H.findPromotions(index,new Set([1]),'שמן').results.every(p=>p.chain===1)));
+test('expired offers not shown',()=>{const x=H.createPromotionIndex({fields,by_chain:{'0':[['old','מבצע שמן','2020-01-01','2020-02-01','0',1]]}});assert.equal(H.findPromotions(x,new Set([0]),'שמן').total,0);});
+console.log('BENCHMARK '+JSON.stringify({rows:60000,matches:result.total,index_ms:Math.round(buildMs),search_ms:Math.round(searchMs*100)/100,heap_delta_mb:Math.round(memoryMB*10)/10,environment:'Node synthetic, not Chrome peak-memory measurement'}));
+(async()=>{
+ const e=setup();const stamp=new Date().toISOString();e.ctx.location={hash:'#compare',protocol:'https:',href:'https://example.test/index.html'};e.run("networks=HB.chains("+JSON.stringify(Array.from({length:8},(_,i)=>({source:'C'+i,name:'רשת '+i})))+");meta="+JSON.stringify({per_chain_freshness:Object.fromEntries(Array.from({length:8},(_,i)=>['C'+i,{latest_snapshot_at:stamp}]))})+";selected=new Set([0,1,2,3,4,5,6,7]);ready=true;");
+ let fetchCount=0,release,built=0,searched=0;const originalBuild=e.ctx.HB.createPromotionIndex,originalFind=e.ctx.HB.findPromotions;e.ctx.HB.createPromotionIndex=(r)=>{built++;return originalBuild(r);};e.ctx.HB.findPromotions=(...args)=>{searched++;return originalFind(...args);};
+ e.ctx.fetch=()=>{fetchCount++;return new Promise(resolve=>{release=resolve;});};
+ e.get('offer-query').value='שמן';e.get('offer-query').listeners.input();await new Promise(r=>setTimeout(r,350));assert.equal(fetchCount,0);pass('closed promotion area never fetches even on input');
+ e.get('offers-panel').open=true;e.get('offer-query').value='שמן זית';const first=e.run('renderOffers()'),second=e.run('renderOffers()');assert.equal(fetchCount,1);release(new Response(zlib.gzipSync(JSON.stringify(raw)),{status:200}));await Promise.all([first,second]);assert.equal(built,1);pass('concurrent opens share one gzip fetch and one index');
+ assert.equal((e.get('promotions').innerHTML.match(/class="offer-result"/g)||[]).length,40);pass('60k real gzip stream produces only 40 result elements');
+ e.get('comparison').innerHTML='UNTOUCHED';const beforeSearch=searched;e.get('offer-query').value='ח';e.get('offer-query').listeners.input();e.get('offer-query').value='חל';e.get('offer-query').listeners.input();e.get('offer-query').value='חלב';e.get('offer-query').listeners.input();await new Promise(r=>setTimeout(r,150));assert.equal(searched,beforeSearch);await new Promise(r=>setTimeout(r,200));assert.equal(searched,beforeSearch+1);assert.equal(built,1);assert.equal(fetchCount,1);pass('300ms debounce searches once without refetch or index rebuild');
+ assert.equal(e.get('comparison').innerHTML,'UNTOUCHED');pass('promotion typing does not rerender comparison or other views');
+ e.get('offers-panel').open=false;e.get('offers-panel').listeners.toggle();e.get('offers-panel').open=true;await e.run('renderOffers()');assert.equal(built,1);assert.equal(fetchCount,1);pass('reopening reuses existing index');
+ e.run("catalog=new Map([['1',"+JSON.stringify(original)+"],['2',"+JSON.stringify(alternatives.get('2'))+"]]);cart=[{barcode:'1',qty:1}];selected=new Set([0]);approved.set('0:1',{barcode:'2',qty:1});");const html=e.run("renderMissing(new Map(),HB.snapshots(networks,meta),'last')");assert.match(html,/ברקוד חלופי: 2/);pass('approved substitute displays actual alternate barcode');
+ console.log(count+' v1.3 checks passed');
+})().catch(e=>{console.error(e);process.exitCode=1;});

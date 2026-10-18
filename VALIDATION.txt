@@ -1,0 +1,41 @@
+HomeBasket 2.0 validation
+471 PASS; 0 failures: Node 462 + Python markup/CSS 9.
+All previous 430 cases retained, with requested UI wording/clipboard assertions updated.
+New v20 suite: 41 cases. Test run output: test-results.txt.
+FULL SECOND RUN with nonempty synthetic production city lists: same 471 PASS.
+Production config restored byte-for-byte afterward. See TEST_CONFIG_ISOLATION.txt.
+Tests v18/v19/support read tests/fixtures/config.js, no production-empty-city assumption.
+Production smoke in v20 does not assert empty service areas.
+Fixture helper explicitly starts a query before checking product rendering; blank search
+now intentionally displays guidance, not arbitrary catalog results. No tests removed.
+
+New coverage: delivery exclusion from Yohananof selectors, cards, tables, handoff;
+pickup verify inclusion and unknown Rami pickup warning; stable original source indexes;
+old search resolution during new debounce window; last query only; six rapid inputs;
+empty search guidance; loading state/aria-busy; failure without stale results;
+singular/plural pieces/packs/product summary; actual five/single basket summary;
+display-only leading punctuation cleanup and internal punctuation preservation;
+RLM + balanced nested isolates; per-number/Latin M/D/80/1000 isolation;
+weighted and natural quantities; cart and handoff use identical clipboard formatter;
+separate config fixture; production with nonempty lists; no file download triggers.
+
+Existing tests retain real gzip parsing, compact exports, shard loading, cache reload and
+meta version, 48h chain freshness, old product dates allowed, substitution approvals,
+size/grade matching, receipt text/pixel/worker stubs, progress/cancel, privacy/consent,
+RTL/390px CSS layout, lazy promotions, 300ms debounce and 40-result maximum.
+Synthetic catalog 97,096 products; promotions 60,000. BENCHMARK.json is Node-only.
+Syntax checked for application modules. Backup 1.9 hashes and ZIP CRC verified.
+No visual browser/phone QA or actual-photo OCR retest. No actual WhatsApp rendering
+verification: Unicode logical content/isolation was tested, manual draft-paste steps
+provided. No WhatsApp message sent.
+No download anchors, automatic save picker/saveAs/download attribute assignment in app.
+Normal JSON/code/OCR resource fetching into browser memory is still required and retained.
+No external cart filling, payment, location upload or server added.
+
+MISSING INPUT: chain_service_areas.json was described as attached but did not appear in
+received local files or filename searches. Actual known delivery cities are NOT populated.
+Importer remains ready for documented JSON schemas. PENDING_SERVICE_AREAS.txt explains it.
+Rami unknown pickup now available for retailer verification, even without that file.
+No live retailer price/stock/coverage/fee verification; existing scalar prices are estimates.
+Delivery/pickup estimates remain separate from product ranking.
+1.9 original directory/ZIP unchanged; hosted website unchanged.

@@ -1,0 +1,13 @@
+{
+  "fields": [
+    "promotion_id",
+    "description",
+    "starts",
+    "ends",
+    "club_id",
+    "stores"
+  ],
+  "by_chain": {
+    "0": []
+  }
+}

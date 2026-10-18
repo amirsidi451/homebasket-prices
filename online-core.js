@@ -1,0 +1,42 @@
+/* Local-only service matching. No geocoder, network calls, storage or location in URLs. */
+(function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.HBOnline=factory();})(typeof globalThis!=='undefined'?globalThis:this,function(){'use strict';
+ const normalize=s=>String(s||'').normalize('NFKC').replace(/[\u0591-\u05C7]/g,'').replace(/["'׳״.,־–-]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+ function settings(chain,config){return config?.chains?.[chain.source]||{};}
+ function service(chain,config,place){
+  const c=settings(chain,config);if(c.visible===false)return {eligible:false,status:'hidden',label:'לא מוצגת — אין הזמנות אונליין'};if(!place?.city||!['delivery','pickup'].includes(place.mode))return {eligible:false,status:'location',label:'בחרו עיר ואופן קבלה'};
+  const enabled=c[place.mode];if(enabled===false)return {eligible:false,status:'unsupported',label:place.mode==='delivery'?'אין משלוח לפי ההגדרות':'אין איסוף עצמי לפי ההגדרות'};
+  if(place.mode==='pickup'&&enabled!==true)return {eligible:true,status:'verify',label:'יש לבדוק זמינות איסוף באתר הרשת'};
+  if(c.availability==='verify')return {eligible:true,status:'verify',label:'יש לבדוק זמינות לכתובת באתר הרשת'};
+  const areas=Array.isArray(c.serviceAreas)?c.serviceAreas:c.serviceAreas?.[place.mode];
+  if(enabled!==true||!Array.isArray(areas)||!areas.length)return {eligible:false,status:'unknown',label:'אזורי השירות טרם הוגדרו'};
+  if(!areas.some(a=>a==='*'||normalize(a)===normalize(place.city)))return {eligible:false,status:'outside',label:'לא משרתת את העיר לפי ההגדרות'};
+  return {eligible:true,status:'available',label:place.mode==='delivery'?'משלוח לפי ההגדרות':'איסוף עצמי לפי ההגדרות'};
+ }
+ function fee(chain,config,mode){if(!['delivery','pickup'].includes(mode))return null;const c=settings(chain,config),v=mode==='delivery'?c.estimatedDeliveryFee:c.estimatedPickupFee;return typeof v==='number'&&Number.isFinite(v)&&v>=0?Math.round(v*100):null;}
+ function destination(chain,config){const c=settings(chain,config);try{const base=new URL(c.orderUrl);if(base.protocol!=='https:'||base.username||base.password)return null;const deep=c.deepLink?new URL(c.deepLink,base):base;if(deep.protocol!=='https:'||deep.origin!==base.origin||deep.username||deep.password)return null;return deep.href;}catch{return null;}}
+ function cities(config){return [...new Set(Object.values(config.chains||{}).filter(c=>c.visible!==false&&c.availability!=='verify').flatMap(c=>Array.isArray(c.serviceAreas)?c.serviceAreas:Object.values(c.serviceAreas||{}).flat()).filter(x=>typeof x==='string'&&x!=='*'&&x.trim()))].sort((a,b)=>a.localeCompare(b,'he'));}
+ function priceLabel(chain,config){return settings(chain,config).priceBasis==='online'?'מחיר ממקור אונליין שהוגדר':'מחיר להשוואה — לא אומת כמחיר אונליין';}
+ function packs(n){return n===1?'אריזה אחת':n+' אריזות';}
+ function productsCount(n){return n===1?'מוצר אחד':n+' מוצרים';}
+ function bidiText(text){return String(text).replace(/[\u200E\u200F\u202A-\u202E\u2066-\u2069]/g,'').replace(/([A-Za-z]+|\d+(?:[.,]\d+)?%?)/g,'\u2066$1\u2069');}
+ function list(items,catalog,displayName){return items.map(i=>{const p=catalog.get(i.barcode),name=p?displayName(p):'מוצר '+i.barcode,amount=p?.weighted?i.qty+' ק״ג':packs(i.qty);return '\u200F\u2067'+bidiText(name)+'\u2069 — \u2067'+bidiText(amount)+'\u2069\u200F';}).join('\n');}
+
+ function parseAreas(raw){
+  if(!raw||typeof raw!=='object'||Array.isArray(raw))throw Error('קובץ אזורי השירות חייב להכיל אובייקט לפי מזהה רשת.');
+  const root=raw.chains||raw,output={};
+  const clean=list=>{if(!Array.isArray(list)||list.some(x=>typeof x!=='string'||!x.trim()||x.length>80||x==='*'))throw Error('נדרשות רשימות של שמות ערים מלאים, ללא כיסוי ארצי משתמע.');return [...new Set(list.map(x=>x.trim().replace(/\s+/g,' ')))];};
+  for(const source of ['RAMI_LEVY','HAZI_HINAM']){
+   if(!Object.prototype.hasOwnProperty.call(root,source))continue;
+   const value=root[source],areas=value?.serviceAreas??value;
+   if(Array.isArray(areas))output[source]=clean(areas);
+   else if(areas&&typeof areas==='object'){
+    const modes={};for(const mode of ['delivery','pickup'])if(Object.prototype.hasOwnProperty.call(areas,mode))modes[mode]=clean(areas[mode]);
+    if(!Object.keys(modes).length)throw Error('חסרות רשימות delivery או pickup עבור '+source);output[source]=modes;
+   }else throw Error('מבנה אזורי שירות לא תקין עבור '+source);
+  }
+  if(!Object.keys(output).length)throw Error('לא נמצאו RAMI_LEVY או HAZI_HINAM בקובץ. לא שונו ההגדרות.');
+  return output;
+ }
+ function applyAreas(raw,config){const output=parseAreas(raw);for(const [source,areas]of Object.entries(output)){if(settings({source},config).availability==='known')config.chains[source].serviceAreas=areas;}return Object.keys(output);}
+ return {normalize,settings,service,fee,destination,cities,priceLabel,list,packs,productsCount,bidiText,parseAreas,applyAreas};
+});

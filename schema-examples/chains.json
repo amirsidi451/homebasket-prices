@@ -1,0 +1,9 @@
+[
+  {
+    "source": "DEMO",
+    "name": "רשת דוגמה בלבד",
+    "chain_id": "111",
+    "id": "demo",
+    "stores": 5
+  }
+]

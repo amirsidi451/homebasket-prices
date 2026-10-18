@@ -1,0 +1,11 @@
+Missing input: chain_service_areas.json
+The file described as attached in the 2.0 request was not available to this workspace or found by filename.
+No real service-city list for Rami Levy or Hazi Hinam has been populated.
+Those two chains remain known, with empty serviceAreas until the actual file is provided.
+Do not report them as fully configured. The verify chains work without a city list.
+To finish: provide the real JSON, place it alongside meta.json under data/ or select it
+using the local city-file control. Supported structure is documented in CONFIG_HE.md.
+This missing input does not disable the rest of the comparison or receipt workflow.
+
+2.0: Rami unknown pickup can be compared with retailer-verification warning.
+The missing file still prevents filling its known delivery-city list and Hazi Hinam city lists.
