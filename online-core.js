@@ -1,6 +1,7 @@
 /* Local-only service matching. No geocoder, network calls, storage or location in URLs. */
 (function(root,factory){if(typeof module==='object'&&module.exports)module.exports=factory();else root.HBOnline=factory();})(typeof globalThis!=='undefined'?globalThis:this,function(){'use strict';
- const normalize=s=>String(s||'').normalize('NFKC').replace(/[\u0591-\u05C7]/g,'').replace(/["'׳״.,־–-]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+ const normalize=s=>String(s||'').normalize('NFKC').replace(/־/g,' ').replace(/[\u0591-\u05C7]/g,'').replace(/["'׳״.,־–-]/g,' ').replace(/\s+/g,' ').trim().toLowerCase();
+ function canonicalCity(value){const raw=String(value||'').replace(/\([^)]*\)/g,'').trim(),key=normalize(raw);return ['תל אביב','תל אביב יפו'].includes(key)?'תל אביב-יפו':raw;}
  function settings(chain,config){return config?.chains?.[chain.source]||{};}
  function availabilityLabel(mode){return mode==='pickup'?'יש לבדוק זמינות איסוף באתר הרשת':'יש לבדוק זמינות משלוח לכתובת באתר הרשת';}
  function service(chain,config,place){
@@ -9,8 +10,8 @@
   if(place.mode==='pickup'&&enabled!==true)return {eligible:true,status:'verify',label:availabilityLabel(place.mode)};
   if(c.availability==='verify')return {eligible:true,status:'verify',label:availabilityLabel(place.mode)};
   const areas=Array.isArray(c.serviceAreas)?c.serviceAreas:c.serviceAreas?.[place.mode];
-  if(enabled!==true||!Array.isArray(areas)||!areas.length)return {eligible:false,status:'unknown',label:'אזורי השירות טרם הוגדרו'};
-  if(!areas.some(a=>a==='*'||normalize(a)===normalize(place.city)))return {eligible:false,status:'outside',label:'לא משרתת את העיר לפי ההגדרות'};
+  if(enabled!==true||!Array.isArray(areas)||!areas.length)return {eligible:false,status:'unknown',label:'זמינות לא ידועה — יש לבדוק באתר הרשת'};
+  if(!areas.some(a=>a==='*'||normalize(canonicalCity(a))===normalize(canonicalCity(place.city))))return {eligible:false,status:'outside',label:'לא משרתת את העיר לפי ההגדרות'};
   return {eligible:true,status:'available',label:availabilityLabel(place.mode)};
  }
  function fee(chain,config,mode){if(!['delivery','pickup'].includes(mode))return null;const c=settings(chain,config),v=mode==='delivery'?c.estimatedDeliveryFee:c.estimatedPickupFee;return typeof v==='number'&&Number.isFinite(v)&&v>=0?Math.round(v*100):null;}
@@ -24,6 +25,8 @@
    const tiers=r.tiers.filter(t=>agorot(t.above)!==null&&agorot(t.amount)!==null).sort((a,b)=>a.above-b.above);
    for(const tier of tiers)if(subtotal>agorot(tier.above))amount=agorot(tier.amount);
   }
+  const freeAbove=agorot(r?.freeAbove??(mode==='delivery'?c.freeAbove:null));
+  if(mode==='delivery'&&amountKnown&&freeAbove!==null&&subtotal>freeAbove)amount=0;
   const minimumOrder=r?agorot(r.minimumOrder??0):0;
   const deficit=amountKnown&&minimumOrder!==null?Math.max(0,minimumOrder-subtotal):null;
   return {fee:amount,minimumOrder,deficit,belowMinimum:deficit!==null&&deficit>0,basis:policy?.basis==='published'?'published':'estimate',subtotal:amountKnown?subtotal:null};
@@ -34,6 +37,7 @@
   const money=n=>new Intl.NumberFormat('he-IL',{style:'currency',currency:'ILS'}).format(n/100);
   let out=q.fee===null?'יש לבדוק עלות באתר הרשת':money(q.fee);
   if(r?.tiers)for(const t of r.tiers)if(typeof t.above==='number'&&typeof t.amount==='number')out+='; מעל '+money(Math.round(t.above*100))+': '+money(Math.round(t.amount*100));
+  const freeAbove=r?.freeAbove??(mode==='delivery'?settings(chain,config).freeAbove:null);if(mode==='delivery'&&typeof freeAbove==='number'&&Number.isFinite(freeAbove)&&freeAbove>=0)out+=' · משלוח חינם מעל '+money(Math.round(freeAbove*100));
   if(q.minimumOrder>0)out+=' · מינימום הזמנה '+money(q.minimumOrder);
   return out;
  }
@@ -41,7 +45,7 @@
  function cities(config){return [...new Set(Object.values(config.chains||{}).filter(c=>c.visible!==false&&c.availability!=='verify').flatMap(c=>Array.isArray(c.serviceAreas)?c.serviceAreas:Object.values(c.serviceAreas||{}).flat()).filter(x=>typeof x==='string'&&x!=='*'&&x.trim()))].sort((a,b)=>a.localeCompare(b,'he'));}
  // Only extract an unambiguous configured city; no network geocoding or price selection.
  function cityFromText(text,config){
-  const raw=String(text||'').trim().replace(/\s+/g,' '),value=normalize(raw),known=cities(config);
+  const raw=canonicalCity(String(text||'').trim().replace(/\s+/g,' ')),value=normalize(raw.replace(/תל[\s־–-]+אביב(?:[\s־–-]+יפו)?/g,'תל אביב-יפו')),known=cities(config).map(canonicalCity);
   const exact=known.find(city=>normalize(city)===value);if(exact)return exact;
   const matches=known.filter(city=>(' '+value+' ').includes(' '+normalize(city)+' ')).sort((a,b)=>b.length-a.length);
   return matches.length&&matches.every(city=>normalize(matches[0]).includes(normalize(city)))?matches[0]:raw;
@@ -50,7 +54,7 @@
  function packs(n){return n===1?'אריזה אחת':n+' אריזות';}
  function productsCount(n){return n===1?'מוצר אחד':n+' מוצרים';}
  function bidiText(text){return String(text).replace(/[\u200B-\u200F\u202A-\u202E\u2066-\u2069\uFEFF]/g,'').replace(/\u00a0/g,' ');}
- function list(items,catalog,displayName){return items.map(i=>{const p=catalog.get(i.barcode),name=p?displayName(p):'מוצר '+i.barcode,amount=p?.weighted?i.qty+' ק״ג':packs(i.qty);return bidiText(name+' — '+amount);}).join('\n');}
+ function list(items,catalog,displayName){return items.map(i=>{const p=catalog.get(i.barcode),name=p?(p.weighted?String(p.name):displayName(p)):'מוצר '+i.barcode,amount=p?.weighted?i.qty+' ק״ג':packs(i.qty);return bidiText(name+' — '+amount).replace(/\s+/g,' ').trim();}).join('\n');}
 
 
  function parseAreas(raw){
@@ -70,5 +74,5 @@
   return output;
  }
  function applyAreas(raw,config){const output=parseAreas(raw);for(const [source,areas]of Object.entries(output)){if(settings({source},config).availability==='known')config.chains[source].serviceAreas=areas;}return Object.keys(output);}
- return {availabilityLabel,normalize,settings,service,fee,quote,minimumLabel,policyLabel,destination,cities,cityFromText,priceLabel,list,packs,productsCount,bidiText,parseAreas,applyAreas};
+ return {canonicalCity,availabilityLabel,normalize,settings,service,fee,quote,minimumLabel,policyLabel,destination,cities,cityFromText,priceLabel,list,packs,productsCount,bidiText,parseAreas,applyAreas};
 });

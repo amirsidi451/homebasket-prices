@@ -1,3 +1,11 @@
+# HomeBasket 2.5.2
+
+Read START_HERE_v2.5.2_HE.txt and CHANGELOG_HE.txt first.
+1196 automated checks passed; see VALIDATION.txt for real-phone limitations.
+Backup of 2.5.1 is included. No live deployment. Existing data format retained.
+Consent-based local saving now includes city and fulfilment mode.
+
+## Previous setup guidance (historical)
 # HomeBasket 2.5.1 — order-flow fixes
 Static Hebrew RTL app, no live-site edits or deployment. Original 2.5 ZIP is in backups/;
 BACKUP_v2.5_SHA256.txt verifies the unchanged original source. This ZIP is named with _flow

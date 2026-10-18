@@ -52,7 +52,7 @@ function search(items,q,coverage=new Map()){
   const category=eggQuery?(/^(?:(?:מארז|תבנית|קרטון)\s+)?(?:\d+\s+)?ביצ(?:ים|י)(?:\s|$)/.test(f.name)?0:2):(text.length?(productType(f.name)===text[0].value?0:f.words.has(text[0].value)?1:2):0);
   ranked.push({p,full:matched===terms.length,matched,sizeMatched,namedSizeMatched,whole,category,relevance:phrase?relevance(f.name,phrase):0});
  }
- return ranked.sort((a,b)=>(b.barcodeMatch||0)-(a.barcodeMatch||0)||a.category-b.category||Number(b.full)-Number(a.full)||(b.sizeMatched||0)-(a.sizeMatched||0)||b.whole-a.whole||b.matched-a.matched||(coverage.get(b.p.barcode)||0)-(coverage.get(a.p.barcode)||0)||(defaultEggPack?((a.p.quantity===12?0:1)-(b.p.quantity===12?0:1)):0)||(b.namedSizeMatched||0)-(a.namedSizeMatched||0)||a.relevance-b.relevance||a.p.name.localeCompare(b.p.name,'he')||a.p.barcode.localeCompare(b.p.barcode)).map(x=>x.p);
+ return ranked.sort((a,b)=>(b.barcodeMatch||0)-(a.barcodeMatch||0)||a.category-b.category||Number(b.full)-Number(a.full)||(b.sizeMatched||0)-(a.sizeMatched||0)||(coverage.get(b.p.barcode)||0)-(coverage.get(a.p.barcode)||0)||b.whole-a.whole||b.matched-a.matched||(defaultEggPack?((a.p.quantity===12?0:1)-(b.p.quantity===12?0:1)):0)||(b.namedSizeMatched||0)-(a.namedSizeMatched||0)||a.relevance-b.relevance||a.p.name.localeCompare(b.p.name,'he')||a.p.barcode.localeCompare(b.p.barcode)).map(x=>x.p);
 }
 
 
