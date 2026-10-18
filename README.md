@@ -1,6 +1,15 @@
-# HomeBasket 2.2.2
+# HomeBasket 2.2.3
 Buildless Hebrew RTL static comparison app. Read README_HE.html.
-Original 2.2.1 folder/ZIP retained; no hosted-site changes.
+Original 2.2.2 folder/ZIP retained; no hosted-site changes.
+## Focused display fixes in 2.2.3
+Footer reads immutable HBRelease.VERSION from release.js; no hardcoded footer version.
+One global chain-status strip remains visible on all routes. Original source indexes and filtering unchanged. Total uses the original loaded chain array, including offline/outside-city chains (8 in the real dataset), or config before loading. Priced = fresh price for at least one original product in current basket among loaded cached records; verify = potential online chain requiring address/service confirmation; stale = missing/expired snapshot. Groups may overlap. No network call is added for counters; before loading, status is explicitly unknown rather than stale.
+Search/cart coverage remains per-product relevant-chain count, labelled separately without a conflicting global denominator; manual selected count refers only to the common/promotions group.
+Rank 2/3 descriptions say shipping/pickup estimate, not collected operational fees. No actual collection exists even when fees quotation is enabled.
+Only rank 1 with FULL basket gets primary retailer CTA/style. Every partial card is secondary with a missing-products warning; if all partial, no primary retailer CTA. Sorting/calculations unchanged.
+390px CSS constrains cards/pages, wraps controls/long labels, keeps 44px touch targets and shrinkable chart columns. Wide detailed tables remain scrollable INSIDE bounded regions; no page-level clipping used to conceal layout issues. Browser visual QA not performed here.
+727 checks (680 retained + 47 new); prior expectations updated only for changed labels/counter/version.
+
 ## Fee quotations in 2.2.2
 See FEES_README_HE.md (Hebrew). Production fees.enabled is false; all 596 previous regression cases are retained. 84 new cases cover exact decimal rounding, fixed/percent/mixed rules, independent limits and perChain source overrides, disabled behavior and integration.
 computeFees(basketTotal, chainKey, config) accepts/returns SHEKELS. total = rounded product basket + customerFee only. Chain commission is never customer debt and never affects rank or public presentation. Percentage base excludes shipping and all fees; clamp then half-up to agora. Zero-value basket has no fees.
@@ -29,7 +38,7 @@ Rami unknown pickup is verified on the retailer site, not blocked by missing cit
 Search invalidates immediately on input, displays loading, and only renders the last query.
 Natural Hebrew counts, display-only name cleanup and direction-isolated clipboard text.
 Tests use tests/fixtures/config.js, never empty-city assumptions about production config.
-680 checks pass. The prior 2.0 nonempty production city isolation report is retained as historical evidence.
+727 checks pass. The prior 2.0 nonempty production city isolation report is retained as historical evidence.
 No automatic saved downloads, download anchors, file-save APIs or attachment redirects.
 Data is still fetched into browser memory; local OCR resources load on demand as before.
 Actual WhatsApp rendering and actual-phone/visual browser QA remain manual checks.

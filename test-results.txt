@@ -54,7 +54,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 656 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 775 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +156,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":159,"search_ms":17.36,"heap_delta_mb":30.7,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":158,"search_ms":17.83,"heap_delta_mb":44.4,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -725,6 +725,56 @@ PASS calculator no network DOM storage or payment SDK
 PASS startup loads calculator before ranking and savings
 PASS fee summary wraps at 390px without new fixed width
 84 fee-calculation and integration checks passed (offline, no collection)
+
+v223.test.cjs
+PASS single display total includes all eight chain data indexes
+PASS priced means any valid current-cart original product once per chain
+PASS same chain with two products is counted once
+PASS address verification not conflated with price coverage
+PASS offline unsupported outside-city chains keep total denominator
+PASS offline unsupported outside-city excluded from verification count
+PASS unavailable chains still count as reference prices like savings
+PASS stale priced chain counted stale, not priced
+PASS missing snapshot counted as stale not inferred fresh from price
+PASS empty basket shows zero priced chains, not zero service coverage
+PASS zero price is a valid price if snapshot fresh
+PASS expired snapshots change counters using supplied now
+PASS before load never claims price freshness or stale data
+PASS production-config total used before catalog arrives
+PASS status computation does not reorder or mutate datasets
+PASS release has one immutable canonical version
+PASS rank explanations never imply collected operational fees, enabled=false
+PASS delivery explanation retains actual comparison basis, enabled=false
+PASS partial still ranks below full, enabled=false
+PASS rank explanations never imply collected operational fees, enabled=true
+PASS delivery explanation retains actual comparison basis, enabled=true
+PASS partial still ranks below full, enabled=true
+PASS footer populated from canonical constant not index literal
+PASS global counter valid with actual loaded dataset size
+PASS same shared counter on home
+PASS same shared counter on cart
+PASS same shared counter on info
+PASS same shared counter on networks
+PASS same shared counter on compare
+PASS global total does not replace original chain indexes or filtering
+PASS full basket keeps only primary recommendation
+PASS partial recommendation is secondary with missing-products message
+PASS all-partial results never show primary CTA or winner styling
+PASS counter refreshed when last cart item removed
+PASS data reload does not leave stale global statistics
+PASS exactly one shared counter DOM node outside all page sections
+PASS no fixed footer version survives
+PASS release and status scripts ordered before UI initialization
+PASS shared counter labels price scope and overlapping statuses
+PASS counter no fetch geolocation or storage and no rank invocation
+PASS 390px touch targets at least 44px
+PASS 390px chart has no intrinsic unshrinkable amount column
+PASS 390px pages and cards bounded without hiding horizontal overflow
+PASS 390px wide tables scroll inside bounded region not page
+PASS 390px quantity controls wrap instead of extending card
+PASS 390px geometry for full cards chart and quantity controls fits
+PASS long names numbers Latin tokens and large money remain breakable
+47 v2.2.3 focused display tests passed (UI stubs/CSS math, not visual browser QA)
 
 markup.test.py
 PASS markup has no duplicate IDs

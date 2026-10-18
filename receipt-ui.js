@@ -3,7 +3,7 @@
 let summaryRequest=0,receiptRows=[],reviewGeneration=-1,reviewEpoch=0,ocrEpoch=0,ocrWorker=null,ocrLoading=null;
 const el=id=>document.getElementById(id),escape=E;
 function say(text){el('receipt-status').textContent=text;}
-function update(){
+function update(){updateChainSummary();
  const types=cart.length,packs=cart.filter(i=>!catalog.get(i.barcode)?.weighted).reduce((s,i)=>s+i.qty,0),kg=cart.filter(i=>catalog.get(i.barcode)?.weighted).reduce((s,i)=>s+i.qty,0);
  el('saved-cart-banner').hidden=!!types||!pendingSavedCart.length;
  el('save-cart-choice').checked=saveCartEnabled;
@@ -14,7 +14,7 @@ function update(){
  for(const [id,n]of [['step-location',1],['step-build',2],['step-networks',3],['step-compare',4]]){el(id).setAttribute('aria-current',n===active?'step':'false');}
  el('basket-next').href=!servicePlace?'#location':types?'#networks':'#search';el('basket-next').textContent=!servicePlace?'בחירת מיקום':types?'בחירת רשתות ←':'בנה סל';
  el('networks-empty').hidden=!!types;
- el('home-data-status').innerHTML=ready?'<strong>המחירים מוכנים להשוואה</strong><p>'+visibleNetworks().length+' רשתות '+(servicePlace?'רלוונטיות להשוואה':'אונליין במאגר')+' · '+catalog.size.toLocaleString('he-IL')+' מוצרים במאגר. עדכניות כל רשת נבדקת בנפרד.</p>':'<strong>לפני שמתחילים: מחברים את המחירים</strong><p>בחבילה המקומית בחרו פעם אחת את תיקיית הנתונים שלכם. אין כאן מחירי דוגמה.</p><a class="button" href="#info">טעינת המחירים מהמחשב</a>';
+ el('home-data-status').innerHTML=ready?'<strong>המחירים מוכנים להשוואה</strong><p>'+'מצב כל הרשתות מופיע במונה האחיד בראש העמוד · '+catalog.size.toLocaleString('he-IL')+' מוצרים במאגר. עדכניות כל רשת נבדקת בנפרד.</p>':'<strong>לפני שמתחילים: מחברים את המחירים</strong><p>בחבילה המקומית בחרו פעם אחת את תיקיית הנתונים שלכם. אין כאן מחירי דוגמה.</p><a class="button" href="#info">טעינת המחירים מהמחשב</a>';
  const request=++summaryRequest,my=generation;
  if(!types){el('basket-estimate').textContent='סכום יופיע לאחר הוספת מוצרים';return;}
  if(!servicePlace||!eligibleIds().length){el('basket-estimate').textContent='בחרו עיר ואופן קבלה כדי לראות רשתות להשוואה';return;}

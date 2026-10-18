@@ -1,3 +1,40 @@
+HomeBasket 2.2.3 validation — 2026-10-18
+727 PASS; 0 failures: Node 718 + Python markup audit 9.
+All 680 prior tests retained; 47 focused v223 tests added. Full test-results.txt included.
+Old assertions changed only for requested display wording: per-product coverage labels,
+global counter labels versus relevant subset counts, shipping-fee wording, favicon token.
+
+1. Footer: immutable VERSION in release.js. UI reads HBRelease.VERSION; no fixed footer
+semantic version string in HTML. Release/status scripts loaded before app initialization.
+2. One persistent global status node outside route sections. Total uses original loaded
+chain array (8 in real export), or config before load; never visible/eligible subset.
+Priced = fresh original price for at least one current cart item in loaded cached records.
+Verify = possible online service requiring address confirmation (including unset coverage).
+Stale = absent/expired source scan. Groups overlap; note explains this, current-basket
+scope, and prices not proving city service. Before load, no fake stale/price assertions.
+Offline/outside-city chains stay in denominator/reference price count but no recommendation.
+No price downloads are added by the counter. Existing original source indexes unchanged.
+3. Rank 2/3 comparisons explicitly name estimated delivery/pickup, not collected operating
+fees. There is no actual collection even with fee demonstration on, so collection wording
+is absent in both enabled and disabled states. Fee arithmetic itself unchanged.
+4. Primary retailer button and winner styling only when rank 1 has full coverage. Partial
+cards have secondary button and missing-products warning. All-partial => no primary retailer
+CTA. Existing full-first sorting, totals, exclusions and handoff functionality unchanged.
+5. 390px: responsive page/card bounds without body overflow hiding; 44px control minimums;
+wrapping action/quantity controls; shrinkable chart/amount columns and long labels; wide
+tables remain intentionally scrollable within bounded regions, not page-level overflow.
+Static width arithmetic, markup and CSS checks; no actual browser/mobile visual test here.
+
+Original 2.2.2 source bytes verified against BACKUP_v2.2.2_SHA256.txt, folder/ZIP retained.
+All app JS syntax checked. Core price/search, online-core, fees.js, savings.js, receipt-core,
+receipt-image, layout.js and production config bytes unchanged. receipt-ui changed only
+home status wording and the call to the shared display-status updater. No OCR logic edits.
+No live website edit, publishing, payments, server, external service, new paid dependency,
+real retailer price check, real export integration/browser screenshot/WhatsApp/photo OCR QA.
+Synthetic 97,096-product and 60,000-promotion suites retained. Node benchmark is not Chrome
+or mobile performance proof. Data exports are not bundled; use existing local export.
+
+Historical 2.2.2 validation (previous run, not extra current test counts):
 HomeBasket 2.2.2 — fees quotation validation, 2026-10-18
 680 PASS, zero failed suites: Node 671 + Python markup 9.
 All 596 existing cases retained; 84 new v222 fee-calculation/integration cases.
