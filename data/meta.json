@@ -1,44 +1,44 @@
 {
- "generated_at": "2026-10-18T22:32:23+03:00",
+ "generated_at": "2026-10-19T11:03:34+03:00",
  "mode": "full",
  "sample_limit_rows_per_chain": null,
- "products": 97080,
- "products_with_prices": 97080,
+ "products": 97116,
+ "products_with_prices": 97116,
  "price_shards": 0,
  "key_note": "keys = GTIN/barcode, leading zeros stripped; chain-local codes (non 8-14 digit) excluded; brand not available in DB",
  "per_chain_freshness": {
   "HAZI_HINAM": {
-   "price_rows": 126150,
-   "price_rows_skipped_local_code": 1707,
-   "distinct_barcodes": 19737,
-   "latest_snapshot_at": "2026-10-18T20:34:00+03:00",
+   "price_rows": 126300,
+   "price_rows_skipped_local_code": 1705,
+   "distinct_barcodes": 19772,
+   "latest_snapshot_at": "2026-10-19T08:54:21+03:00",
    "latest_price_updated_at": "2026-10-18T15:12:40+03:00",
-   "last_import_at": "2026-10-18T18:14:19+00:00",
-   "imported_files": 195,
-   "active_promotions": 692,
-   "latest_promo_snapshot_at": "2026-10-18T20:34:02+03:00"
+   "last_import_at": "2026-10-19T06:53:30+00:00",
+   "imported_files": 222,
+   "active_promotions": 669,
+   "latest_promo_snapshot_at": "2026-10-19T08:54:23+03:00"
   },
   "OSHER_AD": {
-   "price_rows": 155013,
+   "price_rows": 154673,
    "price_rows_skipped_local_code": 11,
-   "distinct_barcodes": 9736,
-   "latest_snapshot_at": "2026-10-18T14:15:02+03:00",
-   "latest_price_updated_at": "2026-10-18T13:45:31+03:00",
-   "last_import_at": "2026-10-18T18:13:32+00:00",
-   "imported_files": 301,
-   "active_promotions": 1645,
-   "latest_promo_snapshot_at": "2026-10-18T14:15:22+03:00"
+   "distinct_barcodes": 9730,
+   "latest_snapshot_at": "2026-10-19T08:00:18+03:00",
+   "latest_price_updated_at": "2026-10-19T07:57:43+03:00",
+   "last_import_at": "2026-10-19T06:51:33+00:00",
+   "imported_files": 350,
+   "active_promotions": 1636,
+   "latest_promo_snapshot_at": "2026-10-19T08:01:25+03:00"
   },
   "RAMI_LEVY": {
-   "price_rows": 1014190,
-   "price_rows_skipped_local_code": 510,
-   "distinct_barcodes": 26259,
-   "latest_snapshot_at": "2026-10-18T19:11:31+03:00",
-   "latest_price_updated_at": "2026-10-18T18:12:27+03:00",
-   "last_import_at": "2026-10-18T16:50:46+00:00",
-   "imported_files": 1694,
-   "active_promotions": 6067,
-   "latest_promo_snapshot_at": "2026-10-18T19:11:53+03:00"
+   "price_rows": 1013325,
+   "price_rows_skipped_local_code": 502,
+   "distinct_barcodes": 26244,
+   "latest_snapshot_at": "2026-10-19T08:11:30+03:00",
+   "latest_price_updated_at": "2026-10-19T05:44:41+03:00",
+   "last_import_at": "2026-10-19T05:33:36+00:00",
+   "imported_files": 1889,
+   "active_promotions": 6038,
+   "latest_promo_snapshot_at": "2026-10-19T08:18:00+03:00"
   },
   "SHUFERSAL": {
    "price_rows": 2362601,
@@ -46,74 +46,74 @@
    "distinct_barcodes": 38644,
    "latest_snapshot_at": "2026-10-18T03:40:00+03:00",
    "latest_price_updated_at": "2026-10-17T22:19:00+03:00",
-   "last_import_at": "2026-10-18T17:38:54+00:00",
-   "imported_files": 4892,
-   "active_promotions": 15645,
-   "latest_promo_snapshot_at": "2026-10-18T03:40:00+03:00"
+   "last_import_at": "2026-10-19T06:17:09+00:00",
+   "imported_files": 5310,
+   "active_promotions": 15714,
+   "latest_promo_snapshot_at": "2026-10-19T03:40:00+03:00"
   },
   "TIV_TAAM": {
-   "price_rows": 576145,
-   "price_rows_skipped_local_code": 19170,
-   "distinct_barcodes": 30515,
-   "latest_snapshot_at": "2026-10-18T09:31:37+03:00",
-   "latest_price_updated_at": "2026-10-17T19:54:00+03:00",
-   "last_import_at": "2026-10-18T18:19:28+00:00",
-   "imported_files": 811,
-   "active_promotions": 3145,
-   "latest_promo_snapshot_at": "2026-10-18T09:31:37+03:00"
+   "price_rows": 575325,
+   "price_rows_skipped_local_code": 19146,
+   "distinct_barcodes": 30495,
+   "latest_snapshot_at": "2026-10-19T00:40:04+03:00",
+   "latest_price_updated_at": "2026-10-18T18:26:00+03:00",
+   "last_import_at": "2026-10-19T07:01:26+00:00",
+   "imported_files": 920,
+   "active_promotions": 3169,
+   "latest_promo_snapshot_at": "2026-10-19T00:40:04+03:00"
   },
   "VICTORY_NEW_SOURCE": {
-   "price_rows": 595431,
-   "price_rows_skipped_local_code": 30026,
-   "distinct_barcodes": 15912,
-   "latest_snapshot_at": "2026-10-18T05:18:18+03:00",
-   "latest_price_updated_at": "2026-10-18T05:16:58+03:00",
-   "last_import_at": "2026-10-18T18:23:37+00:00",
-   "imported_files": 564,
-   "active_promotions": 5541,
-   "latest_promo_snapshot_at": "2026-10-18T05:25:09+03:00"
+   "price_rows": 596339,
+   "price_rows_skipped_local_code": 30055,
+   "distinct_barcodes": 15922,
+   "latest_snapshot_at": "2026-10-19T05:16:39+03:00",
+   "latest_price_updated_at": "2026-10-18T20:14:58+03:00",
+   "last_import_at": "2026-10-19T07:09:48+00:00",
+   "imported_files": 705,
+   "active_promotions": 5625,
+   "latest_promo_snapshot_at": "2026-10-19T05:23:18+03:00"
   },
   "YAYNO_BITAN_AND_CARREFOUR": {
-   "price_rows": 1196983,
-   "price_rows_skipped_local_code": 22928,
-   "distinct_barcodes": 22694,
-   "latest_snapshot_at": "2026-10-18T19:00:11+03:00",
-   "latest_price_updated_at": "2026-10-18T12:02:25+03:00",
-   "last_import_at": "2026-10-18T18:07:11+00:00",
-   "imported_files": 1530,
-   "active_promotions": 8650,
-   "latest_promo_snapshot_at": "2026-10-18T19:00:45+03:00"
+   "price_rows": 1196795,
+   "price_rows_skipped_local_code": 22914,
+   "distinct_barcodes": 22699,
+   "latest_snapshot_at": "2026-10-19T09:04:14+03:00",
+   "latest_price_updated_at": "2026-10-19T07:25:01+03:00",
+   "last_import_at": "2026-10-19T06:48:57+00:00",
+   "imported_files": 1820,
+   "active_promotions": 8625,
+   "latest_promo_snapshot_at": "2026-10-19T09:35:22+03:00"
   },
   "YOHANANOF": {
-   "price_rows": 476583,
-   "price_rows_skipped_local_code": 22570,
-   "distinct_barcodes": 16955,
-   "latest_snapshot_at": "2026-10-18T00:40:31+03:00",
-   "latest_price_updated_at": "2026-10-16T12:23:00+03:00",
-   "last_import_at": "2026-10-18T06:33:58+00:00",
-   "imported_files": 617,
-   "active_promotions": 2431,
-   "latest_promo_snapshot_at": "2026-10-18T00:40:31+03:00"
+   "price_rows": 477129,
+   "price_rows_skipped_local_code": 22583,
+   "distinct_barcodes": 16972,
+   "latest_snapshot_at": "2026-10-19T00:40:48+03:00",
+   "latest_price_updated_at": "2026-10-18T20:37:00+03:00",
+   "last_import_at": "2026-10-19T06:23:52+00:00",
+   "imported_files": 712,
+   "active_promotions": 2455,
+   "latest_promo_snapshot_at": "2026-10-19T00:40:48+03:00"
   }
  },
  "db_row_counts_exact": {
   "networks": 8,
   "branches": 1015,
-  "imported_files": 10604,
-  "runs": 12,
-  "price_import_issues": 303,
-  "products": 107482
+  "imported_files": 11928,
+  "runs": 13,
+  "price_import_issues": 331,
+  "products": 107581
  },
  "db_row_counts_approx_max_rowid": {
-  "prices": 6586863,
-  "promotions": 1241747,
-  "promotion_items": 64178832
+  "prices": 6592573,
+  "promotions": 1257344,
+  "promotion_items": 74120764
  },
  "files": {
   "chains.json": 1034,
-  "promotions.json.gz": 492485,
-  "products.json.gz": 1484916,
-  "prices.json.gz": 1527819
+  "promotions.json.gz": 492934,
+  "products.json.gz": 1485123,
+  "prices.json.gz": 1527345
  },
- "runtime_sec": 302.9
+ "runtime_sec": 87.1
 }
