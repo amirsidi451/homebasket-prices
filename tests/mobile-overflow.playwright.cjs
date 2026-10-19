@@ -12,11 +12,11 @@ const assert=require('node:assert/strict'),zlib=require('node:zlib'),{make}=requ
  await page.waitForFunction(()=>typeof ready!=='undefined'&&ready);
  await page.evaluate(async()=>{applyService('רחובות','delivery');cart=[{barcode:'7290000000012',qty:2},{barcode:'7290000000029',qty:2}];location.hash='#compare';await renderCompare();});
  async function widthCheck(stage){await page.evaluate(()=>document.fonts.ready);await page.waitForFunction(()=>document.querySelector('.network-table'));const sizes=await page.evaluate(()=>({innerWidth,scrollWidth:document.documentElement.scrollWidth,tableWidth:document.querySelector('.network-table').getBoundingClientRect().width}));assert.equal(sizes.innerWidth,390,stage+': layout viewport zoomed out '+JSON.stringify(sizes));assert.ok(sizes.scrollWidth<=390,stage+': page horizontally overflows '+JSON.stringify(sizes));console.log('PASS browser 390px isMobile '+stage,JSON.stringify(sizes));}
- assert.equal(await page.locator('.network-table tbody>tr').count(),7,'all seven visible networks');
+ assert.equal(await page.locator('[data-network-chain], [data-unavailable-chain]').count(),7,'all seven visible candidates, relevant plus unavailable');
  await widthCheck('before product comparison');
  await page.locator('.network-product-details>summary').click();
  await widthCheck('after product comparison');
- assert.equal(await page.locator('.network-table tbody>tr').count(),7,'all seven rows after disclosure');
+ assert.equal(await page.locator('[data-network-chain], [data-unavailable-chain]').count(),7,'all seven candidates after disclosure');
  await page.locator('[data-network-sort="coverage"]').first().click();
  await widthCheck('after sorting');
  assert.equal(await page.locator('.network-sort [data-network-sort="coverage"]').getAttribute('aria-pressed'),'true');

@@ -36,8 +36,8 @@ const tops=e=>[...e.get('comparison').innerHTML.matchAll(/data-network-chain="(\
  test('Tel Aviv: still 3 of 4, hidden never ranked',()=>{const t=tops(e);assert.equal(t.length,4);for(const h of HIDDEN)assert.ok(!t.includes(h));});
  // --- unknown city: known chain (Rami) excluded, verify chains remain with verify notes
  e.run("applyService('עיר לא קיימת','delivery')");await e.run('renderCompare()');
- test('unknown city: verify chains remain (3), Rami excluded by known areas, availability note present',()=>{const t=tops(e);assert.deepEqual(t.sort(),[0,1,2,4]);assert.doesNotMatch(e.get('comparison').innerHTML,/data-order="1"/);assert.match(e.get('comparison').innerHTML,/יש לבדוק זמינות/);assert.match(e.get('chain-summary').textContent,/מתוך 4 רשתות/);});
- test('unknown city: Top 3 with exactly 3 eligible chains',()=>{assert.equal(tops(e).length,4);assert.equal(e.run('eligibleIds().length'),3);});
+test('unknown city: verify chains remain (3), Rami excluded by known areas, availability note present',()=>{const t=tops(e);assert.deepEqual(t.sort(),[0,2,4]);assert.match(e.get('comparison').innerHTML,/data-unavailable-chain="1"/);assert.doesNotMatch(e.get('comparison').innerHTML,/data-order="1"/);assert.match(e.get('comparison').innerHTML,/יש לבדוק זמינות/);assert.match(e.get('chain-summary').textContent,/מתוך 4 רשתות/);});
+ test('unknown city: Top 3 with exactly 3 eligible chains',()=>{assert.equal(tops(e).length,3);assert.equal(e.run('eligibleIds().length'),3);});
  // --- fewer than 3 full-coverage chains
  e=env({noPriceFor:[0,2,3]});e.run("applyService('רחובות','delivery')");await e.run('renderCompare()');
  test('only 1 shown chain with full coverage: Top list has 1, honest note, no hidden filler',()=>{const t=tops(e);assert.equal(t.length,4);assert.match(e.get('comparison').innerHTML,/חסר|אין מחיר/);for(const h of HIDDEN)assert.ok(!t.includes(h));});

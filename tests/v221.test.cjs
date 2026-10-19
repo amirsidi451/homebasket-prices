@@ -57,7 +57,7 @@ test('existing Top3 policy untouched by savings model',()=>{const ff=fixture();c
  test('comparison screen mounts savings without changing main comparison',()=>{assert.match(e.get('savings').innerHTML,/כמה אתם חוסכים/);assert.match(e.get('comparison').innerHTML,/network-table/);});
  test('retains cached gzip data and lazy promotions',()=>{assert.equal(e.run('offers'),null);assert.ok(e.run('priceCache.size')>0);});
  e.run("for(const c of Object.values(HB_CONFIG.chains))c.delivery=false;");await e.run('renderCompare()');
- test('even no eligible service still renders reference savings table',()=>{assert.match(e.get('savings').innerHTML,/רשת א/);assert.match(e.get('comparison').innerHTML,/לא זמינה בעירך|אין כרגע סל מלא/);});
+ test('no eligible service keeps names only in excluded section, never savings graph',()=>{assert.doesNotMatch(e.get('savings').innerHTML,/data-chart-chain=/);assert.match(e.get('comparison').innerHTML,/לא זמין לבחירה שלך/);assert.match(e.get('comparison').innerHTML,/רשת א/);});
  e.run('cart=[];save()');test('cart edits invalidate old savings immediately',()=>assert.equal(e.get('savings').innerHTML,''));
  await e.run('renderCompare()');test('empty cart has no stale savings',()=>assert.equal(e.get('savings').innerHTML,''));
  const root=path.join(__dirname,'..'),html=fs.readFileSync(path.join(root,'index.html'),'utf8'),css=fs.readFileSync(path.join(root,'styles.css'),'utf8'),code=fs.readFileSync(path.join(root,'savings.js'),'utf8');

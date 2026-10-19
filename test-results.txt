@@ -54,7 +54,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 701 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 637 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +156,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":168,"search_ms":18.05,"heap_delta_mb":32.5,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":159,"search_ms":17.2,"heap_delta_mb":32.2,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -630,7 +630,7 @@ PASS fractional weighted quantities included via coverage core
 PASS existing Top3 policy untouched by savings model
 PASS comparison screen mounts savings without changing main comparison
 PASS retains cached gzip data and lazy promotions
-PASS even no eligible service still renders reference savings table
+PASS no eligible service keeps names only in excluded section, never savings graph
 PASS cart edits invalidate old savings immediately
 PASS empty cart has no stale savings
 PASS new script loaded before app and separate accessible container
@@ -1684,6 +1684,43 @@ PASS v262 source label escaped and cannot inject markup
 PASS v262 original four online totals exactly existing quote plus item price
 PASS v262 mobile exact overflow fix retained and browser test checks seven rows
 65 new checks passed; real mobile browser execution is separate.
+
+v263.test.cjs
+PASS v263 original config/arithmetic retained config.js
+PASS v263 original config/arithmetic retained core.js
+PASS v263 original config/arithmetic retained online-core.js
+PASS v263 original config/arithmetic retained fees.js
+PASS v263 original config/arithmetic retained top-ranking.js
+PASS v263 original config/arithmetic retained savings.js
+PASS v263 original config/arithmetic retained chain-status.js
+PASS v263 original config/arithmetic retained comparison-view.js
+PASS v263 original config/arithmetic retained legal.html
+PASS v263 seven candidates preserved, six relevant delivery one unavailable
+PASS v263 Yohananof never ranked or priced in delivery table
+PASS v263 excluded list collapsed and reason/correct switch visible
+PASS v263 product comparison only relevant networks
+PASS v263 irrelevant cheapest cannot alter saving maximum or winner
+PASS v263 summary explicitly counts comparable relevant chains
+PASS v263 Yohananof enters pickup; Hazi outside pickup city separated
+PASS v263 picking fee and cheapest estimate retained
+PASS v263 pickup summary saving before unknown fees explains basis
+PASS v263 Hulon permits seven pickup chains
+PASS v263 outside city known networks excluded verify retained
+PASS v263 outside-city reasons not generic unexplained state
+PASS v263 outside costly network cannot inflate savings
+PASS v263 no pickup switch when it cannot solve service
+PASS v263 small basket stays relevant with minimum warning but not winner
+PASS v263 no service empty state gives next action
+PASS v263 CSS original mobile fixes retained before additive styles
+PASS v263 fulfilment source layout constraints 1280
+PASS v263 fulfilment source layout constraints 390
+PASS v263 fulfilment source layout constraints 640
+PASS v263 city only one input and delivery default
+PASS v263 app separates unsupported network
+PASS v263 comparison controls show city and selected delivery
+PASS v263 mode change updates all data and controls immediately
+PASS v263 excluded-network switch uses same existing service update
+34 v263 targeted checks passed; no rendered browser QA claimed.
 
 markup.test.py
 PASS markup has no duplicate IDs

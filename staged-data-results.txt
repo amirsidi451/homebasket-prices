@@ -1,6 +1,6 @@
 PASS original four chain settings identical to 2.6.1
-PASS real export: seven rows, labels, visibility and Yohananof delivery
-PASS real export: seven rows, labels, visibility and Yohananof pickup
+PASS real export: seven candidates; 6 relevant rows; 1 unavailable; provenance and Yohananof delivery
+PASS real export: seven candidates; 6 relevant rows; 1 unavailable; provenance and Yohananof pickup
 Products: 90757 priced barcodes: 90757 selected barcodes: 40084107, 54051140
 SOURCE | PRICE ROWS | 7 FIELDS | 8 FIELDS | SRC
 HAZI_HINAM | 19772 | 0 | 19772 | {"online_branch":9778,"online_branch_modal_fallback":9994}

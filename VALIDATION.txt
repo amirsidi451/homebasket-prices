@@ -1,10 +1,12 @@
-HomeBasket 2.6.2 — FINAL
-1587 PASS; 0 failed suites. Complete logs: test-results.txt.
-65 targeted additions: byte-exact supplied config, seven authorized sources, 93 supplied Hazi locality entries, every unchanged core API except optional src parsing, original fulfilment/ranking/layout files, mixed 7/8 prices, all four src values, source metadata, source labels/escaping, estimate explanation/total, pickup-only/no-delivery gating, Hazi deficit, Tiv estimated fee and strict free-above boundary, unchanged original-four pricing arithmetic, retained mobile fixes and seven-row browser test contract.
-20 node --check passes: 18 root JavaScript files plus optional staged-data verifier and Playwright regression script.
-Actual staged export verified separately: 90757 products/priced barcodes. Numeric fields of every row unchanged by parser; four existing sources remain seven-field rows. Seven shown rows in delivery and pickup; Osher hidden; Yohananof excluded from delivery and 15 ILS picking fee in pickup. See staged-data-results.txt.
-Original four chain configuration objects equal 2.6.1 exactly; new production config equals supplied bytes. Online/fee/ranking/savings/layout/CSS/legal files retained. Only parser metadata support and provenance presentation changed.
-Historical backup manifests preserved; explicit allowed current source/config hashes in tests/v262-pins.json. No test suite removed. Fixture service configs remain independent of production cities.
+HomeBasket 2.6.3 — FINAL OFFLINE
+1621 PASS; 0 failed suites. See test-results.txt.
+34 new targeted checks: identical config and pricing APIs; seven visible candidates preserved; six relevant delivery networks in Rehovot; no irrelevant price in product columns; collapsed reasons and switch action; counts/savings only relevant complete baskets; extremely cheap/expensive excluded networks cannot affect winner or savings; pickup eligibility, picking fee and estimate; Hulon all seven pickup; Eilat known/verify split; non-solvable pickup no switch; minima remain relevant but cannot win; zero-eligible empty state; original mobile CSS prefix retained; large mode controls/city-only/default delivery; integrated immediate mode changes, savings graph filtering and switch action.
+21 node --check passes: 18 root JS files + three optional QA scripts.
+Byte-identical to 2.6.2: config/core/online-core/fees/top-ranking/savings/chain-status/comparison-view/styles/legal. CSS adds isolated new fulfilment controls after unchanged mobile fixes. Explicit presentation hash exceptions in tests/v263-pins.json; historical backup manifests unchanged.
+Older assertions that required showing unavailable networks in the main table/chart were migrated to the new explicit product decision. No suite removed; pure monetary calculations retained.
+Real supplied export verified: 90757 products, mixed 7/8 field rows. Seven candidates preserved; Rehovot delivery has six relevant rows/one excluded (Yohananof); pickup has six/one excluded (Hazi Hinam's configured pickup list). Details: staged-data-results.txt.
 
-NOT RUN: real Playwright mobile-overflow at 390px / iPhone. Browser-control capability unavailable here. Updated executable test checks exactly seven rows plus innerWidth===390 and documentElement.scrollWidth<=390 before and after opening per-product comparison. It includes mixed 7/8-field data and the new source labels. Real mobile pass is NOT claimed.
-No data directory or full production data bundled. No live deployment.
+NOT RUN: browser layout and console verification at 1280, 390 or 640@2x. Browser-control capability unavailable here; no screenshot or zero-console-error claim.
+Executable tests/compare-selection.playwright.cjs includes 1280 desktop, 390 mobile DPR3, 640 mobile DPR2, exact layout width/overflow assertions, service-mode changes, all seven candidates accounted for, product disclosure, switch-to-pickup and console/pageerror capture.
+DPR2 does not emulate actual desktop browser zoom 200%; physical-phone and zoom tests remain necessary.
+No data folder bundled. No live deployment. Backup 2.6.2 retained.
