@@ -54,7 +54,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 883 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 767 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +156,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":172,"search_ms":17.89,"heap_delta_mb":44.4,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":192,"search_ms":21.02,"heap_delta_mb":31.9,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -361,7 +361,7 @@ PASS copy button copies rendered list
 PASS URL has no city/query data
 PASS changing city invalidates modal
 PASS location not persisted even when cart saving enabled
-PASS search coverage recomputed for eligible chain only
+PASS search coverage uses both visible networks regardless of service city
 PASS two eligible networks compare same scalar
 PASS known delivery fee displayed separately
 PASS fee not added to fair products total
@@ -1489,6 +1489,61 @@ PASS v257 bad JSON map falls back without throwing
 PASS v257 pending optional network image file never delays search/catalog
 PASS v257 404 optional map is cached as absent with no JS error logging
 54 v2.5.7 targeted checks passed; code/fixtures/CSS, not real phone visual QA
+
+v258.test.cjs
+PASS v258 unchanged arithmetic/schema/config config.js
+PASS v258 unchanged arithmetic/schema/config core.js
+PASS v258 unchanged arithmetic/schema/config online-core.js
+PASS v258 unchanged arithmetic/schema/config fees.js
+PASS v258 unchanged arithmetic/schema/config top-ranking.js
+PASS v258 unchanged arithmetic/schema/config savings.js
+PASS v258 unchanged arithmetic/schema/config chain-status.js
+PASS v258 unchanged arithmetic/schema/config comparison-view.js
+PASS v258 coverage priority for חלב
+PASS v258 coverage priority for לחם
+PASS v258 coverage priority for ביצים
+PASS v258 coverage priority for שמן
+PASS v258 coverage priority for אורז
+PASS v258 coverage priority for פסטה
+PASS v258 coverage priority for קפה
+PASS v258 visible result coverage
+PASS v258 cart controls contextual ARIA
+PASS v258 below minimum action amount and link
+PASS v258 top fewer than three explains excluded networks
+PASS v258 ranking reason minimum
+PASS v258 unknown service exclusion explained
+PASS v258 modal reserves measured action height plus safe area
+PASS v258 friendly empty search suggests next action
+PASS v258 empty basket has search action
+PASS v258 focus for buttons links inputs summary
+PASS v258 responsive CSS guard 360
+PASS v258 responsive CSS guard 390
+PASS v258 responsive CSS guard 640
+PASS v258 responsive CSS guard 768
+PASS v258 responsive CSS guard 1280
+PASS v258 keyboard autocomplete retained
+31 targeted checks; Node fixtures and CSS guards, NOT a browser tour
+
+v259.test.cjs
+PASS v259 unchanged config.js
+PASS v259 unchanged core.js
+PASS v259 unchanged online-core.js
+PASS v259 unchanged fees.js
+PASS v259 unchanged top-ranking.js
+PASS v259 unchanged savings.js
+PASS v259 unchanged chain-status.js
+PASS v259 unchanged comparison-view.js
+PASS v259 before city cached prices reindexed to two visible networks
+PASS v259 before city positive label
+PASS v259 hidden network excluded before city
+PASS v259 after city outside-service network still counted as product coverage
+PASS v259 ranking independent of location null
+PASS v259 ranking independent of location {"city":"עיר בדיקה","mode":"delivery"}
+PASS v259 ranking independent of location {"city":"עיר אחרת","mode":"pickup"}
+PASS v259 missing coverage omits badge
+PASS v259 zero coverage omits badge
+PASS v259 existing freshness safeguard preserved without city
+18 targeted checks passed
 
 markup.test.py
 PASS markup has no duplicate IDs

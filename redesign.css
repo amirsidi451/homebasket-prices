@@ -313,3 +313,14 @@ html.order-modal-open .basket-dock{display:none!important}
 .design-v25 .order-images[hidden]{display:none}
 .design-v25 .order-images li{display:flex;align-items:center;gap:8px;min-width:0;max-width:100%;overflow-wrap:anywhere}
 .design-v25 .product-symbol[hidden]{display:none}
+
+/* 2.5.8: actionable states, order scroll clearance, accessible controls. */
+.search-coverage{font-weight:700;color:var(--ink);margin-block:.4rem}
+.minimum-action,.ranking-shortfall{padding:1rem;border:1px solid currentColor;border-radius:12px;margin-block:.75rem;overflow-wrap:anywhere}
+.minimum-action p{margin-block:0 .6rem}
+.ranking-shortfall li{margin-block:.7rem}
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid #00766b;outline-offset:3px}
+#order-dialog{scroll-padding-bottom:calc(var(--order-actions-height,96px) + env(safe-area-inset-bottom,0px) + 24px)}
+#order-dialog .actions{background:var(--surface,#fff);min-width:0;flex-wrap:wrap}
+@media(max-width:640px){.ranking-shortfall{padding:.8rem}.minimum-action .button{min-height:44px;white-space:normal}.search-coverage{font-size:.9rem}}
+@media(prefers-color-scheme:dark){button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline-color:#5eead4}}

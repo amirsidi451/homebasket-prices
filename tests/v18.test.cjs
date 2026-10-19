@@ -44,7 +44,7 @@ test('online label only explicit config',()=>assert.match(O.priceLabel(chain,{ch
  test('URL has no city/query data',()=>assert.equal(e.get('order-continue').href,'https://shop.example.test/'));
  e.run("applyService('עיר ב','delivery')");await e.run('renderCompare()');test('changing city invalidates modal',()=>assert.equal(e.get('order-dialog').open,false));
  test('location not persisted even when cart saving enabled',()=>{e.run('saveCartEnabled=true;save()');assert.match(e.storage['homebasket-place-v1'],/עיר ב/);});
- test('search coverage recomputed for eligible chain only',()=>assert.equal(e.run("coverageIndex.get('3073781199918')"),1));
+ test('search coverage uses both visible networks regardless of service city',()=>assert.equal(e.run("coverageIndex.get('3073781199918')"),2));
  e.run("HB_CONFIG.chains.A.serviceAreas=['עיר ב'];HB_CONFIG.chains.B.estimatedDeliveryFee=35.9;applyService('עיר ב','delivery')");await e.run('renderCompare()');
  test('two eligible networks compare same scalar',()=>{assert.match(e.get('result-summary').textContent,/הרשת הזולה ביותר לסל המלא: רשת א/);assert.match(e.get('result-summary').textContent,/20/);});
  test('known delivery fee displayed separately',()=>assert.match(e.get('comparison').innerHTML,/35[.,]90/));
