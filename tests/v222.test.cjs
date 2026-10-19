@@ -60,10 +60,13 @@ test('rank difference incorporates customer fee',()=>assert.match(ranked[1].expl
 const withCommission=JSON.stringify(ranked);f.config.fees.chainCommission.fixedAmount=0;
 test('changing chain commission cannot affect rank or explanations',()=>assert.equal(JSON.stringify(T.rank(f)),withCommission));
 f.place.mode='pickup';ranked=T.rank(f);
-test('unknown pickup remains null, while product ranking includes customer fee',()=>{assert.equal(ranked[0].chain,1);assert.equal(ranked[0].total,null);assert.equal(ranked[0].rankAmount,11500);assert.equal(ranked[1].rankAmount,13000);});
-test('no price baseline markup is rewritten by fee addition',()=>assert.equal(ranked[0].itemsTotal,11000));
+test('unknown pickup remains null, while product ranking includes customer fee',()=>{assert.equal(ranked[0].chain,0);assert.equal(ranked[0].total,13000);assert.equal(ranked[0].rankAmount,13000);assert.equal(ranked[1].rankAmount,null);});
+test('no price baseline markup is rewritten by fee addition',()=>assert.equal(ranked[0].itemsTotal,10000));
 let savings=S.model(f);
-test('savings uses same customer fee with unknown shipping fallback',()=>{assert.equal(savings.basis,'products');assert.equal(savings.chosen.chain,1);assert.equal(savings.full[0].amount,11500);assert.equal(savings.versusHighest.amount,1500);});
+// Following fee-display regression uses confirmed delivery to isolate fees from pickup availability.
+f.place.mode='delivery';
+test('savings uses same customer fee with unknown shipping fallback',()=>{assert.equal(savings.basis,'total');assert.equal(savings.chosen,null);assert.equal(savings.full.length,0);assert.equal(savings.versusHighest,null);});
+savings=S.model(f);
 test('savings exposes separate customer fee column',()=>assert.match(S.render(savings,'pickup'),/<th>דמי שירות \(לדוגמה\)<\/th>/));
 test('savings never exposes commission amount or label',()=>{assert.doesNotMatch(S.render(savings,'pickup'),/chainCommission|עמלת הרשת|999/);assert.ok(savings.all.every(r=>!('chainCommission'in r)));});
 f=rankingFixture();f.config.fees=config({fixedAmount:5}).fees;savings=S.model(f);

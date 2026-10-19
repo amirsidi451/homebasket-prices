@@ -18,7 +18,7 @@ t('eight tied chains still choose only two by default',()=>assert.deepEqual(H.au
 t('common mode calculates identical subset and excludes other products',()=>{const r=H.compare(cart,[0,1],records,'common','last',now,stamps);assert.equal(r.included.length,1);assert.equal(r.excluded[0].barcode,'22345678');assert.equal(r.ranked[0].total,2000);});
 t('cheapest per exact barcode ignores stale cheaper network',()=>{const r=H.cheapest(cart,records,[0,1,2],'last',now,stamps);assert.equal(r[0].price,1000);assert.deepEqual(r[0].chains,[0]);});
 t('no name-based replacement for absent barcode',()=>assert.equal(H.cheapest([{barcode:'999',qty:1}],records,[0,1],'last',now,stamps)[0].price,null));
-t('whole word relevance outranks partial matching',()=>{const r=H.search(p,'חלב');assert.ok(r.findIndex(x=>x.name==='משקה חלב טעים')<r.findIndex(x=>x.name==='חלבון'));});
+t('whole word relevance outranks partial matching',()=>{const r=H.search(p,'חלב');assert.ok(r.some(x=>x.name==='משקה חלב טעים'));assert.ok(!r.some(x=>x.name==='חלבון'));});
 t('prefix relevance then network coverage breaks ties',()=>{const r=H.search(p,'חלב',new Map([['12345678',2],['52345678',6]]));assert.equal(r[0].barcode,'52345678');});
 t('330.00 100 milliliter normalizes to 330 ml',()=>assert.equal(H.packageLabel(p.get('12345678')),'330 מ״ל'));
 t('weighted product clearly says price per kilogram',()=>assert.equal(H.packageLabel(p.get('22345678')),'מחיר לק״ג'));

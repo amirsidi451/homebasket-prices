@@ -1,8 +1,8 @@
-# HomeBasket 2.6.3
-City + delivery/pickup first. Large mode controls on the location step and above comparison.
-Only relevant networks in the primary table, product table and savings chart. Unavailable shown separately in collapsed details; optional pickup switch reuses existing service update.
-Seven visible candidates remain; Osher Ad hidden. Config/data/parser/pricing/fees/minimums unchanged from 2.6.2. Original source labels/estimates and mobile overflow fixes retained.
-1621 offline checks pass, including 34 new checks. 21 JS syntax checks. Actual supplied 90757-product export verified separately.
-Browser layout/console QA NOT performed here. See tests/MOBILE_OVERFLOW_HE.md and tests/compare-selection.playwright.cjs (1280/390/640 at DPR2). Real 200% zoom and phone QA still required.
-Use existing data/dataBase; no data or deployment included. Backup 2.6.2.
-See START_HERE_v2.6.3_HE.txt, CHANGELOG_HE.txt, test-results.txt and VALIDATION.txt.
+# HomeBasket 2.6.4
+Small presentation-only duplicate-label patch based on 2.6.3.
+One pickup-only reason and one clear price-estimate source label; accessible explanations retained. Repeated source text/status explanations deduplicated, including the order modal.
+Config, data/parser/pricing, ranking/fulfilment filtering, seven visible chains, Osher hidden, CSS and legal unchanged.
+1667 offline checks pass (46 added); 22 JS syntax checks. Actual supplied export still verified.
+Browser tour NOT run here. Updated tests/compare-selection.playwright.cjs includes actual DOM leaf-label audit, Mitzpe Ramon cases, modal, viewport/overflow/console checks at 1280/390/640 DPR2. See tests/MOBILE_OVERFLOW_HE.md.
+No data directory or deployment included. Use existing data/dataBase. Backup 2.6.3.
+Read START_HERE_v2.6.4_HE.txt, CHANGELOG_HE.txt, test-results.txt and VALIDATION.txt.

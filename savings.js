@@ -16,11 +16,11 @@
    if(state.status==='hidden')availability='אין הזמנות אונליין — מחיר לייחוס בלבד';
    else if(state.status==='outside')availability='לא זמינה בעירך לפי ההגדרות — מחיר לייחוס בלבד';
    else if(state.status==='unknown')availability='יש לבדוק זמינות — אזורי השירות אינם ידועים';
-   return {...quote,chain,name:n.name,fresh,coverage,itemsTotal,fee,total,eligible:state.eligible,availability,...(feesEnabled?{feesEnabled:true,customerFee}:{}),full:cartSize>0&&fresh&&valid&&coverage===cartSize&&!quote.belowMinimum};
+   return {...quote,chain,name:n.name,fresh,coverage,itemsTotal,fee,total,eligible:state.eligible&&n.price_is_estimate!==true&&(place?.mode!=='pickup'||state.status==='available'),availability,...(feesEnabled?{feesEnabled:true,customerFee}:{}),full:cartSize>0&&fresh&&valid&&coverage===cartSize&&!quote.belowMinimum};
   });
   const candidates=all.filter(r=>r.full&&r.eligible),unavailable=all.filter(r=>!r.eligible);
   // Use the same comparison basis as Top3; unknown fees never become zero.
-  const basis=['products','total'].includes(comparisonBasis)?comparisonBasis:candidates.length&&candidates.every(r=>r.total!==null)?'total':'products';
+  const basis='total';
   const full=candidates.filter(r=>basis!=='total'||r.total!==null),partial=all.filter(r=>r.eligible&&!full.includes(r));
   full.forEach(r=>{r.amount=basis==='total'?r.total:r.itemsTotal+(r.customerFee||0);});
   full.sort((a,b)=>a.amount-b.amount||a.chain-b.chain);

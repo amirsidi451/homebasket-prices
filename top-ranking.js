@@ -9,17 +9,17 @@
    if(!Number.isInteger(row.coverage)||row.coverage<1||row.coverage>cartSize||!Number.isSafeInteger(row.total)||row.total<0)continue;
    const feesEnabled=config?.fees?.enabled===true,customerFee=feesEnabled?Math.round(F.computeFees(row.total/100,n.source,config).customerFee*100):0;
    const quote=O.quote(n,config,place.mode,row.total),fee=quote.fee,total=fee===null?null:row.total+fee+customerFee;if(total!==null&&!Number.isSafeInteger(total))continue;
-   ranked.push({chain:row.chain,coverage:row.coverage,missing:cartSize-row.coverage,full:row.coverage===cartSize,itemsTotal:row.total,fee,total,...quote,feeKnown:fee!==null,...(feesEnabled?{feesEnabled:true,customerFee}: {})});seen.add(row.chain);
+   ranked.push({chain:row.chain,coverage:row.coverage,missing:cartSize-row.coverage,full:row.coverage===cartSize,itemsTotal:row.total,fee,total,...quote,feeKnown:fee!==null,priceIsEstimate:n.price_is_estimate===true,pickupUnverified:place.mode==='pickup'&&O.service(n,config,place).status!=='available',...(feesEnabled?{feesEnabled:true,customerFee}: {})});seen.add(row.chain);
   }
-  const productsBasis=place.mode==='pickup'&&ranked.some(r=>!r.belowMinimum&&!r.feeKnown);
-  for(const r of ranked){r.basis=productsBasis?'products':'total';r.rankAmount=productsBasis?r.itemsTotal+(r.customerFee||0):r.total;}
-  // Full basket always before partial. Different partial coverage is not comparable.
-  // For equal coverage, priced fees rank before unknown fees, never treating unknown as zero.
-  ranked.sort((a,b)=>Number(a.belowMinimum)-Number(b.belowMinimum)||Number(b.full)-Number(a.full)||b.coverage-a.coverage||(productsBasis?0:Number(b.feeKnown)-Number(a.feeKnown))||(a.rankAmount!==null&&b.rankAmount!==null?a.rankAmount-b.rankAmount:0)||a.chain-b.chain);
-  let position=0;ranked.forEach(r=>{r.rank=r.belowMinimum?null:++position;});ranked.forEach(r=>{r.explanations=explain(r,ranked,place.mode);if(r.feesEnabled){r.explanations=r.explanations.map(t=>t.replaceAll('מחיר המוצרים','מחיר המוצרים ודמי השירות'));r.explanations.push('דמי שירות לדוגמה כלולים בדירוג; אין גבייה באתר');}});return ranked;
+  for(const r of ranked){r.basis='total';r.rankAmount=r.total;r.recommendable=!r.priceIsEstimate&&!r.pickupUnverified&&r.feeKnown&&!r.belowMinimum&&r.full;}
+  ranked.sort((a,b)=>Number(b.recommendable)-Number(a.recommendable)||Number(a.priceIsEstimate)-Number(b.priceIsEstimate)||Number(a.pickupUnverified)-Number(b.pickupUnverified)||Number(b.feeKnown)-Number(a.feeKnown)||Number(a.belowMinimum)-Number(b.belowMinimum)||b.coverage-a.coverage||(a.total!==null&&b.total!==null?a.total-b.total:0)||a.chain-b.chain);
+  let position=0;ranked.forEach(r=>{r.rank=r.recommendable?++position:null;});ranked.forEach(r=>{r.explanations=explain(r,ranked,place.mode);if(r.feesEnabled){r.explanations=r.explanations.map(t=>t.replaceAll('מחיר המוצרים','מחיר המוצרים ודמי השירות'));r.explanations.push('דמי שירות לדוגמה כלולים בדירוג; אין גבייה באתר');}});return ranked;
  }
  function explain(row,ranked,mode){
   const feeName=mode==='pickup'?'דמי איסוף':'דמי משלוח',out=[];
+  if(row.priceIsEstimate)return ['ייתכן שזול יותר — מחיר משוער'];
+  if(row.pickupUnverified)return ['בדקו נקודת איסוף באתר הרשת','זמינות האיסוף טרם אושרה; הרשת אינה מקבלת המלצה ראשית'];
+  if(!row.full)return [row.missing===1?'חסר מוצר אחד ולכן המחיר אינו מלא':'חסרים '+row.missing+' מוצרים ולכן המחיר אינו מלא','מובילה בכיסוי בין הסלים החלקיים; לא ניתן לקבוע מחיר לסל מלא'];
   if(row.belowMinimum)return [O.minimumLabel(row),'אין המלצה להזמנה לפני השלמת המינימום באתר הרשת'];
   out.push(row.full?'כיסוי מלא של כל המוצרים':row.missing===1?'חסר מוצר אחד ולכן המחיר אינו מלא':'חסרים '+row.missing+' מוצרים ולכן המחיר אינו מלא');
   const next=ranked.find(r=>r.rank===2&&!r.belowMinimum),unknownFull=ranked.some(r=>r.full&&!r.feeKnown);
@@ -29,10 +29,10 @@
    else if(row.feeKnown)out.push('סל מלא עם עלות שירות ידועה; אין סל מלא נוסף עם עלות ידועה לחישוב חיסכון');
    if(row.basis==='total'&&row.full&&row.feeKnown&&unknownFull)out.push('רשתות עם עלות שירות לא ידועה עשויות לשנות את הדירוג לאחר אימות');
   }
-  if(row.rank>1&&row.rank<=3){const first=ranked[0];if(first.full&&row.full&&row.rankAmount!==null&&first.rankAmount!==null){const difference=row.rankAmount-first.rankAmount;out.push(difference>0?'יקרה ב־'+money(difference)+' ממקום 1'+(row.basis==='products'?' במחיר המוצרים, לפני דמי איסוף':' כולל '+feeName+' משוערים'):'אותו '+(row.basis==='products'?'מחיר מוצרים':'סכום כולל')+' כמו מקום 1');}else out.push('לא ניתן לחשב הפרש כולל מול מקום 1: הכיסוי או דמי השירות אינם מלאים');}
-  if(!row.feeKnown)out.push(mode==='pickup'?'דמי איסוף לא ידועים; הדירוג לפי מחיר המוצרים לפני דמי איסוף':'לא ניתן לחשב סכום כולל: '+feeName+' אינם ידועים; הדירוג זמני');
+  if(row.rank>1&&row.rank<=3){const first=ranked.find(r=>r.rank===1);if(first?.full&&row.full&&row.rankAmount!==null&&first.rankAmount!==null){const difference=row.rankAmount-first.rankAmount;out.push(difference>0?'יקרה ב־'+money(difference)+' ממקום 1'+(row.basis==='products'?' במחיר המוצרים, לפני דמי איסוף':' כולל '+feeName+' משוערים'):'אותו '+(row.basis==='products'?'מחיר מוצרים':'סכום כולל')+' כמו מקום 1');}else out.push('לא ניתן לחשב הפרש כולל מול מקום 1: הכיסוי או דמי השירות אינם מלאים');}
+  if(!row.feeKnown)out.push(mode==='pickup'?'דמי איסוף לא ידועים; הסכום הכולל אינו ידוע והרשת אינה נכללת בחיסכון':'לא ניתן לחשב סכום כולל: '+feeName+' אינם ידועים; הדירוג זמני');
   else{
-   const peer=ranked.find(r=>r.rank<=3&&r.chain!==row.chain&&r.coverage===row.coverage&&r.feeKnown&&r.fee>row.fee);
+   const peer=ranked.find(r=>Number.isInteger(r.rank)&&r.rank<=3&&r.chain!==row.chain&&r.coverage===row.coverage&&r.feeKnown&&r.fee>row.fee);
    if(peer)out.push(feeName+' נמוכים יותר ממקום '+peer.rank);
   }
   return out;

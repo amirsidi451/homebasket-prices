@@ -58,9 +58,9 @@ test('product data shape is unchanged by separate image map',()=>{const raw={fie
  test('weighted quantity stored as kilograms with three decimal places',()=>{assert.equal(e.run("addProduct('400',.375)"),true);assert.equal(e.run("cart.find(i=>i.barcode==='400').qty"),.375);});
  test('weighted sub-gram quantity cannot be rounded into fake item',()=>assert.equal(e.run("addProduct('400',.0001)"),false));
  let reads=0;e.ctx.readImages=async()=>{reads++;return{'3073781199918':'https://cdn.example.test/cheese.webp'};};e.run('jsonFile=readImages;productImages=null;imagePromise=null;files=null;delete HB_CONFIG.imagesFile');await e.run('loadProductImages()');
- test('default optional gzip map is discovered without config changes',()=>assert.equal(reads,1));
+ test('default optional gzip map is discovered without config changes',()=>assert.equal(reads,0));
  e.run("HB_CONFIG.imagesFile='images.json';productImages=null");await e.run('loadProductImages()');await e.run('loadProductImages()');
- test('declared legacy map loaded once and cached lazily',()=>assert.equal(reads,2));
+ test('declared legacy map loaded once and cached lazily',()=>assert.equal(reads,1));
  test('image presentation lazy and no-referrer without upload',()=>{const h=e.run("productVisual(catalog.get('3073781199918'))");assert.match(h,/loading="lazy" decoding="async" referrerpolicy="no-referrer"/);assert.match(h,/product-letter/);assert.match(h,/https:\/\/cdn.example.test/);});
  const broken={tagName:'IMG',hidden:false};e.get('products').listeners.error({target:broken});test('broken image hides raster, leaving initial underneath',()=>assert.equal(broken.hidden,true));
  e.ctx.readImages=async()=>{reads++;throw Error('bad optional map');};e.run('jsonFile=readImages;productImages=null;imagePromise=null');
@@ -84,7 +84,7 @@ test('product data shape is unchanged by separate image map',()=>{const raw={fie
  const original=ui.run('JSON.stringify(cart)');await ui.run("openAlternatives('300',1)");
  test('opening suggestions cannot alter cart or approved fees/prices',()=>{assert.equal(ui.run('JSON.stringify(cart)'),original);assert.equal(ui.run('approved.size'),0);});
  ui.run("priceCache.get('prices.json.gz').get('300').delete(0)");await ui.run('renderCompare()');html=ui.get('comparison').innerHTML;
- test('no full basket clear headline and no Top3 partial ranks',()=>{assert.match(ui.get('result-summary').textContent,/אין כרגע סל מלא/);assert.equal((html.match(/network-winner"/g)||[]).length,0);});
+ test('no full basket clear headline and no Top3 partial ranks',()=>{assert.match(ui.get('result-summary').textContent,/אף רשת לא מכסה את כל הסל/);assert.equal((html.match(/network-winner"/g)||[]).length,0);});
  test('fallback shared ranking visible rather than trapped in folded details',()=>{assert.match(html,/<section class="panel common-fallback">[\s\S]*מצב משותף/);assert.match(html,/2 מתוך 3 מוצרים זהים/);});
  test('fallback explicitly excludes shipping fees and full-basket savings',()=>assert.match(html,/אינו מחיר הסל המלא ואינו נכלל בחיסכון לסל מלא/));
  test('partial rows never primary purchase recommendations',()=>{const table=html.slice(html.indexOf('<table class="network-table">'),html.indexOf('</table>'));assert.doesNotMatch(table,/class="primary"/);});

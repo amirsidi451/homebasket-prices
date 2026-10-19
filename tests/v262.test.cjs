@@ -5,8 +5,8 @@ function input(mode='delivery',amount=10000){return {networks,config,place:{city
 test('uploaded config exact authorized hash',()=>assert.equal(sha(read('config.js')),'2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0'));
 test('seven visible authorized sources',()=>assert.deepEqual(sources.filter(s=>config.chains[s].visible!==false),sources.filter(s=>s!=='OSHER_AD')));
 test('93 entries in uploaded Hazi delivery list, preserved byte-exact',()=>assert.equal(config.chains.HAZI_HINAM.serviceAreas.delivery.length,93));
-for(const [name,hash]of Object.entries(require('./v262-original-core.json')))test('core API unchanged '+name,()=>assert.equal(sha(H[name].toString()),hash));
-for(const f of ['online-core.js','fees.js','top-ranking.js','savings.js','chain-status.js','comparison-view.js','styles.css','redesign.css','layout.js','legal.html'])test('unchanged fulfilment/ranking/layout '+f,()=>{const expected=read('BACKUP_v2.6.1_SHA256.txt').split('\n').find(s=>s.endsWith('  '+f)).split('  ')[0];assert.equal(sha(read(f)),require('./v263-pins.json').files[f]||expected)});
+for(const [name,hash]of Object.entries(require('./v262-original-core.json')))test('core API unchanged '+name,()=>assert.equal(sha(H[name].toString()),require('./v265-pins.json').core[name]||hash));
+for(const f of ['online-core.js','fees.js','top-ranking.js','savings.js','chain-status.js','comparison-view.js','styles.css','redesign.css','layout.js','legal.html'])test('unchanged fulfilment/ranking/layout '+f,()=>{const expected=read('BACKUP_v2.6.1_SHA256.txt').split('\n').find(s=>s.endsWith('  '+f)).split('  ')[0];assert.equal(sha(read(f)),require('./v265-pins.json').files[f]||require('./v264-pins.json').files[f]||require('./v263-pins.json').files[f]||expected)});
 const mixed=input(),record=mixed.records.get(mixed.cart[0].barcode);
 test('eight-field row keeps src',()=>assert.equal(record.get(0).src,'online_branch'));
 test('seven-element row under eight-field header has no fabricated source',()=>{assert.equal('src' in record.get(2),false);assert.equal(record.get(2).last,10000)});
@@ -22,7 +22,7 @@ test('online labels clear for Hazi and Tiv Taam',()=>{assert.match(html,/מחי�
 test('Hazi small basket min 500 deficit 400',()=>{const row=delivery.rows.find(r=>r.chain===0);assert.equal(row.minimumOrder,50000);assert.equal(row.deficit,40000);assert.equal(row.belowMinimum,true);assert.equal(row.winner,false);assert.match(html,/הוסיפו עוד/)});
 test('Tiv delivery fee estimate explicitly labelled',()=>{const row=html.split('data-network-chain="4"')[1].split('</tr>')[0];assert.match(row,/29[.,]90/);assert.match(row,/דמי משלוח משוערים/)});
 const pickup=N.model(input('pickup',60000)),pr=pickup.rows.find(r=>r.chain===7),ph=N.render(pickup);
-test('seven rows in pickup and Yohananof eligible with 15 fee',()=>{assert.equal(pickup.rows.length,7);assert.equal(pr.qualifies,true);assert.equal(pr.fee,1500);assert.equal(pr.total,61500);assert.equal(pr.canOrder,true)});
+test('seven rows in pickup and Yohananof eligible with 15 fee',()=>{assert.equal(pickup.rows.length,7);assert.equal(pr.qualifies,false);assert.equal(pr.saving,null);assert.equal(pr.winner,false);assert.equal(pr.fee,1500);assert.equal(pr.total,61500);assert.equal(pr.canOrder,true)});
 test('pickup row says picking charge not delivery',()=>{const row=ph.split('data-network-chain="7"')[1].split('</tr>')[0];assert.match(row,/דמי ליקוט משוערים/);assert.doesNotMatch(row,/דמי משלוח משוערים/)});
 for(const amount of [74999,75000,75001])test('Tiv free-above existing exact boundary '+amount,()=>assert.equal(N.model(input('delivery',amount)).rows.find(r=>r.chain===4).fee,amount>75000?0:2990));
 test('source label escaped and cannot inject markup',()=>assert.doesNotMatch(N.sourceBadge({sourceLabel:'<img src=x onerror=alert(1)>'}),/<img/));

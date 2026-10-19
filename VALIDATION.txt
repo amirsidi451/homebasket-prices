@@ -1,12 +1,17 @@
-HomeBasket 2.6.3 — FINAL OFFLINE
-1621 PASS; 0 failed suites. See test-results.txt.
-34 new targeted checks: identical config and pricing APIs; seven visible candidates preserved; six relevant delivery networks in Rehovot; no irrelevant price in product columns; collapsed reasons and switch action; counts/savings only relevant complete baskets; extremely cheap/expensive excluded networks cannot affect winner or savings; pickup eligibility, picking fee and estimate; Hulon all seven pickup; Eilat known/verify split; non-solvable pickup no switch; minima remain relevant but cannot win; zero-eligible empty state; original mobile CSS prefix retained; large mode controls/city-only/default delivery; integrated immediate mode changes, savings graph filtering and switch action.
-21 node --check passes: 18 root JS files + three optional QA scripts.
-Byte-identical to 2.6.2: config/core/online-core/fees/top-ranking/savings/chain-status/comparison-view/styles/legal. CSS adds isolated new fulfilment controls after unchanged mobile fixes. Explicit presentation hash exceptions in tests/v263-pins.json; historical backup manifests unchanged.
-Older assertions that required showing unavailable networks in the main table/chart were migrated to the new explicit product decision. No suite removed; pure monetary calculations retained.
-Real supplied export verified: 90757 products, mixed 7/8 field rows. Seven candidates preserved; Rehovot delivery has six relevant rows/one excluded (Yohananof); pickup has six/one excluded (Hazi Hinam's configured pickup list). Details: staged-data-results.txt.
+HomeBasket 2.6.5 — FINAL OFFLINE VALIDATION
+1718 PASS; 0 failed suites. Full per-test output: test-results.txt.
+52 new v265 policy/UI cases, including all requested search examples, estimate exclusion, unknown-pickup exclusion, no pickup-switch for unknown collection, uniform known-grand-total ranking, partial coverage-first ordering, missing order items, quiet absent image-map loading, price counts, singular Hebrew, 0.5kg steps, conditional saved-cart prompt, Netanya pickup warning, mobile results scroll, failed resource and async E-undefined fallback.
+22 node --check passes: 19 root JS files + 3 optional Playwright scripts. Syntax checking does NOT execute a browser.
+Production config SHA256 unchanged: 2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0
+Seven visible chains, Osher hidden, platform fees disabled. No data files in deliverable. Existing quote/fee/formulas and parser arithmetic remain tested and unchanged. Changes are ranking eligibility, search and UI behavior explicitly requested for v265.
+Backup: unchanged v2.6.4 ZIP retained before editing; per-file manifest BACKUP_v2.6.4_SHA256.txt. No live deployment.
 
-NOT RUN: browser layout and console verification at 1280, 390 or 640@2x. Browser-control capability unavailable here; no screenshot or zero-console-error claim.
-Executable tests/compare-selection.playwright.cjs includes 1280 desktop, 390 mobile DPR3, 640 mobile DPR2, exact layout width/overflow assertions, service-mode changes, all seven candidates accounted for, product disclosure, switch-to-pickup and console/pageerror capture.
-DPR2 does not emulate actual desktop browser zoom 200%; physical-phone and zoom tests remain necessary.
-No data folder bundled. No live deployment. Backup 2.6.2 retained.
+REAL EXPORT: read-only parser/metadata/numeric verification of 90757 products: staged-data-results.txt. Search and pickup policy integration: staged-v265-results.txt. Diapers search 86 matches; almond-milk query has no name-matching beverage in this export and returns zero rather than lotion/chocolate. Query times in that report are container measurements, not phone performance promises.
+Historical tests expecting the superseded mixed-pickup products-only fallback, estimated-price recommendation, automatic missing-map probing, or zero-price buckets for verify chains were migrated to v265 policy. Original backup manifests remain unchanged. Authorized touched files/functions are listed in tests/v265-pins.json; untouched fee arithmetic and old schema/cache/regression cases still run.
+
+NOT RUN: Playwright rendering/console tours at 1280,390,640@2x; browser-control capability unavailable in this environment. tests/v265.playwright.cjs is supplied for external execution, with Hod Hasharon/Haifa/Netanya pickup, Beer Sheva 12/15 versus 11/15 partial basket, modal missing items, document scrollWidth<=viewport, actual innerWidth, product-table disclosure, no absent images.json request, and healthy-page console/pageerror assertions. Deliberate failed-script case is isolated.
+Updated existing compare-selection.playwright.cjs to avoid clicking an unverified pickup switch. Existing mobile-overflow.playwright.cjs preserved.
+No claim of rendered pass, zero real-browser console errors, or physical-device pass.
+DPR2 is not actual desktop 200% zoom. Still requires real phone: safe-area, keyboard, clipboard/WhatsApp, modal scrolling, automatic results scroll, orientation and zoom.
+
+OPTIONAL IMAGES: no blind hosted-file probe. Existing imagesFile configuration or optional meta.images_file declares a real hosted map; local folder selection auto-detects an existing file. Without declaration, placeholders are immediate and there is no map request/404. An explicitly declared missing URL can still generate a browser network error; do not declare a nonexistent map. Current production config is unchanged.

@@ -32,14 +32,15 @@ function queryTokens(value){const tokens=folded(value).match(/\d+(?:\.\d+)?%?|[�
 const searchFeatures=new WeakMap();
 function productFeatures(p){let f=searchFeatures.get(p);if(f)return f;const name=folded(p.name);const parsed=queryTokens(name);const base=unitBase(p);const namedMeasures=parsed.filter(t=>t.kind==='measure');const measures=[...namedMeasures];if(base)measures.push({kind:'measure',dimension:base.unit,value:base.quantity});const numbers=parsed.filter(t=>t.kind==='number'||t.kind==='percent').map(t=>t.value);if(p.quantity!==null&&Number.isFinite(Number(p.quantity)))numbers.push(Number(p.quantity));f={words:new Set(name.match(/[א-תa-z]+/g)||[]),name,measures,namedMeasures,numbers,percents:parsed.filter(t=>t.kind==='percent').map(t=>t.value),dimensions:new Set(measures.map(t=>t.dimension))};const u=unitSpecs[folded(p.unit)];if(u)f.dimensions.add(u[0]);searchFeatures.set(p,f);return f;}
 function search(items,q,coverage=new Map()){
+ const wordKey=w=>w==='חיתולי'?'חיתולים':w;
  q=String(q).trim();const query=folded(q),terms=queryTokens(q),text=terms.filter(t=>t.kind==='text'),phrase=text.map(t=>t.value).join(' '),onlyDigits=/^\d+$/.test(query),ranked=[];
  const eggQuery=text[0]?.value==='ביצים'||text[0]?.value==='ביצי';const defaultEggPack=eggQuery&&!terms.some(t=>t.kind==='measure'||t.kind==='number');
  for(const p of items.values()){
   if(!query){ranked.push({p,full:true,matched:0,relevance:0,category:0,whole:0});continue;}
   if(onlyDigits&&p.barcode.startsWith(query)){ranked.push({p,barcodeMatch:p.barcode===query?2:1,full:true,matched:terms.length,category:0,whole:0,relevance:0});continue;}
-  const f=productFeatures(p);let matched=0,textMatched=0,sizeMatched=0,namedSizeMatched=0,whole=0;
+  const f=productFeatures(p);const foodOrDiaper=text.length&&['חלב','מלפפון','חזה','שמן','תפוח','ביצים','חיתולים'].includes(wordKey(text[0].value));if(foodOrDiaper&&!careOrCleaning(q)&&(careOrCleaning(p.name)||f.words.has('גוף')||/כלבים|חתולים|לכלב|לחתול/.test(f.name)))continue;if(text[0]?.value==='חלב'&&text.length>1&&!['חלב','משקה'].includes(productType(f.name)))continue;let matched=0,textMatched=0,sizeMatched=0,namedSizeMatched=0,whole=0;
   for(const term of terms){let ok=false;
-   if(term.kind==='text'){ok=f.name.includes(term.value);if(ok)textMatched++;if(f.words.has(term.value))whole++;}
+   if(term.kind==='text'){ok=[...f.words].some(w=>wordKey(w)===wordKey(term.value))||(terms.at(-1)===term&&[...f.words].some(w=>wordKey(w).startsWith(wordKey(term.value))));if(ok)textMatched++;if(f.words.has(term.value))whole++;}
    else if(term.kind==='grade')ok=f.words.has(term.value);
    else if(term.kind==='measure')ok=f.measures.some(m=>m.dimension===term.dimension&&Math.abs(m.value-term.value)<.00001);
    else if(term.kind==='unit')ok=f.dimensions.has(term.dimension);
@@ -47,12 +48,14 @@ function search(items,q,coverage=new Map()){
    else ok=f.numbers.includes(term.value);
    if(ok){matched++;if(term.kind==='measure'){sizeMatched++;if(f.namedMeasures.some(m=>m.dimension===term.dimension&&Math.abs(m.value-term.value)<.00001))namedSizeMatched++;}}
   }
-  if(!matched||(text.length&&!textMatched))continue;
+  if(!matched||textMatched!==text.length)continue;
   // Inference from the name only: exports have no category field.
-  const category=eggQuery?(/^(?:(?:מארז|תבנית|קרטון)\s+)?(?:\d+\s+)?ביצ(?:ים|י)(?:\s|$)/.test(f.name)?0:2):(text.length?(productType(f.name)===text[0].value?0:f.words.has(text[0].value)?1:2):0);
-  ranked.push({p,full:matched===terms.length,matched,sizeMatched,namedSizeMatched,whole,category,relevance:phrase?relevance(f.name,phrase):0});
+  const category=eggQuery?(/^(?:(?:מארז|תבנית|קרטון)\s+)?(?:\d+\s+)?ביצ(?:ים|י)(?:\s|$)/.test(f.name)?0:2):(text.length?(wordKey(productType(f.name))===wordKey(text[0].value)?0:f.words.has(text[0].value)?1:2):0);
+  const textExact=text.every(t=>[...f.words].some(w=>wordKey(w)===wordKey(t.value)));
+  ranked.push({p,textExact,full:matched===terms.length,matched,sizeMatched,namedSizeMatched,whole,category,relevance:phrase?relevance(f.name,phrase):0});
  }
- return ranked.sort((a,b)=>(b.barcodeMatch||0)-(a.barcodeMatch||0)||a.category-b.category||Number(b.full)-Number(a.full)||(b.sizeMatched||0)-(a.sizeMatched||0)||(coverage.get(b.p.barcode)||0)-(coverage.get(a.p.barcode)||0)||b.whole-a.whole||b.matched-a.matched||(defaultEggPack?((a.p.quantity===12?0:1)-(b.p.quantity===12?0:1)):0)||(b.namedSizeMatched||0)-(a.namedSizeMatched||0)||a.relevance-b.relevance||a.p.name.localeCompare(b.p.name,'he')||a.p.barcode.localeCompare(b.p.barcode)).map(x=>x.p);
+ const exactText=ranked.some(r=>r.textExact);
+ return ranked.filter(r=>!exactText||r.textExact||r.barcodeMatch).sort((a,b)=>(b.barcodeMatch||0)-(a.barcodeMatch||0)||a.category-b.category||Number(b.full)-Number(a.full)||(b.sizeMatched||0)-(a.sizeMatched||0)||(coverage.get(b.p.barcode)||0)-(coverage.get(a.p.barcode)||0)||b.whole-a.whole||b.matched-a.matched||(defaultEggPack?((a.p.quantity===12?0:1)-(b.p.quantity===12?0:1)):0)||(b.namedSizeMatched||0)-(a.namedSizeMatched||0)||a.relevance-b.relevance||a.p.name.localeCompare(b.p.name,'he')||a.p.barcode.localeCompare(b.p.barcode)).map(x=>x.p);
 }
 
 

@@ -1,3 +1,7 @@
+HomeBasket v2.6.5
+TOTAL: 1718 PASS; failures: 0
+52 new v265 policy/UI cases. Offline Node/VM/CSS/markup checks; NOT Playwright execution.
+
 compact.test.cjs
 PASS compact products decode names and numeric quantity
 PASS chain source stays associated with its index
@@ -54,7 +58,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 637 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 1066 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +160,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":159,"search_ms":17.2,"heap_delta_mb":32.2,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":155,"search_ms":13.61,"heap_delta_mb":47.5,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -792,7 +796,7 @@ PASS pickup-only chain unavailable for delivery counter
 PASS same pickup-only chain available after pickup mode and city switch
 PASS known city exclusion changes counter for all chains
 PASS unknown areas assigned to verification never unavailable by guess
-PASS unselected city never claims confirmed price category
+PASS unselected city can show actual price data without claiming availability
 PASS all five requested Hebrew category labels appear
 PASS deterministic 512 mixed-state scenarios always partition into eight
 PASS partial top card includes missing-products warning
@@ -1292,7 +1296,6 @@ PASS v253 dialog sticky action backing is opaque and isolated
 PASS v253 table expansion contained at 640px
 PASS v253 warning survives routing for מצפה רמון
 PASS v253 warning survives routing for קצרין
-PASS v253 warning survives routing for אילת
 PASS v253 known city hides unlisted warning
 PASS v253 unavailable known list versus unknown verify are distinct
 PASS v253 known city tested for selected mode only
@@ -1307,7 +1310,7 @@ PASS v253 normalized equal quantities dedup but sizes remain distinct
 PASS v253 empty basket service text has one minimum label
 PASS v253 restore advances visible workflow from location
 PASS v253 savings header distinguishes relevant networks from catalog
-42 v2.5.3 checks passed; API stubs/CSS constraints, not real phone QA
+41 v2.5.3 checks passed; API stubs/CSS constraints, not real phone QA
 
 v254.test.cjs
 PASS v254 Rehovot normalization רחובות
@@ -1721,6 +1724,110 @@ PASS v263 comparison controls show city and selected delivery
 PASS v263 mode change updates all data and controls immediately
 PASS v263 excluded-network switch uses same existing service update
 34 v263 targeted checks passed; no rendered browser QA claimed.
+
+v264.test.cjs
+PASS v264 unchanged config/calculations/layout config.js
+PASS v264 unchanged config/calculations/layout core.js
+PASS v264 unchanged config/calculations/layout online-core.js
+PASS v264 unchanged config/calculations/layout fees.js
+PASS v264 unchanged config/calculations/layout top-ranking.js
+PASS v264 unchanged config/calculations/layout savings.js
+PASS v264 unchanged config/calculations/layout chain-status.js
+PASS v264 unchanged config/calculations/layout comparison-view.js
+PASS v264 unchanged config/calculations/layout redesign.css
+PASS v264 unchanged config/calculations/layout styles.css
+PASS v264 unchanged config/calculations/layout layout.js
+PASS v264 unchanged config/calculations/layout legal.html
+PASS v264 presentation arithmetic/filtering unchanged model
+PASS v264 presentation arithmetic/filtering unchanged sortRows
+PASS v264 leaf audit detects actual duplicate labels
+PASS v264 repeated monetary amounts are values, not duplicate labels
+PASS v264 all network labels unique מצפה רמון delivery full
+PASS v264 all network labels unique מצפה רמון delivery partial
+PASS v264 all network labels unique מצפה רמון delivery missing
+PASS v264 all network labels unique מצפה רמון delivery stale
+PASS v264 all network labels unique מצפה רמון pickup full
+PASS v264 all network labels unique מצפה רמון pickup partial
+PASS v264 all network labels unique מצפה רמון pickup missing
+PASS v264 all network labels unique מצפה רמון pickup stale
+PASS v264 all network labels unique רחובות delivery full
+PASS v264 all network labels unique רחובות delivery partial
+PASS v264 all network labels unique רחובות delivery missing
+PASS v264 all network labels unique רחובות delivery stale
+PASS v264 all network labels unique רחובות pickup full
+PASS v264 all network labels unique רחובות pickup partial
+PASS v264 all network labels unique רחובות pickup missing
+PASS v264 all network labels unique רחובות pickup stale
+PASS v264 all network labels unique חולון delivery full
+PASS v264 all network labels unique חולון delivery partial
+PASS v264 all network labels unique חולון delivery missing
+PASS v264 all network labels unique חולון delivery stale
+PASS v264 all network labels unique חולון pickup full
+PASS v264 all network labels unique חולון pickup partial
+PASS v264 all network labels unique חולון pickup missing
+PASS v264 all network labels unique חולון pickup stale
+PASS v264 Yohananof unavailable only one pickup-only label as reason
+PASS v264 one clear estimate label in unavailable row
+PASS v264 estimate generic fallback retained if source label absent
+PASS v264 duplicate status/explanation rendered once even stale row
+PASS v264 uniqueLabels normalizes whitespace without mutating input
+PASS v264 order dialog provenance label once explanation preserved
+46 v264 checks passed; DOM-leaf labels audited, financial values/actions excluded; real browser QA separate.
+
+v265.test.cjs
+PASS v265 הוד השרון estimate cannot win
+PASS v265 הוד השרון unknown pickup is verify, not confirmed
+PASS v265 הוד השרון unknown pickup cannot offer mode switch
+PASS v265 הוד השרון estimate after verified, without savings
+PASS v265 חיפה estimate cannot win
+PASS v265 חיפה unknown pickup is verify, not confirmed
+PASS v265 חיפה unknown pickup cannot offer mode switch
+PASS v265 חיפה estimate after verified, without savings
+PASS v265 נתניה estimate cannot win
+PASS v265 נתניה unknown pickup is verify, not confirmed
+PASS v265 נתניה unknown pickup cannot offer mode switch
+PASS v265 נתניה estimate after verified, without savings
+PASS v265 mixed pickup fees rank by known grand total; unknown last
+PASS v265 unknown fee has no numeric savings explanation
+PASS v265 partial basket summary exact, not stale-data error
+PASS v265 partial: Shufersal 12/15 before Carrefour 11/15
+PASS v265 search נייר טואלט right product category first
+PASS v265 search נייר טואלט excludes unrelated/partial word
+PASS v265 search מלפפון right product category first
+PASS v265 search מלפפון excludes unrelated/partial word
+PASS v265 search חזה עוף right product category first
+PASS v265 search חזה עוף excludes unrelated/partial word
+PASS v265 search שמן זית right product category first
+PASS v265 search שמן זית excludes unrelated/partial word
+PASS v265 search חלב שקדים right product category first
+PASS v265 search חלב שקדים excludes unrelated/partial word
+PASS v265 search תפוח אדמה right product category first
+PASS v265 search תפוח אדמה excludes unrelated/partial word
+PASS v265 search ביצים right product category first
+PASS v265 search חיתולים right product category first
+PASS v265 search חיתולים excludes unrelated/partial word
+PASS v265 AND excludes a product missing any query word
+PASS v265 diaper construct-form alias is whole-word equivalent
+PASS v265 body lotion and chocolate not almond milk
+PASS v265 exact words exclude prefix lookalikes when exact words exist
+PASS v265 no arbitrary 12-result limit for diapers
+PASS v265 same relevance sizes still prioritize coverage
+PASS v265 production config immutable original SHA
+PASS v265 modal missing item separated and individually labelled
+PASS v265 status actual prices count despite verify service
+PASS v265 singular coverage grammar
+PASS v265 weighted plus 0.5 kg
+PASS v265 weighted minus 0.5 kg
+PASS v265 unsaved cart new basket prompt does not mention saved cart
+PASS v265 saved cart new basket prompt accurate
+PASS v265 Netanya in delivery list not called unknown city in pickup
+PASS v265 390px async results scroll to comparison table
+PASS v265 absent image map no request => no 404 console error
+PASS v265 declared but broken images nonfatal placeholder
+PASS v265 startup guard inline before application dependencies
+PASS v265 failed script resource shows friendly retry without HB/E dependencies
+PASS v265 async E undefined rejection also shows friendly retry
+52 v265 policy/UI cases passed. Actual Playwright/device tests reported separately.
 
 markup.test.py
 PASS markup has no duplicate IDs

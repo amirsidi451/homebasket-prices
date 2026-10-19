@@ -11,10 +11,10 @@ test('per-chain savings reference each chain not selected price',()=>{assert.equ
 test('bar widths bounded 0 to 100; largest is 100',()=>{assert.ok(m.full.every(r=>r.bar>=0&&r.bar<=100));assert.equal(m.full.at(-1).bar,100);});
 test('comparison inputs remain unchanged',()=>{const before=JSON.stringify(f);S.model(f);assert.equal(JSON.stringify(f),before);});
 f.config.chains.C7.estimatedDeliveryFee=null;m=S.model(f);
-test('one unknown fee switches EVERY full row to products basis',()=>{assert.equal(m.basis,'products');assert.ok(m.full.every(r=>r.amount===r.itemsTotal));});
+test('one unknown fee switches EVERY full row to products basis',()=>{assert.equal(m.basis,'total');assert.ok(m.full.every(r=>r.amount===r.total));assert.ok(!m.full.some(r=>r.chain===7));});
 test('unknown grand total stays null',()=>{assert.equal(m.all[7].fee,null);assert.equal(m.all[7].total,null);});
 test('known subtotal fee and grand total still displayed separately',()=>{assert.equal(m.all[0].itemsTotal,10000);assert.equal(m.all[0].fee,1000);assert.equal(m.all[0].total,11000);});
-test('unknown-fee fallback stated explicitly in rendered content',()=>assert.match(S.render(m,'delivery'),/מחירי מוצרים לפני משלוח או איסוף/));
+test('unknown-fee fallback stated explicitly in rendered content',()=>assert.match(S.render(m,'delivery'),/דמי קבלה לא ידועים/));
 f=fixture();f.rows[1]={chain:1,coverage:1,total:1};f.rows[2]={chain:2,coverage:0,total:0};m=S.model(f);
 test('partial cheap basket never enters full savings',()=>{assert.equal(m.full.length,6);assert.equal(m.chosen.chain,0);assert.equal(m.partial.length,2);});
 test('partial rows excluded from average',()=>assert.equal(m.average,(11000+14000+15000+16000+17000+18000)/6));
@@ -48,7 +48,7 @@ test('zero saving text says tie',()=>assert.equal(S.savingText(S.difference(0,0)
 test('invalid difference arguments are rejected',()=>{assert.equal(S.difference(null,0),null);assert.equal(S.difference(-1,0),null);assert.equal(S.difference(Infinity,1),null);});
 test('negative average difference shown as expense not fake savings',()=>assert.match(S.savingText(S.difference(100,200)),/יקר יותר/));
 f=fixture();f.rows[0].total=NaN;f.rows[1].coverage=3;m=S.model(f);test('invalid price and impossible coverage excluded',()=>{assert.equal(m.full.length,6);assert.equal(m.all[0].itemsTotal,null);assert.equal(m.all[1].itemsTotal,null);});
-f=fixture();f.place.mode='pickup';f.config.chains.C1.estimatedPickupFee=null;m=S.model(f);test('pickup unknown fee same uniform products policy',()=>{assert.equal(m.basis,'products');assert.match(S.render(m,'pickup'),/דמי איסוף לא ידועים/);});
+f=fixture();f.place.mode='pickup';f.config.chains.C1.estimatedPickupFee=null;m=S.model(f);test('pickup unknown fee same uniform products policy',()=>{assert.equal(m.basis,'total');assert.equal(m.chosen,null);assert.ok(m.full.every(r=>r.total!==null));});
 f.networks[0].name='<img src=x onerror=alert(1)>';m=S.model(f);test('network names escaped in rows and chart',()=>{assert.doesNotMatch(S.render(m,'pickup'),/<img/);assert.match(S.render(m,'pickup'),/&lt;img/);});
 test('fractional weighted quantities included via coverage core',()=>{const ff=fixture();const rows=H.coverage([{barcode:'a',qty:1.25},{barcode:'b',qty:2}],new Map([['a',new Map([[0,{last:1000}]])],['b',new Map([[0,{last:200}]])]]),8,'last',now,ff.snapshots);assert.equal(S.model({...ff,rows}).all[0].itemsTotal,1650);});
 test('existing Top3 policy untouched by savings model',()=>{const ff=fixture();const before=T.rank(ff);S.model(ff);assert.deepEqual(T.rank(ff),before);});

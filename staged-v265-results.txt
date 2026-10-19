@@ -1,0 +1,12 @@
+PASS actual search נייר טואלט | 107 matches | 726 ms | נייר טואלט לח לילי קלאסי · 56 יחידות [6 networks] | נייר טואלט לילי קלאסיק 30 גלילים [6 networks] | נייר טואלט סופט פרימיום 4 שכבות - מארז 18 גלילים [6 networks]
+PASS actual search מלפפון | 178 matches | 381 ms | מלפפון בחומץ 7-9 · 560 גרם [6 networks] | מלפפון במלח 10-12 · 560 גרם [6 networks] | מלפפון יבנה בחומץ בי · 290 גרם [5 networks]
+PASS actual search חזה עוף | 144 matches | 413 ms | חזה עוף בצורת כוכבים מאמאעוף · 700 גרם [7 networks] | חזה עוף בציפוי ביתי 700 גרם מאמאעוף [7 networks] | חזה עוף בציפוי מעודן 700 גרם מאמאעוף [7 networks]
+PASS actual search שמן זית | 189 matches | 372 ms | שמן זית כתית מעולה קלאסי 2 · 500 מ״ל [6 networks] | שמן זית קלאסי בקבוק לחיץ · 280 מ״ל [6 networks] | שמן זית בלדי כתית מעולה סבא חביב · 750 מ״ל [5 networks]
+PASS actual search חלב שקדים | 0 matches | 416 ms | 
+PASS actual search תפוח אדמה | 108 matches | 341 ms | תפוח אדמה גורמה [4 networks] | תפוח אדמה (ארטישוק) ירושלמי 700 גר · 700 גרם [3 networks] | תפוח אדמה אדום לאפיה [3 networks]
+PASS actual search ביצים | 230 matches | 341 ms | ביצים *12 M · 12 יחידות [7 networks] | מארז 12 ביצים L · 12 יחידות [7 networks] | מארז 18 ביצים L · 18 יחידות [6 networks]
+PASS actual search חיתולים | 86 matches | 354 ms | חיתולי בייביסיטר לרך הנולד מידה 1 , 2-5 ק"ג · 42 יחידות [7 networks] | חיתולי בייביסיטר לרך הנולד מידה 2 , 3-6 ק"ג · 38 יחידות [7 networks] | חיתולי בייביסיטר מידה +4 , 10-16 ק"ג · 38 יחידות [7 networks]
+PASS actual pickup הוד השרון | winner: no confirmed recommendation | seven shown rows: 7
+PASS actual pickup חיפה | winner: no confirmed recommendation | seven shown rows: 7
+PASS actual pickup נתניה | winner: no confirmed recommendation | seven shown rows: 7
+PASS v265 actual data: 90757 products; read only; no browser execution.

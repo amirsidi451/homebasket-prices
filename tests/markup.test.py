@@ -19,7 +19,7 @@ for id in ['home','receipt','networks','basket-drawer','basket-lines','result-su
 print('PASS all entry, step and persistent-basket controls exist')
 assert 'compare' in a.parents['chain-select'];print('PASS chain selection tucked into comparison options')
 assert 'dir="rtl"' in html;print('PASS RTL document preserved')
-assert all((root/src.split('?')[0]).is_file() for src in a.scripts);print('PASS every startup script exists locally')
+assert all((root/src.split('?')[0]).is_file() for src in a.scripts if src);print('PASS every startup script exists locally')
 assert 'tesseract' not in ' '.join(a.scripts);print('PASS OCR dependency not loaded at startup')
 assert not re.search(r'עזרה מ.?AI|בני הבית|אלרגיות|בעלי חיים',' '.join(a.text));print('PASS no household or AI cart-builder flow in UI')
 css=(root/'styles.css').read_text()

@@ -51,7 +51,7 @@ test('JSON import cannot replace order URL, price basis or fees',()=>{const c={c
  e.run("applyService('עיר לא ברשימה','pickup')");await e.run('renderCompare()');
  test('pickup includes Yohananof and all verify chains',()=>assert.deepEqual(Array.from(e.run('eligibleIds()')),[0,2,3,4,7]));
  test('Yohananof 15 shekel pickup fee visible',()=>assert.match(e.run('serviceText(networks[3])'),/איסוף משוער:.*15/));
- test('unknown pickup ranking uses products; known fee total still calculated',()=>{assert.match(e.get('result-summary').textContent,/10[.,]00/);assert.equal(e.run("HBTop.rank({rows:HB.coverage(cart,comparisonRecords,networks.length,'last',Date.now(),HB.snapshots(networks,meta)),cartSize:cart.length,networks,config:HB_CONFIG,place:servicePlace,snapshots:HB.snapshots(networks,meta)}).find(r=>r.chain===3).total"),2800);});
+ test('unknown pickup ranking uses products; known fee total still calculated',()=>{assert.doesNotMatch(e.get('result-summary').textContent,/הכי זולה|הזולה ביותר/);assert.equal(e.run("HBTop.rank({rows:HB.coverage(cart,comparisonRecords,networks.length,'last',Date.now(),HB.snapshots(networks,meta)),cartSize:cart.length,networks,config:HB_CONFIG,place:servicePlace,snapshots:HB.snapshots(networks,meta)}).find(r=>r.chain===3).total"),2800);});
  e.ctx.areas=payload;
  await e.get('areas-file').listeners.change({target:{files:[{size:100,text:async()=>JSON.stringify(payload)}],value:'selected'}});
  test('local file import applies known mode areas',()=>assert.deepEqual(Array.from(e.run('HB_CONFIG.chains.RAMI_LEVY.serviceAreas.delivery')),['עיר בדיקה']));

@@ -8,7 +8,7 @@
  function service(chain,config,place){
   const c=settings(chain,config);if(c.visible===false)return {eligible:false,status:'hidden',label:'לא מוצגת — אין הזמנות אונליין'};if(!place?.city||!['delivery','pickup'].includes(place.mode))return {eligible:false,status:'location',label:'בחרו עיר ואופן קבלה'};
   const enabled=c[place.mode];if(enabled===false)return {eligible:false,status:'unsupported',label:place.mode==='delivery'?'אין משלוח לפי ההגדרות':'אין איסוף עצמי לפי ההגדרות'};
-  if(place.mode==='pickup'&&enabled!==true)return {eligible:true,status:'verify',label:availabilityLabel(place.mode)};
+  if(place.mode==='pickup'&&(enabled!==true||c.availability==='verify'))return {eligible:true,status:'verify',label:'בדקו נקודת איסוף באתר הרשת'};
   if(c.availability==='verify')return {eligible:true,status:'verify',label:availabilityLabel(place.mode)};
   const areas=Array.isArray(c.serviceAreas)?c.serviceAreas:c.serviceAreas?.[place.mode];
   if(enabled!==true||!Array.isArray(areas)||!areas.length)return {eligible:false,status:'unknown',label:'זמינות לא ידועה — יש לבדוק באתר הרשת'};

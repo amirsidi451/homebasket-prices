@@ -36,8 +36,8 @@ test('existing malicious bidi controls stripped before wrapping',()=>{const s=O.
  test('original eighth chain index retained after mode filtering',()=>assert.equal(c.run('networks[7].source'),'TIV_TAAM'));
  c.run("HB_CONFIG.chains.RAMI_LEVY.pickup=null;applyService('עיר בדיקה','pickup')");await c.run('renderCompare()');
  test('Yohananof included for pickup availability verification',()=>{assert.match(c.get('comparison').innerHTML,/יוחננוף/);assert.equal(c.run('serviceState(networks[3]).status'),'verify');});
- test('Rami unknown pickup has explicit retailer verification message',()=>{assert.equal(c.run('serviceState(networks[1]).label'),'יש לבדוק זמינות איסוף באתר הרשת');assert.equal(c.run('isEligible(1)'),true);});
- c.run('openOrder(1)');test('unknown pickup handoff repeats pickup check',()=>assert.match(c.get('order-service').textContent,/יש לבדוק זמינות איסוף באתר הרשת/));
+ test('Rami unknown pickup has explicit retailer verification message',()=>{assert.equal(c.run('serviceState(networks[1]).label'),'בדקו נקודת איסוף באתר הרשת');assert.equal(c.run('isEligible(1)'),true);});
+ c.run('openOrder(1)');test('unknown pickup handoff repeats pickup check',()=>assert.match(c.get('order-service').textContent,/בדקו נקודת איסוף באתר הרשת/));
  let copied='';c.ctx.navigator.clipboard.writeText=async text=>copied=text;await c.get('copy').onclick();test('cart copy uses same isolated formatter as order handoff',()=>assert.equal(copied,c.get('order-list').value));
  const summary=setup();summary.run("catalog=new Map(Array.from({length:5},(_,i)=>[String(i),{name:'מוצר '+i,unit:'יחידות',quantity:1,weighted:false}]));cart=Array.from({length:5},(_,i)=>({barcode:String(i),qty:1}));");
  vm.runInContext(fs.readFileSync(path.join(__dirname,'../receipt-ui.js'),'utf8'),summary.ctx);

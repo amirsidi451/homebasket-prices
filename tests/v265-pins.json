@@ -1,0 +1,36 @@
+{
+  "files": {
+    "core.js": "b68179adac0fad906d9a08bc54f145979009dc7c8847e5ff57ceb2bfa2349f2c",
+    "online-core.js": "0ac5620fbd44f570a8d37e57f43090a5ba24089ea475e3467d157e283c6bf115",
+    "top-ranking.js": "e5b328ff5d396211ba2787652e0ef6cde83a597bb2c794ea474da0a02f45161e",
+    "savings.js": "7032d9565ae9e95607add988d3a6e2233905d3d2e0476ea4f3df91a1612a4495",
+    "chain-status.js": "eed5bcd9a8cc70a43e5599108b3cf3c037cf068e99688cd679f10979d076eda6",
+    "app.js": "9c0c9b21ab550de8c426af9b5890196fc060f4f411c822a50372d689deb121f4",
+    "redesign.css": "bd661042bf50ac9a63694ac1e1d83c1b58d32eeea16043be93272453cbb5b331",
+    "network-table.js": "d472b2c6534ed4429d5120c3aba05c90c9e4469e05aadb44680c2b4ed4957445"
+  },
+  "core": {
+    "search": "5aeaedb4cebf98f81bee389813b95c4f4edafffa033215971c1c801ea60309fb"
+  },
+  "online": {
+    "service": "be996f67c9ad75fdfa05dce6e03b61a24737f4f99d8b5edf3cb2e39ade56fafa"
+  },
+  "ui": {
+    "load": "40258ad94c9ca9b09e13bd75063a798750b794f052f73384b237c56d41836096",
+    "startNewCart": "d77a4eedb13ad0f39b5d11548703c92ce64dc23a4e62f1fd86f6ac7c53fd0f60",
+    "adjustQuantity": "be54597bde183cbdf8cea19f3e63671b77b45aa5ae29bd40df88df7f902f9614",
+    "loadProductImages": "0ec7b30cd0add670d74206368b4ea727a4cd25f5822a54f3e97aac64bfd7d774",
+    "searchCoverageLabel": "789c504649cccaf32e063c6cc0c10f5f34dd172efbd549b8eef64ade164463c3",
+    "coverageFirstResults": "7bdf213e0fb7b3d4460276119c95705c098afe96d06e9954b5f6d5771b179196",
+    "updateChainSummary": "931de06a394958d802104119d107f00208ef661b87d9acd67ee7557721361815",
+    "updateCityWarning": "a5b243abddf4ee60ef9a005a234b973efce0409ec1808d1d6c382e1e87f532c7",
+    "openOrder": "269a48c5e5436dad4a7102af4f605559aee7d84efaa074ba36294b13b6e5afd9",
+    "renderNetworkComparison": "763f8865b1fe6861a72c0aa2e895fe8d3db5eebd725b6817c803d121cbafbe6c",
+    "renderCompare": "469bb151f39e107160d5952d354242091150dffdf3a3dcb7105d9e48051d66ea",
+    "renderCommonFallback": "2a6bd1d610fa52cc6dea08fbcef818915d7aaaa2f110778dffcfd30d79a1d1e2"
+  },
+  "network": {
+    "model": "17ef0ad9d938dd9848f05fd0ae1e45fe4821150344562356e616c1ac8c31ee1d",
+    "sortRows": "cb99d295cabfc8ac4913ed91b2ea55848d1dbe31abf26869ebbd36861b36a16f"
+  }
+}
