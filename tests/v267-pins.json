@@ -1,0 +1,17 @@
+{
+  "files": {
+    "top-ranking.js": "e40a468df1aeb8743e5c21e305921129fd13361a9d2fa24e637a981359eca1a9",
+    "savings.js": "dec6d097fb92ae109c3b953c53bd8b63974cdfd8b690318282f8d2dfd8fcb7c2",
+    "app.js": "426e6997e17752618f727ed57eb98322b0a1245d106562bd0868835e12f5af15",
+    "network-table.js": "b12aa8ab0769c0cf636b899f75b7883f011f09265156bc2b630f34b6da787842"
+  },
+  "core": {},
+  "online": {},
+  "ui": {
+    "renderProducts": "15a1ef508d429531700c09a5c6891a95d7d3593bbe63832c25c6e7d92b25acb3",
+    "renderRelevantSavings": "84fef7b431a36ea7f30f12e4fe65fb9988a662748db03e7c9feac6b21d26635e"
+  },
+  "network": {
+    "sortRows": "8e9a8787fa5d67b18d958610025d542c89889e0f32b0e537358d3c8bc36c49c1"
+  }
+}

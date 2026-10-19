@@ -1,21 +1,15 @@
-HomeBasket 2.6.6 — FINAL OFFLINE VALIDATION
-1782 PASS; 0 failed suites. Full log: test-results.txt. 64 new v266 fixture/VM cases.
-25 Node syntax checks: 19 root scripts, 4 Playwright scripts, v266 scenario fixture, and read-only integration script. A syntax pass is NOT a browser run.
-Production config exact SHA: 2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0
-Unchanged: styles.css, redesign.css, layout.js, online-core.js, fees.js, legal.html; price parser/pricing/fee formulas. Index structure/layout preserved; only asset cache-version and status-note wording changed. No data folder changes. No deployment. Backup of shipped v2.6.5 included.
+HomeBasket v2.6.7 — final validation
+1815 PASS; 0 failed suites. Includes every previous suite plus 33 v267 fixture/VM cases. Full output: test-results.txt.
+26 Node syntax checks; see syntax-results.txt. Syntax checks are NOT browser execution.
+Production config SHA256: 2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0
 
-CUSTOMER CASE FIXTURES (synthetic subtotal/coverage values):
-Tel Aviv pickup: Victory full 10/10 before Tiv Taam 7/10 under minimum; exact totals 329.26 and 269.50 preserved. Original specified ten barcodes and quantities used.
-Mitzpe Ramon pickup: only full verified-price basket Victory first, despite unverified collection point.
-Haifa pickup with weighted quantity: full Shufersal first, partial under-minimum Carrefour later.
-Netanya pickup: full Shufersal above under-minimum Carrefour; original 131.30 deficit checked.
-Hod Hasharon pickup: full Carrefour first; confirmed-pickup Hazi 11/12 with 341.40 deficit cannot outrank full baskets.
-Netanya and Beer Sheva partial delivery: coverage-first, then minimum at equal coverage, then known total and price. No fake winner or savings for estimates/unknown collection. Hidden Osher remains absent.
-Counter counts tested against table row states independently of cart coverage. Search synonym is explicit opt-in. Missing network-table dependency logged to console, no technical message in UI.
+Implemented: coverage priority inside partial carts even when a full cart exists; consistent geographic-relevance count and unverified-pickup wording in savings area; explicit synonym suggestion as primary zero-result UI without contradictory generic empty state.
+Exact customer barcode fixtures: Tel Aviv 10 items with diaper/yogurt/potato quantities; Netanya 6 items. Amount/coverage fixtures are synthetic to isolate ordering, NOT live prices. Hod Hasharon, unknown totals, minimum tie-breaks, estimates and explicit search-button behavior also covered.
 
-REAL DATA, READ ONLY: staged-v266-results.txt; 90757 products in the available snapshot. Requested tuna barcode 7290005287251 ranks 8 with seven shown-chain prices. Almond query has no direct AND matches; explicit beverage suggestion has 39 matches. These snapshot counts are not claims about the current published site's newer files. Full numeric mixed-7/8-field parser check: staged-data-results.txt.
+Unchanged byte for byte: config.js, core.js, online-core.js, fees.js, chain-status.js, comparison-view.js, styles.css, redesign.css, layout.js, legal.html. Numerical savings model, difference function and network model also verified byte-identical. Only ordering comparators and presentation changed; no data schema changes. Seven visible chains, hidden Osher, disabled fees preserved. No live-site deployment.
+Backup before change: backups/HomeBasket_Static_v2.6.6.zip plus BACKUP_v2.6.6_SHA256.txt. Source hash guards updated only for authorized changes; historical manifests retained. Index layout unchanged, asset cache keys advanced to 267; release constant 2.6.7.
 
-NOT RUN: actual Playwright rendering/console checks at 1280,390,640@2x, or physical-phone QA. Supported browser-control capability unavailable. Supplied tests/v266.playwright.cjs exercises the five pickup cities, both partial delivery cases, disclosure overflow, order modal and blocked-script fallback. Existing v265 browser runners are retained.
-Healthy-page script collects console/page errors and asserts no page overflow; deliberate blocked-script scenario is isolated and expects console errors. No zero-console-error or rendered-pass claim is made here.
-Sites skill restriction: “If $control-browser is unavailable, skip browser QA”. Source: skill://plugin_connector_1p_689987207de08191979cf68eca2941c6/sites/SKILL.md
-Still needs actual phone: safe-area, keyboard, touch targets, modal scrolling, scroll-to-results and clipboard/WhatsApp. DPR2 is not desktop 200% zoom.
+NOT RUN HERE: Playwright or visual/console browser checks at 1280,390,640@2x. Supported control-browser is unavailable; Sites skill says: “If $control-browser is unavailable, skip browser QA”. Source: skill://plugin_connector_1p_689987207de08191979cf68eca2941c6/sites/SKILL.md
+Prepared runner: tests/v267.playwright.cjs. It asserts exact new scenarios plus retained pickup/delivery regression scenarios, overflow and healthy-page console errors. Intentional blocked-script negative case is isolated. No claim of zero browser-console errors or rendered passes is made.
+Physical-phone QA still required: safe-area, touch/keyboard, order-modal scrolling, scroll-to-results, clipboard/WhatsApp. DPR2 is not equivalent to desktop 200% zoom.
+Historical staged-data results retained with their original scope: they are not a fresh scan or current published-data verification. data is not bundled.

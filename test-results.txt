@@ -1,6 +1,6 @@
-HomeBasket v2.6.6
-TOTAL: 1782 PASS; failures: 0
-64 new v266 cases. Offline Node/VM/markup/CSS checks; NOT Playwright execution.
+HomeBasket v2.6.7 — OFFLINE REGRESSION RESULTS
+1815 PASS; 0 failed suites; 33 new v267 cases.
+Fixture/VM/markup tests only. Playwright NOT RUN; see VALIDATION.txt.
 
 compact.test.cjs
 PASS compact products decode names and numeric quantity
@@ -58,7 +58,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 997 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 1044 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -160,7 +160,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":203,"search_ms":16.78,"heap_delta_mb":47.6,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":189,"search_ms":17.35,"heap_delta_mb":49.7,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -1902,6 +1902,42 @@ PASS v266 explicit click changes query without adding anything to cart
 PASS v266 missing network-table dependency displays friendly retry, technical detail only in console
 PASS v266 savings singular relevance plus real database size
 64 v266 cases passed; offline fixtures/VM only; Playwright execution reported separately.
+
+v267.test.cjs
+PASS v267 Tel Aviv exact ten-barcode cart and quantities retained
+PASS v267 Tel Aviv full first; partial coverage 9,9,8,7 afterwards
+PASS v267 Tel Aviv 279.40 does not outrank 288.56 at lower coverage
+PASS v267 pure ranking agrees with table for partial coverage with a full basket
+PASS v267 no recommendation or savings awarded to unknown pickup or estimate
+PASS v267 partial tie: minimum before known total then ascending amount
+PASS v267 explicit ascending coverage control remains available
+PASS v267 no-full case still coverage first
+PASS v267 sort is immutable
+PASS v267 Natanya exact six customer barcodes
+PASS v267 Natanya has six service-relevant rows, two full verified baskets with unknown pickup
+PASS v267 unchanged config.js
+PASS v267 unchanged styles.css
+PASS v267 unchanged redesign.css
+PASS v267 unchanged layout.js
+PASS v267 unchanged online-core.js
+PASS v267 unchanged fees.js
+PASS v267 unchanged core.js
+PASS v267 unchanged chain-status.js
+PASS v267 unchanged comparison-view.js
+PASS v267 unchanged legal.html
+PASS v267 price and savings model functions byte-identical to shipped v266
+PASS v267 single release source and cache keys
+PASS v267 savings count agrees with six rows instead of financial eligibility zero
+PASS v267 savings main message acknowledges two full carts without unverified savings
+PASS v267 pending pickup and estimated chart reasons are explicit
+PASS v267 presentation does not fabricate financial cohort or savings
+PASS v267 Tel Aviv savings wording agrees with full-cart summary
+PASS v267 Hod Hasharon counts six pending plus one confirmed relevant row consistently
+PASS v267 synonym is main empty state without generic no-product notice
+PASS v267 no zero-results counter or silent expansion beside suggestion
+PASS v267 explicit suggestion still works without modifying cart
+PASS v267 real empty search with no suggestion keeps useful next action
+33 v267 cases passed; fixtures/VM only; browser execution separate.
 
 markup.test.py
 PASS markup has no duplicate IDs
