@@ -1,0 +1,18 @@
+{
+  "files": {
+    "online-core.js": "bbc0a8d1046fb52646bd191c5612ba82eea788b87e2c275dc81eba343a5dff2e",
+    "savings.js": "a6ace93bba7e00f1cb13e494a9930dcbf85115a604cff508a8f05bfa9cf05c72",
+    "app.js": "5a5154351f32c9b3c18f0a7a66cae0abbea1b0345ff45ae037577e4417d5798d",
+    "network-table.js": "83c81a631da51eb02fd6bbc797b2b9cf81ce9ecbbbdb823a5e035d5c0b527f47"
+  },
+  "core": {},
+  "online": {
+    "minimumLabel": "9f8e9a8ab6babb99cf472595779e9545e476bd110c83c4456fd05bb6696a404a"
+  },
+  "ui": {
+    "renderRelevantSavings": "7897c2e65580f6349c3e35d6833a7a7b9df2d5558c6a41bb76a155fead7bde26"
+  },
+  "network": {
+    "model": "c1475515d5405ea47be18bfb6aaa9876ca0b2191c9d8a04a57fa8a21e058a58f"
+  }
+}

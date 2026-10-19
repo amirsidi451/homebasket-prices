@@ -1,15 +1,14 @@
-HomeBasket v2.6.7 — final validation
-1815 PASS; 0 failed suites. Includes every previous suite plus 33 v267 fixture/VM cases. Full output: test-results.txt.
-26 Node syntax checks; see syntax-results.txt. Syntax checks are NOT browser execution.
-Production config SHA256: 2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0
+HomeBasket v2.6.8 — FINAL VALIDATION
+1854 PASS; 0 failed suites. All previous regressions plus 39 new v268 cases. Full log: test-results.txt.
+New checks: canonical two-decimal deficit wording; full7/7 Victory total16130 and deficit10070 agorot at Mitzpe Ramon; full under minimum precedes partial without winner; minimum-qualified full cart precedes under-minimum full; Netanya/Haifa/Hod Hasharon savings count wording; unknown pickup excluded from numeric savings; fixed two-decimal currency; browser-runner corrections.
+Fixtures contain synthetic coverage/subtotals and are not live retailer data.
 
-Implemented: coverage priority inside partial carts even when a full cart exists; consistent geographic-relevance count and unverified-pickup wording in savings area; explicit synonym suggestion as primary zero-result UI without contradictory generic empty state.
-Exact customer barcode fixtures: Tel Aviv 10 items with diaper/yogurt/potato quantities; Netanya 6 items. Amount/coverage fixtures are synthetic to isolate ordering, NOT live prices. Hod Hasharon, unknown totals, minimum tie-breaks, estimates and explicit search-button behavior also covered.
+Config exact SHA256: 2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0
+Unchanged bytes: config.js, core.js, fees.js, top-ranking.js, styles.css, redesign.css, layout.js, legal.html, chain-status.js, comparison-view.js. Online fee/quote/service/city-normalization functions and savings model/difference/comparator verified unchanged. Network model differs ONLY in status.push minimum label, verified by normalized source hash. minimumLabel and savings render changes are display-only. Index unchanged apart from cache keys 267 to268. No data schema changes. No live deployment.
+Backup before change: backups/HomeBasket_Static_v2.6.7.zip plus BACKUP_v2.6.7_SHA256.txt.
+Historical manifests retained. Authorized pins added only for changed presentation functions/files; no removal of regression suites.
 
-Unchanged byte for byte: config.js, core.js, online-core.js, fees.js, chain-status.js, comparison-view.js, styles.css, redesign.css, layout.js, legal.html. Numerical savings model, difference function and network model also verified byte-identical. Only ordering comparators and presentation changed; no data schema changes. Seven visible chains, hidden Osher, disabled fees preserved. No live-site deployment.
-Backup before change: backups/HomeBasket_Static_v2.6.6.zip plus BACKUP_v2.6.6_SHA256.txt. Source hash guards updated only for authorized changes; historical manifests retained. Index layout unchanged, asset cache keys advanced to 267; release constant 2.6.7.
-
-NOT RUN HERE: Playwright or visual/console browser checks at 1280,390,640@2x. Supported control-browser is unavailable; Sites skill says: “If $control-browser is unavailable, skip browser QA”. Source: skill://plugin_connector_1p_689987207de08191979cf68eca2941c6/sites/SKILL.md
-Prepared runner: tests/v267.playwright.cjs. It asserts exact new scenarios plus retained pickup/delivery regression scenarios, overflow and healthy-page console errors. Intentional blocked-script negative case is isolated. No claim of zero browser-console errors or rendered passes is made.
-Physical-phone QA still required: safe-area, touch/keyboard, order-modal scrolling, scroll-to-results, clipboard/WhatsApp. DPR2 is not equivalent to desktop 200% zoom.
-Historical staged-data results retained with their original scope: they are not a fresh scan or current published-data verification. data is not bundled.
+NOT RUN HERE: Playwright/visual browser checks at 1280,390,640@2x, or physical-phone checks. control-browser unavailable. Sites instruction: “If $control-browser is unavailable, skip browser QA”. Source: skill://plugin_connector_1p_689987207de08191979cf68eca2941c6/sites/SKILL.md
+Prepared tests/v268.playwright.cjs fixes v267 false assertion for unlisted Mitzpe Ramon, and checks blocked-script startup UI without calling missing app dependency. It retains overflow/console assertions for healthy pages at all three sizes and adds full-below-minimum scenario. Blocked-script console errors are intentional and separate. No browser-pass or zero-console-error claim is made.
+Physical phone still needs safe-area, touch targets, keyboard, order-modal scrolling, auto-scroll and clipboard/WhatsApp checks. DPR2 is not desktop200%zoom.
+Historical staged-data logs retain their earlier scope; they are not a fresh data check. No data bundled.

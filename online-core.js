@@ -32,7 +32,7 @@
   const deficit=amountKnown&&minimumOrder!==null?Math.max(0,minimumOrder-subtotal):null;
   return {fee:amount,minimumOrder,deficit,belowMinimum:deficit!==null&&deficit>0,basis:policy?.basis==='published'?'published':'estimate',subtotal:amountKnown?subtotal:null};
  }
- function minimumLabel(q){return q?.belowMinimum?'מתחת למינימום הזמנה (חסרים '+new Intl.NumberFormat('he-IL',{maximumFractionDigits:2}).format(q.deficit/100)+' ₪)':'';}
+ function minimumLabel(q){return q?.belowMinimum?'חסרים '+new Intl.NumberFormat('he-IL',{minimumFractionDigits:2,maximumFractionDigits:2}).format(q.deficit/100)+' ₪ למינימום':'';}
  function policyLabel(chain,config,mode){
   const r=settings(chain,config).fulfilment?.[mode],q=quote(chain,config,mode);
   const money=n=>new Intl.NumberFormat('he-IL',{style:'currency',currency:'ILS'}).format(n/100);

@@ -1,0 +1,16 @@
+{
+  "online-core.js": {
+    "fee": "2460083853f017ea3d5d9b5e353a3a7be1f27d7bbd904a32420df0846a3195dc",
+    "quote": "3fffd04cb7754ab1d840ac7e5bd4444c87fe00129fe35819ce49d13bbdaed74c",
+    "service": "be996f67c9ad75fdfa05dce6e03b61a24737f4f99d8b5edf3cb2e39ade56fafa",
+    "normalize": "2fd2cc87bab5bdeb701b4737b038f7c9b946a72dba63cffed46985185cc76f57",
+    "canonicalCity": "f084a4754e4e9c7d6cdb5c8537649b59e20727a936b4446c43bc147beb927f28"
+  },
+  "savings.js": {
+    "model": "b231daf313da39f857c1a21d29758251b9269b28323bdfaed543f5d3081d6d1a",
+    "difference": "ae46b4561ceef9b78babe5a46b8cce857a95e19437d5a7e9bd81bc0605bc1435"
+  },
+  "network-table.js": {
+    "sortRows": "8e9a8787fa5d67b18d958610025d542c89889e0f32b0e537358d3c8bc36c49c1"
+  }
+}

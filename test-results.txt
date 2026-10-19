@@ -1,6 +1,6 @@
-HomeBasket v2.6.7 — OFFLINE REGRESSION RESULTS
-1815 PASS; 0 failed suites; 33 new v267 cases.
-Fixture/VM/markup tests only. Playwright NOT RUN; see VALIDATION.txt.
+HomeBasket v2.6.8 — OFFLINE REGRESSION RESULTS
+1854 PASS; 0 failed suites; 39 new v268 cases.
+Fixture/VM/markup checks. Playwright NOT RUN here; see VALIDATION.txt.
 
 compact.test.cjs
 PASS compact products decode names and numeric quantity
@@ -58,7 +58,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 1044 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 1056 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -160,7 +160,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":189,"search_ms":17.35,"heap_delta_mb":49.7,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":161,"search_ms":15.64,"heap_delta_mb":50.6,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -1938,6 +1938,48 @@ PASS v267 no zero-results counter or silent expansion beside suggestion
 PASS v267 explicit suggestion still works without modifying cart
 PASS v267 real empty search with no suggestion keeps useful next action
 33 v267 cases passed; fixtures/VM only; browser execution separate.
+
+v268.test.cjs
+PASS v268 minimum deficit uses exactly two decimals 10070
+PASS v268 minimum deficit uses exactly two decimals 8700
+PASS v268 minimum deficit uses exactly two decimals 22560
+PASS v268 minimum deficit uses exactly two decimals 1
+PASS v268 minimum met has no deficit message
+PASS v268 Mitzpe Ramon full7 total161.30 deficit100.70 unchanged
+PASS v268 full below minimum remains before partial, without recommendation
+PASS v268 network status has canonical deficit label
+PASS v268 unchanged config.js
+PASS v268 unchanged core.js
+PASS v268 unchanged fees.js
+PASS v268 unchanged top-ranking.js
+PASS v268 unchanged styles.css
+PASS v268 unchanged redesign.css
+PASS v268 unchanged layout.js
+PASS v268 unchanged chain-status.js
+PASS v268 unchanged comparison-view.js
+PASS v268 unchanged legal.html
+PASS v268 network model changes only its minimum display wording
+PASS v268 numeric/service API unchanged online-core.js.fee
+PASS v268 numeric/service API unchanged online-core.js.quote
+PASS v268 numeric/service API unchanged online-core.js.service
+PASS v268 numeric/service API unchanged online-core.js.normalize
+PASS v268 numeric/service API unchanged online-core.js.canonicalCity
+PASS v268 numeric/service API unchanged savings.js.model
+PASS v268 numeric/service API unchanged savings.js.difference
+PASS v268 numeric/service API unchanged network-table.js.sortRows
+PASS v268 new browser tour allows a genuinely unlisted city
+PASS v268 blocked-script test never invokes missing app dependency
+PASS v268 under-minimum full basket has accurate savings headline
+PASS v268 chart and network table use same deficit label
+PASS v268 נתניה states full carts that meet minimum, not all full carts
+PASS v268 נתניה keeps unverified pickup outside savings
+PASS v268 חיפה states full carts that meet minimum, not all full carts
+PASS v268 חיפה keeps unverified pickup outside savings
+PASS v268 הוד השרון states full carts that meet minimum, not all full carts
+PASS v268 הוד השרון keeps unverified pickup outside savings
+PASS v268 savings monetary cells always show two decimals including zero and integers
+PASS v268 eligible full basket remains before full below minimum
+39 v268 cases passed; fixture/VM only; Playwright not executed here.
 
 markup.test.py
 PASS markup has no duplicate IDs

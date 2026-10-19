@@ -43,7 +43,7 @@ test('unknown city: verify chains remain (3), Rami excluded by known areas, avai
  test('only 1 shown chain with full coverage: Top list has 1, honest note, no hidden filler',()=>{const t=tops(e);assert.equal(t.length,4);assert.match(e.get('comparison').innerHTML,/חסר|אין מחיר/);for(const h of HIDDEN)assert.ok(!t.includes(h));});
  // --- below minimum order still marked
  e=env({minimums:{0:99999}});e.run("applyService('רחובות','delivery')");await e.run('renderCompare()');
- test('below-minimum chain not in Top 3 and clearly marked; hidden still absent',()=>{const t=tops(e);assert.equal(t.length,4);assert.ok(t.includes(0));assert.doesNotMatch(e.get('comparison').innerHTML,/network-winner" data-network-chain="0"/);assert.match(e.get('comparison').innerHTML,/מתחת למינימום/);for(const h of HIDDEN)assert.ok(!t.includes(h));});
+ test('below-minimum chain not in Top 3 and clearly marked; hidden still absent',()=>{const t=tops(e);assert.equal(t.length,4);assert.ok(t.includes(0));assert.doesNotMatch(e.get('comparison').innerHTML,/network-winner" data-network-chain="0"/);assert.match(e.get('comparison').innerHTML,/חסרים [\d.,]+ ₪ למינימום/);for(const h of HIDDEN)assert.ok(!t.includes(h));});
  // --- pickup / shared group / partial
  e=env({noPriceFor:[2]});e.run("applyService('רחובות','pickup')");await e.run('renderCompare()');
  test('pickup + one chain without prices: partial handled, 4 shown max, hidden absent',()=>{const t=tops(e);assert.equal(t.length,4);for(const h of HIDDEN)assert.ok(!t.includes(h));assert.doesNotMatch(e.get('comparison').innerHTML,/data-order="2"/);});
