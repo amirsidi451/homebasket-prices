@@ -1,0 +1,43 @@
+[
+  {
+    "source": "HAZI_HINAM",
+    "name": "חצי חינם",
+    "price_source": "online_branch",
+    "price_is_estimate": false,
+    "price_label_he": "מחיר אונליין"
+  },
+  {
+    "source": "OSHER_AD",
+    "name": "אושר עד"
+  },
+  {
+    "source": "RAMI_LEVY",
+    "name": "רמי לוי"
+  },
+  {
+    "source": "SHUFERSAL",
+    "name": "שופרסל"
+  },
+  {
+    "source": "TIV_TAAM",
+    "name": "טיב טעם",
+    "price_source": "picking_branches",
+    "price_is_estimate": false,
+    "price_label_he": "מחיר אונליין (סניפי ליקוט)"
+  },
+  {
+    "source": "VICTORY_NEW_SOURCE",
+    "name": "ויקטורי"
+  },
+  {
+    "source": "YAYNO_BITAN_AND_CARREFOUR",
+    "name": "יינות ביתן/קרפור"
+  },
+  {
+    "source": "YOHANANOF",
+    "name": "יוחננוף",
+    "price_source": "branch_modal_estimate",
+    "price_is_estimate": true,
+    "price_label_he": "מחיר משוער לפי סניף"
+  }
+]

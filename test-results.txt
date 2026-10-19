@@ -54,7 +54,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 787 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 701 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +156,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":222,"search_ms":18.4,"heap_delta_mb":31.9,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":168,"search_ms":18.05,"heap_delta_mb":32.5,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -1391,7 +1391,7 @@ PASS v256 pricing retained, explicit city normalization allowed top-ranking.js
 PASS v256 pricing retained, explicit city normalization allowed comparison-view.js
 PASS v256 pricing retained, explicit city normalization allowed savings.js
 PASS v256 pricing retained, explicit city normalization allowed chain-status.js
-PASS v256 production four visible flags preserved
+PASS v256 production seven authorized visible flags preserved
 PASS v256 production service areas preserved including Rehovot
 PASS v256 legal next to index has required targets and placeholder
 PASS v256 footer contains both legal links
@@ -1457,7 +1457,7 @@ PASS v257 equivalent city key פרדס חנה כרכור/פרדס-חנה-כרכ�
 PASS v257 config spelling preferred פרדס חנה כרכור
 PASS v257 equivalent city key גבעת שמואל/גבעת־שמואל
 PASS v257 config spelling preferred גבעת שמואל
-City source/service equivalent pairs checked: 95
+City source/service equivalent pairs checked: 137
 PASS v257 every static equivalent of configured service city has identical availability
 PASS v257 suggestion prefixes never return duplicate city keys
 PASS v257 Rami government spelling served הרצלייה
@@ -1616,6 +1616,74 @@ PASS v261 product scroll viewport clips overflowing paint only inside wrapper
 PASS v261 CSS diff contains only requested declarations
 PASS v261 real mobile test contains exact viewport assertions both disclosure states
 17 v261 checks passed; CSS/invariants/test contract only. Real Playwright execution reported separately.
+
+v262.test.cjs
+PASS v262 uploaded config exact authorized hash
+PASS v262 seven visible authorized sources
+PASS v262 93 entries in uploaded Hazi delivery list, preserved byte-exact
+PASS v262 core API unchanged ageHours
+PASS v262 core API unchanged ageNotice
+PASS v262 core API unchanged cleanName
+PASS v262 core API unchanged eggGrade
+PASS v262 core API unchanged promotionDescription
+PASS v262 core API unchanged displayName
+PASS v262 core API unchanged createPromotionIndex
+PASS v262 core API unchanged findPromotions
+PASS v262 core API unchanged queryTokens
+PASS v262 core API unchanged validateSources
+PASS v262 core API unchanged priceStatus
+PASS v262 core API unchanged commonAcross
+PASS v262 core API unchanged similarProducts
+PASS v262 core API unchanged adjusted
+PASS v262 core API unchanged chains
+PASS v262 core API unchanged products
+PASS v262 core API unchanged fresh
+PASS v262 core API unchanged compare
+PASS v262 core API unchanged validCart
+PASS v262 core API unchanged snapshotStamp
+PASS v262 core API unchanged normalizeUnit
+PASS v262 core API unchanged packageLabel
+PASS v262 core API unchanged snapshots
+PASS v262 core API unchanged search
+PASS v262 core API unchanged coverage
+PASS v262 core API unchanged autoSelect
+PASS v262 core API unchanged cheapest
+PASS v262 core API unchanged promotions
+PASS v262 core API unchanged activePromotion
+PASS v262 unchanged fulfilment/ranking/layout online-core.js
+PASS v262 unchanged fulfilment/ranking/layout fees.js
+PASS v262 unchanged fulfilment/ranking/layout top-ranking.js
+PASS v262 unchanged fulfilment/ranking/layout savings.js
+PASS v262 unchanged fulfilment/ranking/layout chain-status.js
+PASS v262 unchanged fulfilment/ranking/layout comparison-view.js
+PASS v262 unchanged fulfilment/ranking/layout styles.css
+PASS v262 unchanged fulfilment/ranking/layout redesign.css
+PASS v262 unchanged fulfilment/ranking/layout layout.js
+PASS v262 unchanged fulfilment/ranking/layout legal.html
+PASS v262 eight-field row keeps src
+PASS v262 seven-element row under eight-field header has no fabricated source
+PASS v262 legacy seven-field export remains exact numeric fields
+PASS v262 source preserved online_branch
+PASS v262 source preserved online_branch_modal_fallback
+PASS v262 source preserved picking_branches
+PASS v262 source preserved branch_modal_estimate
+PASS v262 metadata survives chains parser unchanged
+PASS v262 all seven in delivery table, Osher absent all tables
+PASS v262 Yohananof delivery status pickup-only and cannot win/order
+PASS v262 Yohananof delivery fee not fabricated or called shipping
+PASS v262 price estimate clear on Yohananof row and total
+PASS v262 online labels clear for Hazi and Tiv Taam
+PASS v262 Hazi small basket min 500 deficit 400
+PASS v262 Tiv delivery fee estimate explicitly labelled
+PASS v262 seven rows in pickup and Yohananof eligible with 15 fee
+PASS v262 pickup row says picking charge not delivery
+PASS v262 Tiv free-above existing exact boundary 74999
+PASS v262 Tiv free-above existing exact boundary 75000
+PASS v262 Tiv free-above existing exact boundary 75001
+PASS v262 source label escaped and cannot inject markup
+PASS v262 original four online totals exactly existing quote plus item price
+PASS v262 mobile exact overflow fix retained and browser test checks seven rows
+65 new checks passed; real mobile browser execution is separate.
 
 markup.test.py
 PASS markup has no duplicate IDs

@@ -1,0 +1,14 @@
+{
+  "files": {
+    "config.js": "2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0",
+    "core.js": "375c46390cae1c92a9a405b20d299585fc6b5a46f17da2a1c12d3d09855faae0",
+    "app.js": "ad34867ae03861f733a9270c0b4314e2481989cb543af788b96053782c6e0731",
+    "network-table.js": "ff6d15df48ca64f015af3d8d08e2afdb0b2b40c8290de9cdd5e2634304976012"
+  },
+  "core": {
+    "prices": "0219fcd785c36e1747d774bb2e7f56da3f84cf629f609f70c766b48c55bf6177"
+  },
+  "ui": {
+    "openOrder": "b1237323a3c9e0cec1c1be8ed8b607fd0efe4616dbb6630255397256d5b5cef2"
+  }
+}

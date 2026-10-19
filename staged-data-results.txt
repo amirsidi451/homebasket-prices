@@ -1,0 +1,14 @@
+PASS original four chain settings identical to 2.6.1
+PASS real export: seven rows, labels, visibility and Yohananof delivery
+PASS real export: seven rows, labels, visibility and Yohananof pickup
+Products: 90757 priced barcodes: 90757 selected barcodes: 40084107, 54051140
+SOURCE | PRICE ROWS | 7 FIELDS | 8 FIELDS | SRC
+HAZI_HINAM | 19772 | 0 | 19772 | {"online_branch":9778,"online_branch_modal_fallback":9994}
+OSHER_AD | 9730 | 9730 | 0 | {}
+RAMI_LEVY | 26244 | 26244 | 0 | {}
+SHUFERSAL | 38644 | 38644 | 0 | {}
+TIV_TAAM | 21491 | 0 | 21491 | {"picking_branches":21491}
+VICTORY_NEW_SOURCE | 15922 | 15922 | 0 | {}
+YAYNO_BITAN_AND_CARREFOUR | 22699 | 22699 | 0 | {}
+YOHANANOF | 16972 | 0 | 16972 | {"branch_modal_estimate":16972}
+PASS all numeric fields unchanged by mixed 7/8-field parser

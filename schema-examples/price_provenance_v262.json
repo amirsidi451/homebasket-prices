@@ -1,0 +1,60 @@
+{
+  "chains": [
+    {
+      "source": "HAZI_HINAM",
+      "name": "חצי חינם",
+      "price_source": "online_branch",
+      "price_is_estimate": false,
+      "price_label_he": "מחיר אונליין",
+      "price_basis_branches": [
+        {
+          "store_id": "103"
+        }
+      ]
+    },
+    {
+      "source": "YOHANANOF",
+      "name": "יוחננוף",
+      "price_source": "branch_modal_estimate",
+      "price_is_estimate": true,
+      "price_label_he": "מחיר משוער לפי סניף",
+      "price_basis_branches": []
+    }
+  ],
+  "prices": {
+    "fields": [
+      "chain",
+      "last",
+      "min",
+      "median",
+      "max",
+      "stores",
+      "last_updated",
+      "src"
+    ],
+    "unit": "agorot",
+    "p": {
+      "12345678": [
+        [
+          0,
+          1000,
+          1000,
+          1000,
+          1000,
+          1,
+          "2026-10-19",
+          "online_branch"
+        ],
+        [
+          1,
+          1100,
+          1100,
+          1100,
+          1100,
+          1,
+          "2026-10-19"
+        ]
+      ]
+    }
+  }
+}

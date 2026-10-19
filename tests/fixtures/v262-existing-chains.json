@@ -1,0 +1,166 @@
+{
+  "VICTORY_NEW_SOURCE": {
+    "freeAbove": null,
+    "availability": "verify",
+    "visible": true,
+    "name": "ויקטורי",
+    "orderUrl": "https://www.victoryonline.co.il/",
+    "deepLink": null,
+    "serviceAreas": {
+      "delivery": [],
+      "pickup": []
+    },
+    "delivery": null,
+    "pickup": null,
+    "estimatedDeliveryFee": 35.9,
+    "priceBasis": "estimate",
+    "estimatedPickupFee": 12,
+    "fulfilment": {
+      "basis": "estimate",
+      "delivery": {
+        "amount": 35.9,
+        "minimumOrder": 250
+      },
+      "pickup": {
+        "amount": 12,
+        "minimumOrder": 250
+      }
+    }
+  },
+  "RAMI_LEVY": {
+    "freeAbove": null,
+    "availability": "known",
+    "visible": true,
+    "name": "רמי לוי",
+    "orderUrl": "https://www.rami-levy.co.il/he",
+    "deepLink": null,
+    "serviceAreas": {
+      "delivery": [
+        "מבשרת ציון",
+        "פסגת זאב",
+        "מעלה אדומים",
+        "מודיעין",
+        "שוהם",
+        "רחובות",
+        "נס ציונה",
+        "תל אביב (מרכז וצפון, עד ארלוזורוב)",
+        "פתח תקווה",
+        "ראש העין",
+        "גבעתיים",
+        "רמת גן",
+        "חולון",
+        "בת ים",
+        "אזור",
+        "גבעת שמואל",
+        "גני תקווה",
+        "קריית אונו",
+        "הרצליה",
+        "רמת השרון",
+        "הוד השרון",
+        "כפר סבא",
+        "רעננה",
+        "אבן יהודה",
+        "אשדוד",
+        "גן יבנה",
+        "אלקנה",
+        "חדרה",
+        "קיסריה",
+        "אור עקיבא",
+        "פרדס חנה כרכור",
+        "זכרון יעקב",
+        "בנימינה",
+        "כפר יונה",
+        "תל מונד",
+        "נתניה",
+        "חיפה",
+        "עכו",
+        "נשר",
+        "נהריה",
+        "כרמיאל",
+        "קריית שמונה",
+        "קצרין",
+        "שדרות",
+        "מעלות תרשיחא"
+      ],
+      "pickup": []
+    },
+    "delivery": true,
+    "pickup": null,
+    "estimatedDeliveryFee": 35.9,
+    "priceBasis": "estimate",
+    "estimatedPickupFee": null,
+    "fulfilment": {
+      "basis": "estimate",
+      "delivery": {
+        "amount": 35.9,
+        "minimumOrder": 0
+      },
+      "pickup": {
+        "amount": null,
+        "minimumOrder": 0
+      }
+    }
+  },
+  "SHUFERSAL": {
+    "freeAbove": null,
+    "availability": "verify",
+    "visible": true,
+    "name": "שופרסל",
+    "orderUrl": "https://www.shufersal.co.il/online/",
+    "deepLink": null,
+    "serviceAreas": {
+      "delivery": [],
+      "pickup": []
+    },
+    "delivery": null,
+    "pickup": null,
+    "estimatedDeliveryFee": 35.9,
+    "priceBasis": "estimate",
+    "estimatedPickupFee": 15,
+    "fulfilment": {
+      "basis": "estimate",
+      "delivery": {
+        "amount": 35.9,
+        "minimumOrder": 0
+      },
+      "pickup": {
+        "amount": 15,
+        "minimumOrder": 0,
+        "tiers": [
+          {
+            "above": 750,
+            "amount": 10
+          }
+        ]
+      }
+    }
+  },
+  "YAYNO_BITAN_AND_CARREFOUR": {
+    "freeAbove": null,
+    "availability": "verify",
+    "visible": true,
+    "name": "יינות ביתן / קרפור",
+    "orderUrl": "https://www.carrefour.co.il/",
+    "deepLink": null,
+    "serviceAreas": {
+      "delivery": [],
+      "pickup": []
+    },
+    "delivery": null,
+    "pickup": null,
+    "estimatedDeliveryFee": 35.9,
+    "priceBasis": "estimate",
+    "estimatedPickupFee": 15,
+    "fulfilment": {
+      "basis": "estimate",
+      "delivery": {
+        "amount": 35.9,
+        "minimumOrder": 200
+      },
+      "pickup": {
+        "amount": 15,
+        "minimumOrder": 200
+      }
+    }
+  }
+}

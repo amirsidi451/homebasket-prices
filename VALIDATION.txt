@@ -1,9 +1,10 @@
-HomeBasket 2.6.1
-FINAL OFFLINE: 1522 PASS; 0 failed suites. Complete output: test-results.txt.
-17 new patch checks: exact two-declaration CSS diff, min-width override, paint containment, executable mobile test contract, and unchanged source/config/pricing/layout/legal files.
-18 root JavaScript files and the standalone Playwright script passed node --check.
-Only runtime edits relative to 2.6.0: network-table min-width:0; network-products-scroll contain:paint; release number/cache query tokens.
-No config.js/data-schema/pricing/JavaScript behavior changes. Backup 2.6.0 manifest included. No deployment.
+HomeBasket 2.6.2 — FINAL
+1587 PASS; 0 failed suites. Complete logs: test-results.txt.
+65 targeted additions: byte-exact supplied config, seven authorized sources, 93 supplied Hazi locality entries, every unchanged core API except optional src parsing, original fulfilment/ranking/layout files, mixed 7/8 prices, all four src values, source metadata, source labels/escaping, estimate explanation/total, pickup-only/no-delivery gating, Hazi deficit, Tiv estimated fee and strict free-above boundary, unchanged original-four pricing arithmetic, retained mobile fixes and seven-row browser test contract.
+20 node --check passes: 18 root JavaScript files plus optional staged-data verifier and Playwright regression script.
+Actual staged export verified separately: 90757 products/priced barcodes. Numeric fields of every row unchanged by parser; four existing sources remain seven-field rows. Seven shown rows in delivery and pickup; Osher hidden; Yohananof excluded from delivery and 15 ILS picking fee in pickup. See staged-data-results.txt.
+Original four chain configuration objects equal 2.6.1 exactly; new production config equals supplied bytes. Online/fee/ranking/savings/layout/CSS/legal files retained. Only parser metadata support and provenance presentation changed.
+Historical backup manifests preserved; explicit allowed current source/config hashes in tests/v262-pins.json. No test suite removed. Fixture service configs remain independent of production cities.
 
-NOT RUN: tests/mobile-overflow.playwright.cjs. Browser control unavailable here; no real-browser measurements or iPhone QA claimed. The test is ready for an external Playwright QA environment and asserts innerWidth===390 and documentElement.scrollWidth<=390 before/after opening product comparison.
-Offline source checks do not substitute for that rendered browser test.
+NOT RUN: real Playwright mobile-overflow at 390px / iPhone. Browser-control capability unavailable here. Updated executable test checks exactly seven rows plus innerWidth===390 and documentElement.scrollWidth<=390 before and after opening per-product comparison. It includes mixed 7/8-field data and the new source labels. Real mobile pass is NOT claimed.
+No data directory or full production data bundled. No live deployment.
