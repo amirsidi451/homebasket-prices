@@ -39,10 +39,10 @@ test('ambiguous multi-city text never invents a location',()=>{const c={chains:{
 const e=setup();await loadFixture(e);
 e.run("HB_CONFIG.chains.A.fulfilment={basis:'estimate',delivery:{amount:35.9,minimumOrder:250},pickup:{amount:12,minimumOrder:250}};HB_CONFIG.chains.B.fulfilment={basis:'estimate',delivery:{amount:35.9,minimumOrder:0},pickup:{amount:15,minimumOrder:0}};cart=[{barcode:'3073781199918',qty:1}]");
 await e.run('renderCompare()');
-test('minimum audit visible but not primary card',()=>{assert.match(e.get('all-chain-explanations').innerHTML,/מתחת למינימום הזמנה/);assert.doesNotMatch(e.get('comparison').innerHTML,/data-top-chain="0"/);assert.match(e.get('comparison').innerHTML,/data-top-chain="1"/);});
+test('minimum audit visible but not primary card',()=>{assert.match(e.get('comparison').innerHTML,/מתחת למינימום/);assert.doesNotMatch(e.get('comparison').innerHTML,/network-winner" data-network-chain="0"/);assert.match(e.get('comparison').innerHTML,/network-winner" data-network-chain="1"/);});
 e.ctx.location.hash='#compare';e.run("HB_CONFIG.chains.A.serviceAreas=['עיר אחרת'];HB_CONFIG.chains.B.serviceAreas=['עיר בדיקה'];applyService('עיר אחרת','delivery')");
 await e.run('renderCompare()');
-test('location updates all comparison and audit content without navigation',()=>{assert.match(e.get('location-summary').textContent,/עיר אחרת/);assert.match(e.get('all-chain-explanations').innerHTML,/לא זמינה בעירך/);assert.doesNotMatch(e.get('comparison').innerHTML,/data-top-chain="1"/);assert.match(e.get('result-summary').textContent,/מתחת למינימום/);assert.match(e.get('comparison').innerHTML,/הסל מתחת למינימום ההזמנה/);});
+test('location updates all comparison and audit content without navigation',()=>{assert.match(e.get('location-summary').textContent,/עיר אחרת/);assert.match(e.get('comparison').innerHTML,/לא זמינה בעירך/);assert.doesNotMatch(e.get('comparison').innerHTML,/network-winner" data-network-chain="1"/);assert.match(e.get('comparison').innerHTML,/מתחת למינימום/);});
 e.run("applyService('עיר בדיקה','delivery')");e.get('service-city').value='עיר בדיקה';e.get('service-pickup').checked=true;e.get('service-pickup').listeners.change();await e.run('renderCompare()');
 test('radio selection applies pickup immediately and recalculates total',()=>{assert.equal(e.run('servicePlace.mode'),'pickup');assert.match(e.get('comparison').innerHTML,/איסוף משוער/);assert.match(e.get('comparison').innerHTML,/27/);});
 e.get('service-city').value='עיר אחרת';e.get('service-city').listeners.input();await new Promise(r=>setTimeout(r,350));

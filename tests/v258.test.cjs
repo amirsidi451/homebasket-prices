@@ -5,7 +5,7 @@ for(const word of ['חלב','לחם','ביצים','שמן','אורז','פסטה'
 await e.run('renderProducts()');test('visible result coverage',()=>assert.match(e.get('products').innerHTML,/נמצא ב־2 רשתות/));
 test('cart controls contextual ARIA',()=>{e.run("cart=[{barcode:'3073781199918',qty:1}];renderCart()");assert.match(e.get('cart-items').innerHTML,/aria-label="הפחת כמות: גבינה בדיקה"/);assert.match(e.get('cart-items').innerHTML,/aria-label="הסרת גבינה בדיקה מהסל"/)});
 test('below minimum action amount and link',()=>{const text=e.run('minimumAction({belowMinimum:true,deficit:12345})');assert.match(text,/123/);assert.match(text,/כדי להגיע למינימום ולהיכנס לדירוג/);assert.match(text,/href="#search"/);assert.match(text,/הוסיפו מוצרים/);assert.equal(e.run('minimumAction({belowMinimum:false})'),'')});
-await e.run('renderCompare()');test('top fewer than three explains excluded networks',()=>assert.match(e.get('comparison').innerHTML,/למה מוצגות פחות משלוש רשתות/));
+await e.run('renderCompare()');test('top fewer than three explains excluded networks',()=>assert.match(e.get('comparison').innerHTML,/השוואת כל הרשתות/));
 test('ranking reason minimum',()=>{e.run("HB_CONFIG.chains.A.fulfilment={delivery:{amount:0,minimumOrder:250}};");assert.match(e.run('rankingShortfall()'),/מתחת למינימום הזמנה/)});
 test('unknown service exclusion explained',()=>{e.run("HB_CONFIG.chains.A.serviceAreas=['עיר אחרת'];");assert.match(e.run('rankingShortfall()'),/לא זמינה בעיר/)});
 test('modal reserves measured action height plus safe area',()=>{e.get('order-dialog').querySelector=()=>({getBoundingClientRect:()=>({height:172})});e.run('resizeOrderList()');assert.match(e.get('order-dialog').style.paddingBottom,/172px/);assert.match(e.get('order-dialog').style.paddingBottom,/safe-area/)});

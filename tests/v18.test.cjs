@@ -52,7 +52,7 @@ test('online label only explicit config',()=>assert.match(O.priceLabel(chain,{ch
  test('estimated price label always visible for default export',()=>assert.match(e.get('comparison').innerHTML,/לא אומת כמחיר אונליין/));
  e.get('metric').value='median';await e.run('renderCompare()');test('hidden legacy metric cannot switch canonical chain price',()=>assert.match(e.get('result-summary').textContent,/20/));
  e.run('openOrder(0);setQuantity("3073781199918",3)');test('cart edits invalidate handoff list',()=>{assert.equal(e.get('order-dialog').open,false);assert.equal(e.get('order-list').value,'');});
- e.run("applyService('עיר לא מוכרת','delivery')");await e.run('renderCompare()');test('unconfigured area cannot rank any chain',()=>{assert.equal(e.run('selected.size'),0);assert.match(e.get('result-summary').textContent,/לא בוצעה השוואה/);});
+ e.run("applyService('עיר לא מוכרת','delivery')");await e.run('renderCompare()');test('unconfigured area cannot rank any chain',()=>{assert.equal(e.run('selected.size'),0);assert.match(e.get('result-summary').textContent,/אין כרגע סל מלא/);});
  e.run("applyService('עיר ב','delivery');catalog.set('42',{barcode:'42',name:'גבינה חלופית',quantity:1,unit:'יחידות',weighted:false});approved.set('0:3073781199918',{barcode:'42',qty:2});comparisonRecords.set('3073781199918',new Map());comparisonRecords.set('42',new Map([[0,{last:990}]]));openOrder(0)");
  test('explicit approved substitute used for missing original in handoff',()=>assert.match(plain(e.get('order-list').value),/גבינה חלופית.*— 2 אריזות/));
  test('city never included in versioned data URLs',()=>assert.doesNotMatch(e.run("dataURL('prices.json.gz').href"),/עיר|%D7%A2%D7%99%D7%A8/));
@@ -67,8 +67,8 @@ test('online label only explicit config',()=>assert.match(O.priceLabel(chain,{ch
  test('weighted list preserves fractional kilograms',()=>assert.equal(plain(O.list([{barcode:'42',qty:0.75}],new Map([['42',{name:'עגבניות',weighted:true}]]),p=>p.name)),'עגבניות — 0.75 ק״ג'));
  // Stale chains and promotions retain their independent freshness rule.
  e.run("applyService('עיר ב','delivery');meta.per_chain_freshness.B.latest_snapshot_at='2020-01-01'");await e.run('renderCompare()');
- test('service availability does not override 72h freshness',()=>assert.match(e.get('comparison').innerHTML,/לא זמין היום/));
- test('old product update still valid in fresh chain',()=>assert.match(e.get('comparison').innerHTML,/מחיר חלקי:.*30/));
+ test('service availability does not override 72h freshness',()=>assert.match(e.get('comparison').innerHTML,/לא עדכנית/));
+ test('old product update still valid in fresh chain',()=>assert.match(e.get('comparison').innerHTML,/30[.,]00/));
  e.run('openOrder(0)');await e.run('load()');test('refresh closes stale handoff and clears list',()=>{assert.equal(e.get('order-dialog').open,false);assert.equal(e.get('order-list').value,'');});
  const html=fs.readFileSync(path.join(__dirname,'../index.html'),'utf8'),css=fs.readFileSync(path.join(__dirname,'../styles.css'),'utf8');
  test('disclaimer exact requested text present',()=>assert.ok(html.includes('המחירים להשוואה בלבד, המחיר הסופי ייקבע באתר הרשת')));

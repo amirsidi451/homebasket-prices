@@ -37,8 +37,8 @@ test('deterministic 512 mixed-state scenarios always partition into eight',()=>{
  const e=setup();await loadFixture(e);
  e.run("catalog=HB.products({fields:['name','unit','quantity','weighted'],p:{'100':['חלב','ליטר',2,0],'200':['אורז','גרם',1000,0],'300':['במבה','גרם',80,0],'400':['ביצים L','יחידות',12,0],'500':['שמן זית','מיליליטר',750,0]}});cart=[...catalog.values()].map(p=>({barcode:p.barcode,qty:1}));priceMode='single';priceFiles=['prices.json.gz'];priceCache.clear();priceCache.set('prices.json.gz',new Map(cart.map((item,i)=>[item.barcode,new Map(i===4?[[0,{last:1000}]]:[[0,{last:1000}],[1,{last:2000}]])])));comparisonRecords.clear();");
  await e.run('renderCompare()');let html=e.get('comparison').innerHTML;
- test('partial top card includes missing-products warning',()=>assert.match(html,/data-partial-chain="1"[\s\S]*חסר מוצר אחד בסל/));
- test('partial top card explicitly names missing olive oil and normalized size',()=>{const card=html.slice(html.indexOf('data-partial-chain="1"'));assert.match(card,/שמן זית · 750 מ״ל/);assert.match(card,/× 1/);});
+ test('partial top card includes missing-products warning',()=>assert.match(html,/data-network-chain="1"[\s\S]*חסר מוצר אחד בסל/));
+ test('partial top card explicitly names missing olive oil and normalized size',()=>{const card=html.slice(html.indexOf('data-network-chain="1"'));assert.match(card,/שמן זית · 750 מ״ל/);assert.match(card,/× 1/);});
  test('missing list excludes available products',()=>{const gaps=e.run('renderBasketGaps(1)');assert.doesNotMatch(gaps,/חלב|אורז|במבה|ביצים/);assert.match(gaps,/שמן זית/);});
  test('complete chain has no missing list',()=>assert.equal(e.run('renderBasketGaps(0)'),''));
  test('same explicit names shown in remaining-network cards',()=>{const cards=e.run('networkOrderCards([0])');assert.match(cards,/מחירים נמצאו ל־4 מתוך 5 מוצרים/);assert.match(cards,/חסרים מוצרים בסל/);assert.match(cards,/שמן זית · 750 מ״ל/);});
@@ -57,12 +57,12 @@ test('deterministic 512 mixed-state scenarios always partition into eight',()=>{
  e.run('files=null');
  test('UI counter sum remains original dataset size on city changes',()=>{e.run("applyService('עיר אחרת','delivery')");const x=e.run('updateChainSummary()');assert.equal(x.unavailable,2);assert.equal(keys.reduce((a,k)=>a+x[k],0),2);e.run("applyService('עיר בדיקה','delivery')");const y=e.run('updateChainSummary()');assert.equal(keys.reduce((a,k)=>a+y[k],0),2);});
  const root=path.join(__dirname,'..'),source=fs.readFileSync(path.join(root,'index.html'),'utf8'),app=fs.readFileSync(path.join(root,'app.js'),'utf8'),ico=fs.readFileSync(path.join(root,'favicon.ico'));
- test('SVG favicon explicitly linked with release cache token',()=>assert.match(source,/<link rel="icon"[^>]*href="favicon.svg\?v=259"/));
- test('legacy ICO also explicitly linked and present at site root',()=>{assert.match(source,/<link rel="alternate icon"[^>]*href="favicon.ico\?v=259"/);assert.equal(ico.readUInt16LE(0),0);assert.equal(ico.readUInt16LE(2),1);assert.ok(ico.readUInt16LE(4)>=1);});
+ test('SVG favicon explicitly linked with release cache token',()=>assert.match(source,/<link rel="icon"[^>]*href="favicon.svg\?v=261"/));
+ test('legacy ICO also explicitly linked and present at site root',()=>{assert.match(source,/<link rel="alternate icon"[^>]*href="favicon.ico\?v=261"/);assert.equal(ico.readUInt16LE(0),0);assert.equal(ico.readUInt16LE(2),1);assert.ok(ico.readUInt16LE(4)>=1);});
  test('every ICO frame within actual file bounds with correct image payload',()=>{for(let i=0;i<ico.readUInt16LE(4);i++){const p=6+16*i,size=ico.readUInt32LE(p+8),offset=ico.readUInt32LE(p+12);assert.ok(offset>=6&&size>0&&offset+size<=ico.length);assert.equal(ico.subarray(offset+1,offset+4).toString(),'PNG');}});
  test('all declared favicon file targets resolve locally without missing assets',()=>{for(const m of source.matchAll(/<link[^>]*rel="(?:alternate )?icon"[^>]*href="([^"]+)"/g))assert.ok(fs.existsSync(path.join(root,m[1].split('?')[0])));});
  test('area loader has no generic JSON HTTP loader call',()=>{const fn=app.slice(app.indexOf('async function loadConfiguredAreas()'),app.indexOf("$('areas-file').addEventListener"));assert.doesNotMatch(fn,/fetch\(|jsonFile\(/);assert.match(fn,/if\(!files\)return/);assert.match(fn,/localFile.stream\(\)/);});
- test('release updated only through canonical version constant',()=>assert.equal(require('../release.js').VERSION,'2.5.9'));
+ test('release updated only through canonical version constant',()=>assert.equal(require('../release.js').VERSION,'2.6.1'));
  test('missing names remain wrap-safe in mobile RTL',()=>{const css=fs.readFileSync(path.join(root,'styles.css'),'utf8');assert.match(css,/\.basket-gaps\{[^}]*overflow-wrap:anywhere;min-width:0/);assert.match(css,/\.basket-gaps bdi\{unicode-bidi:isolate/);});
  console.log(count+' v2.2.4 partition/missing-product/no-404 checks passed (offline fixtures)');
 })().catch(error=>{console.error(error);process.exitCode=1;});

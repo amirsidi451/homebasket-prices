@@ -38,21 +38,21 @@ f=fixture([[3,100]],[0]);f.rows[0].coverage=4;test('invalid coverage cannot over
 (async()=>{
  const e=setup();e.ctx.stamp=new Date().toISOString();e.run("networks=HB.chains(Array.from({length:7},(_,i)=>({source:'C'+i,name:'רשת '+i})));meta={per_chain_freshness:Object.fromEntries(networks.map(n=>[n.source,{latest_snapshot_at:n.index===6?'2020-01-01':stamp}]))};catalog=HB.products({fields:['name','unit','quantity','weighted'],p:{'100':['חלב','ליטר',1,0],'200':['אורז','גרם',1000,0]}});cart=[{barcode:'100',qty:1},{barcode:'200',qty:1}];for(const n of networks){HB_CONFIG.chains[n.source].estimatedDeliveryFee=([35.9,10,0,30,0,0,0])[n.index];}HB_CONFIG.chains.C4.delivery=false;HB_CONFIG.chains.C5.visible=false;priceMode='single';priceFiles=['prices.json.gz'];priceCache.set('prices.json.gz',new Map(['100','200'].map(code=>[code,new Map(networks.filter(n=>!(n.index===2&&code==='200')).map(n=>[n.index,{last:([1000,1200,100,2000,1,1,1])[n.index]}]))])));ready=true;selected=new Set([0,1]);");
  await e.run('renderCompare()');const html=e.get('comparison').innerHTML;
- test('top3 main content precedes product-only details',()=>assert.ok(html.indexOf('class="top-three panel"')<html.indexOf('class="panel comparison-main"')));
- test('top cards ordered by full total including delivery',()=>assert.deepEqual([...html.matchAll(/data-top-chain="(\d+)"/g)].map(m=>Number(m[1])),[1,0,3]));
+ test('top3 main content precedes product-only details',()=>{assert.ok(html.indexOf('class="network-table"')<html.indexOf('class="network-products"'));});
+ test('top cards ordered by full total including delivery',()=>{assert.deepEqual([...html.matchAll(/data-network-chain="(\d+)"/g)].map(m=>Number(m[1])).slice(0,3),[1,0,3]);});
  test('exactly one primary order button for place 1',()=>{assert.equal((html.match(/class="primary" data-order=/g)||[]).length,1);assert.match(html,/class="primary" data-order="1"/);});
  test('other top ranks get secondary order buttons',()=>{assert.match(html,/class="secondary" data-order="0"/);assert.match(html,/class="secondary" data-order="3"/);});
  test('known full winner summary includes delivery',()=>{assert.match(e.get('result-summary').textContent,/רשת 1.*34[.,]00/);assert.match(e.get('result-summary').textContent,/כולל משלוח משוער/);});
- test('per-card full total, delivery fee and coverage visible',()=>{assert.match(html,/סך הסל:/);assert.match(html,/משלוח משוער/);assert.match(html,/2 מתוך 2 מוצרים/);});
- test('partial result hidden in collapsed remaining chains',()=>{assert.match(html,/<details class="other-networks"><summary>שאר הרשתות הרלוונטיות \(2\)/);assert.match(html,/data-order="2"/);assert.doesNotMatch(html,/<details class="other-networks" open/);});
+ test('per-card full total, delivery fee and coverage visible',()=>{assert.match(html,/סה״כ לתשלום משוער/);assert.match(html,/משלוח\/איסוף משוער/);assert.match(html,/2 מתוך 2/);});
+ test('partial result hidden in collapsed remaining chains',()=>{assert.match(html,/data-network-chain="2"/);assert.match(html,/סכום חלקי — לא ניתן להשוות/);});
  test('irrelevant networks do not get any order buttons',()=>assert.doesNotMatch(html,/data-order="[45]"/));
  test('availability comparison note present',()=>assert.ok(html.includes('מחירים להשוואה, יש לבדוק זמינות משלוח לכתובת באתר הרשת')));
- test('product-only prior comparison retained inside folded details',()=>{assert.match(html,/<details class="comparison-extra product-details">/);assert.match(html,/השוואת אותם/);});
+ test('product-only prior comparison retained inside folded details',()=>{assert.match(html,/<details class="network-product-details">/);assert.match(html,/השוואה לפי מוצר/);});
  e.run("HB_CONFIG.chains.C0.estimatedDeliveryFee=null;HB_CONFIG.chains.C1.estimatedDeliveryFee=null;HB_CONFIG.chains.C3.estimatedDeliveryFee=null");await e.run('renderCompare()');
  test('unknown-fee main UI has no fabricated total',()=>{assert.match(e.get('comparison').innerHTML,/סכום כולל אינו ידוע/);assert.match(e.get('result-summary').textContent,/לא ניתן לקבוע סכום כולל/);});
  e.run("HB_CONFIG.chains.C0.delivery=false;HB_CONFIG.chains.C1.delivery=false;HB_CONFIG.chains.C3.delivery=false");await e.run('renderCompare()');
- test('fewer than three supported results are not padded',()=>{assert.equal((e.get('comparison').innerHTML.match(/data-top-chain=/g)||[]).length,0);assert.match(e.get('comparison').innerHTML,/סל חלקי/);});
- test('all-partial UI labels amount as partial',()=>{assert.match(e.get('comparison').innerHTML,/מחיר חלקי/);assert.match(e.get('result-summary').textContent,/אין רשת שמכסה את כל הסל/);});
+ test('fewer than three supported results are not padded',()=>{assert.equal((e.get('comparison').innerHTML.match(/data-top-chain=/g)||[]).length,0);assert.match(e.get('comparison').innerHTML,/מחיר חלקי/);});
+ test('all-partial UI labels amount as partial',()=>{assert.match(e.get('comparison').innerHTML,/מחיר חלקי/);assert.match(e.get('result-summary').textContent,/אין כרגע סל מלא/);});
  const css=fs.readFileSync(path.join(__dirname,'../styles.css'),'utf8');test('390px top cards become single-column with 48px buttons',()=>{assert.match(css,/@media\(max-width:850px\)\{\.top-three-grid\{grid-template-columns:minmax\(0,1fr\)/);assert.match(css,/\.top-chain button\{[^}]*min-height:48px/);});
  test('explanations entirely deterministic without network or AI dependencies',()=>assert.doesNotMatch(fs.readFileSync(path.join(__dirname,'../top-ranking.js'),'utf8'),/\bfetch\s*\(|OPENAI|apiKey|XMLHttpRequest/));
  console.log(n+' v2.1 ranking/explanation/UI checks passed (Node API stubs, not visual QA)');

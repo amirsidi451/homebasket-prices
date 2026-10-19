@@ -54,7 +54,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 767 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 787 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -156,7 +156,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":192,"search_ms":21.02,"heap_delta_mb":31.9,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":222,"search_ms":18.4,"heap_delta_mb":31.9,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -1100,7 +1100,7 @@ PASS hero intro precedes step one, three sections have focus targets
 PASS all network status remains available in disclosure before main
 PASS technical comparison and promotion explanations are disclosures
 PASS no image feature rewrite; placeholders and lazy images preserved byte-for-byte
-PASS design adds under 100KB of compressed startup assets including local font
+PASS design plus requested comparison table adds under 110KB of compressed startup assets including local font
 PASS city, build and compare stay on one screen in the main workspace
 PASS step two progress and completed first step exposed to keyboard/screenreader
 PASS redesign does not bypass required location precondition
@@ -1544,6 +1544,78 @@ PASS v259 missing coverage omits badge
 PASS v259 zero coverage omits badge
 PASS v259 existing freshness safeguard preserved without city
 18 targeted checks passed
+
+v260.test.cjs
+PASS v260 pricing/config unchanged config.js
+PASS v260 pricing/config unchanged core.js
+PASS v260 pricing/config unchanged online-core.js
+PASS v260 pricing/config unchanged fees.js
+PASS v260 pricing/config unchanged top-ranking.js
+PASS v260 pricing/config unchanged savings.js
+PASS v260 pricing/config unchanged chain-status.js
+PASS v260 pricing/config unchanged comparison-view.js
+PASS v260 exactly four visible rows
+PASS v260 hidden chain absent all tables 3
+PASS v260 hidden chain absent all tables 5
+PASS v260 hidden chain absent all tables 6
+PASS v260 hidden chain absent all tables 7
+PASS v260 all nine requested columns
+PASS v260 semantic table caption scoped headers and sort
+PASS v260 total includes existing fee
+PASS v260 operating fees off zero
+PASS v260 winner cheapest full basket
+PASS v260 saving against most expensive comparable full basket
+PASS v260 sort price ascending
+PASS v260 sort price descending
+PASS v260 sort saving ascending
+PASS v260 sort saving descending
+PASS v260 sort coverage ascending
+PASS v260 sort coverage descending
+PASS v260 render sort state savings descending
+PASS v260 partial never wins
+PASS v260 partial no savings
+PASS v260 partial missing names and quantity
+PASS v260 partial sorted after full even when cheap
+PASS v260 minimum deficit uses existing quote
+PASS v260 below minimum excluded winner
+PASS v260 below minimum actionable status
+PASS v260 below minimum row present
+PASS v260 known outside city still row
+PASS v260 verify remains candidate with availability label
+PASS v260 stale visible explained and cannot order
+PASS v260 zero coverage no order CTA
+PASS v260 free delivery uses existing rule
+PASS v260 customer fee included chain commission private
+PASS v260 unknown pickup maintains product basis not zero fee
+PASS v260 products unit multiplied by quantity
+PASS v260 products footer explicit partial totals
+PASS v260 responsive source constraints 390
+PASS v260 responsive source constraints 640
+PASS v260 responsive source constraints 1280
+PASS v260 integrated comparison uses central all-network table not Top3 cards
+PASS v260 sort rerenders table with accessible active column
+PASS v260 order modal preserved
+49 v260 targeted checks, fixtures and CSS guards; NOT rendered browser QA
+
+v261.test.cjs
+PASS v261 unchanged config.js
+PASS v261 unchanged app.js
+PASS v261 unchanged network-table.js
+PASS v261 unchanged styles.css
+PASS v261 unchanged core.js
+PASS v261 unchanged online-core.js
+PASS v261 unchanged fees.js
+PASS v261 unchanged top-ranking.js
+PASS v261 unchanged savings.js
+PASS v261 unchanged chain-status.js
+PASS v261 unchanged comparison-view.js
+PASS v261 unchanged layout.js
+PASS v261 unchanged legal.html
+PASS v261 network card overrides global table minimum
+PASS v261 product scroll viewport clips overflowing paint only inside wrapper
+PASS v261 CSS diff contains only requested declarations
+PASS v261 real mobile test contains exact viewport assertions both disclosure states
+17 v261 checks passed; CSS/invariants/test contract only. Real Playwright execution reported separately.
 
 markup.test.py
 PASS markup has no duplicate IDs

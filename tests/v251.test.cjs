@@ -53,7 +53,7 @@ nav.contains=()=>true;c.scrollY=240;c.HB_LAYOUT.scrollChrome();test('focused key
  test('pointer chooses free address pending explicit approval',()=>{assert.equal(e.run('servicePlace'),null);assert.equal(e.get('service-city').value,'כתובת חופשית 9');e.get('location-form').listeners.submit({preventDefault(){}});assert.equal(e.run('servicePlace.city'),'כתובת חופשית 9');});
  e.run("applyService('עיר בדיקה','delivery');cart=[{barcode:'3073781199918',qty:1}];location.hash='#compare'");let compareScrolls=0;e.get('compare').scrollIntoView=()=>compareScrolls++;
  e.get('basket-next').onclick({preventDefault(){}});test('comparison dock navigates to cart editing',()=>assert.equal(e.ctx.location.hash,'#cart'));e.ctx.location.hash='#compare';e.get('step-compare').onclick({preventDefault(){}});await sleep(30);
- test('repeat compare click scrolls and marks successful comparison updated',()=>{assert.ok(compareScrolls>0);assert.equal(e.get('comparison-updated').textContent,'מעודכן');assert.match(e.get('comparison').innerHTML,/data-top-chain=/);});
+ test('repeat compare click scrolls and marks successful comparison updated',()=>{assert.ok(compareScrolls>0);assert.equal(e.get('comparison-updated').textContent,'מעודכן');assert.match(e.get('comparison').innerHTML,/data-network-chain=/);});
  const current=e.run('compareGeneration');e.get('step-compare').onclick({preventDefault(){}});await sleep(30);
  test('repeat top step triggers a fresh comparison even when hash is unchanged',()=>{assert.ok(e.run('compareGeneration')>current);assert.equal(e.get('comparison-updated').textContent,'מעודכן');});
  e.run('cart=[]');e.get('basket-next').onclick({preventDefault(){}});await sleep(10);

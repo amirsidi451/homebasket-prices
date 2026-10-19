@@ -324,3 +324,32 @@ button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{o
 #order-dialog .actions{background:var(--surface,#fff);min-width:0;flex-wrap:wrap}
 @media(max-width:640px){.ranking-shortfall{padding:.8rem}.minimum-action .button{min-height:44px;white-space:normal}.search-coverage{font-size:.9rem}}
 @media(prefers-color-scheme:dark){button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline-color:#5eead4}}
+/* 2.6.0: one semantic table; compact, fully visible fields on small screens. */
+.design-v25 .network-comparison{min-width:0;max-width:100%;padding:clamp(.6rem,2vw,1.4rem)}
+.network-table{min-width:0;width:100%;table-layout:fixed;border-collapse:separate;border-spacing:0;font-size:.88rem}
+.network-table caption{text-align:start;font-weight:700;padding:.8rem 0}
+.network-table th,.network-table td{min-width:0;white-space:normal;overflow-wrap:anywhere;vertical-align:top;text-align:start;padding:.65rem .4rem;border-bottom:1px solid var(--line)}
+.network-table small,.network-table bdi{display:block}
+.network-table th button{font:inherit;white-space:normal;padding:.3rem;min-height:44px;width:100%}
+.network-table .network-action button{white-space:normal;min-height:44px;width:100%;padding:.5rem}
+.network-table ul{margin:0;padding-inline-start:1rem}
+.network-table .button,.network-table summary{min-height:44px}
+.network-winner{background:var(--surface-soft);box-shadow:inset -4px 0 var(--brand)}
+.network-total{font-size:1.05rem;font-weight:800}.network-saving{color:var(--brand-hover);font-weight:700}
+.network-saving-summary{font-size:1.15rem;font-weight:800}.network-sort{display:flex;gap:.5rem;flex-wrap:wrap;margin-block:1rem}.network-sort button{min-height:44px}
+.network-sort [aria-pressed=true]{background:var(--brand);color:var(--brand-ink)}
+.network-product-details{margin-block-start:1.3rem}.network-product-details>summary{padding:.8rem;font-weight:700;min-height:44px}
+.network-products-scroll{overflow-x:auto;max-width:100%;contain:paint;overscroll-behavior-inline:contain;border:1px solid var(--line);border-radius:10px}
+.network-products{min-width:620px;width:100%;border-collapse:collapse}.network-products td,.network-products th{padding:.75rem;border:1px solid var(--line);text-align:start}.network-products small{display:block}.network-products th:first-child{position:sticky;inset-inline-start:0;background:var(--surface);z-index:1;max-width:200px;overflow-wrap:anywhere}.product-lowest{background:var(--surface-soft);font-weight:800}.scroll-hint{font-size:.9rem}
+@media(max-width:900px){
+ .network-table{display:block;width:100%;table-layout:auto}.network-table caption{display:block}.network-table thead{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip-path:inset(50%)}
+ .network-table tbody{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr));gap:1rem;min-width:0}
+ .network-table .network-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);border:1px solid var(--line);border-radius:14px;min-width:0;padding:.7rem;gap:.45rem}
+ .network-table .network-row>th,.network-table .network-row>td{padding:.3rem;border:0;min-width:0}
+ .network-table .network-row>th,.network-table .network-status,.network-table .network-action{grid-column:1/-1}
+ .network-table .network-row>th{font-size:1.15rem;grid-row:1}
+ .network-table td::before{content:attr(data-label);display:block;font-size:.82rem;color:var(--muted);font-weight:400;margin-block-end:.25rem}
+ .network-table .network-total{grid-column:1;grid-row:2}.network-table .network-saving{grid-column:2;grid-row:2}.network-table .network-status{grid-row:3}
+ .network-table .network-action{grid-row:4}.network-table .network-action button{min-height:46px}
+}
+@media(prefers-color-scheme:dark){.network-saving{color:var(--brand)}}

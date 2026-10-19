@@ -40,7 +40,7 @@ test('JSON import cannot replace order URL, price basis or fees',()=>{const c={c
  e.run("networks=HB.chains(list);meta={per_chain_freshness:snapshot};ready=true;catalog=HB.products({fields:['name','unit','quantity','weighted'],p:{'3073781199918':['גבינה','יחידות',1,0]}});cart=[{barcode:'3073781199918',qty:1}];priceMode='single';priceFiles=['prices.json.gz'];priceCache.set('prices.json.gz',new Map([['3073781199918',new Map(networks.map(n=>[n.index,{last:n.index===5?1:1000+n.index*100,min:1,median:1,max:9999,updated_at:'2020-01-01'}]))]]));applyService('עיר לא ברשימה','delivery');");
  await e.run('renderCompare()');
  test('delivery includes four verify chains without areas file',()=>assert.deepEqual(Array.from(e.run('eligibleIds()')),[0,2,4,7]));
- test('verify warning visible in main comparison',()=>assert.match(e.get('comparison').innerHTML,/יש לבדוק זמינות משלוח לכתובת באתר הרשת/));
+ test('verify warning visible in main comparison',()=>assert.match(e.get('comparison').innerHTML,/בדקו זמינות לכתובת/));
  test('hidden chain absent from network selector',()=>assert.doesNotMatch(e.get('chain-select').innerHTML,/אושר עד/));
  test('hidden chain absent from comparison and order cards',()=>assert.doesNotMatch(e.get('comparison').innerHTML,/אושר עד/));
  test('hidden cheapest price cannot win',()=>assert.doesNotMatch(e.get('result-summary').textContent,/אושר עד/));

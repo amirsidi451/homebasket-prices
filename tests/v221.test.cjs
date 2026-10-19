@@ -54,10 +54,10 @@ test('fractional weighted quantities included via coverage core',()=>{const ff=f
 test('existing Top3 policy untouched by savings model',()=>{const ff=fixture();const before=T.rank(ff);S.model(ff);assert.deepEqual(T.rank(ff),before);});
 (async()=>{
  const e=setup();await loadFixture(e);e.run("cart=[{barcode:'3073781199918',qty:1}];");await e.run('renderCompare()');
- test('comparison screen mounts savings without changing main comparison',()=>{assert.match(e.get('savings').innerHTML,/כמה אתם חוסכים/);assert.match(e.get('comparison').innerHTML,/top-three/);});
+ test('comparison screen mounts savings without changing main comparison',()=>{assert.match(e.get('savings').innerHTML,/כמה אתם חוסכים/);assert.match(e.get('comparison').innerHTML,/network-table/);});
  test('retains cached gzip data and lazy promotions',()=>{assert.equal(e.run('offers'),null);assert.ok(e.run('priceCache.size')>0);});
  e.run("for(const c of Object.values(HB_CONFIG.chains))c.delivery=false;");await e.run('renderCompare()');
- test('even no eligible service still renders reference savings table',()=>{assert.match(e.get('savings').innerHTML,/רשת א/);assert.match(e.get('comparison').innerHTML,/לא הוגדרו|אזורי שירות/);});
+ test('even no eligible service still renders reference savings table',()=>{assert.match(e.get('savings').innerHTML,/רשת א/);assert.match(e.get('comparison').innerHTML,/לא זמינה בעירך|אין כרגע סל מלא/);});
  e.run('cart=[];save()');test('cart edits invalidate old savings immediately',()=>assert.equal(e.get('savings').innerHTML,''));
  await e.run('renderCompare()');test('empty cart has no stale savings',()=>assert.equal(e.get('savings').innerHTML,''));
  const root=path.join(__dirname,'..'),html=fs.readFileSync(path.join(root,'index.html'),'utf8'),css=fs.readFileSync(path.join(root,'styles.css'),'utf8'),code=fs.readFileSync(path.join(root,'savings.js'),'utf8');
