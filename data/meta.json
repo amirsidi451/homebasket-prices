@@ -1,9 +1,9 @@
 {
- "generated_at": "2026-10-19T11:03:34+03:00",
+ "generated_at": "2026-10-19T11:32:29+03:00",
  "mode": "full",
  "sample_limit_rows_per_chain": null,
- "products": 97116,
- "products_with_prices": 97116,
+ "products": 90757,
+ "products_with_prices": 90757,
  "price_shards": 0,
  "key_note": "keys = GTIN/barcode, leading zeros stripped; chain-local codes (non 8-14 digit) excluded; brand not available in DB",
  "per_chain_freshness": {
@@ -15,6 +15,17 @@
    "latest_price_updated_at": "2026-10-18T15:12:40+03:00",
    "last_import_at": "2026-10-19T06:53:30+00:00",
    "imported_files": 222,
+   "price_policy": "online_branch",
+   "price_is_estimate": false,
+   "exported_barcodes": 19772,
+   "exported_by_price_source": {
+    "online_branch": 9778,
+    "online_branch_modal_fallback": 9994
+   },
+   "basis_latest_snapshot_at": "2026-10-19T08:06:25+03:00",
+   "basis_latest_price_updated_at": "2026-10-18T15:12:40+03:00",
+   "stores_with_prices": 13,
+   "stores_with_prices_named": 13,
    "active_promotions": 669,
    "latest_promo_snapshot_at": "2026-10-19T08:54:23+03:00"
   },
@@ -59,6 +70,16 @@
    "latest_price_updated_at": "2026-10-18T18:26:00+03:00",
    "last_import_at": "2026-10-19T07:01:26+00:00",
    "imported_files": 920,
+   "price_policy": "picking_branches",
+   "price_is_estimate": false,
+   "exported_barcodes": 21491,
+   "exported_by_price_source": {
+    "picking_branches": 21491
+   },
+   "basis_latest_snapshot_at": "2026-10-19T00:40:04+03:00",
+   "basis_latest_price_updated_at": "2026-10-18T14:38:00+03:00",
+   "stores_with_prices": 54,
+   "stores_with_prices_named": 54,
    "active_promotions": 3169,
    "latest_promo_snapshot_at": "2026-10-19T00:40:04+03:00"
   },
@@ -92,6 +113,16 @@
    "latest_price_updated_at": "2026-10-18T20:37:00+03:00",
    "last_import_at": "2026-10-19T06:23:52+00:00",
    "imported_files": 712,
+   "price_policy": "branch_modal_estimate",
+   "price_is_estimate": true,
+   "exported_barcodes": 16972,
+   "exported_by_price_source": {
+    "branch_modal_estimate": 16972
+   },
+   "basis_latest_snapshot_at": "2026-10-19T00:40:48+03:00",
+   "basis_latest_price_updated_at": "2026-10-18T20:37:00+03:00",
+   "stores_with_prices": 47,
+   "stores_with_prices_named": 47,
    "active_promotions": 2455,
    "latest_promo_snapshot_at": "2026-10-19T00:40:48+03:00"
   }
@@ -110,10 +141,47 @@
   "promotion_items": 74120764
  },
  "files": {
-  "chains.json": 1034,
+  "chains.json": 9122,
   "promotions.json.gz": 492934,
-  "products.json.gz": 1485123,
-  "prices.json.gz": 1527345
+  "products.json.gz": 1382268,
+  "prices.json.gz": 1465632
  },
- "runtime_sec": 87.1
+ "runtime_sec": 76.2,
+ "exporter_version": "2.0-online-policy",
+ "price_sources": {
+  "online_branch": "online (delivery) branch price from the transparency file",
+  "online_branch_modal_fallback": "item missing in the online branch file: most common price across the chain's physical branches",
+  "picking_branches": "most common price across the chain's online picking (ליקוט) branches",
+  "branch_modal_estimate": "ESTIMATE: no online price published; most common price across all branches"
+ },
+ "chain_price_policy": {
+  "HAZI_HINAM": {
+   "source": "online_branch",
+   "basis_stores": [
+    "103"
+   ],
+   "fallback": "online_branch_modal_fallback",
+   "estimate": false
+  },
+  "TIV_TAAM": {
+   "source": "picking_branches",
+   "basis_stores": [
+    "514",
+    "519",
+    "502",
+    "503",
+    "512",
+    "515"
+   ],
+   "fallback": null,
+   "estimate": false
+  },
+  "YOHANANOF": {
+   "source": "branch_modal_estimate",
+   "basis_stores": null,
+   "fallback": null,
+   "estimate": true
+  }
+ },
+ "price_note": "rows of chains without a policy: last = most recently updated branch price (unchanged); policy rows carry 'src' and last = the chosen online/estimate price"
 }
