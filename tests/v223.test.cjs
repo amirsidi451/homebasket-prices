@@ -21,7 +21,7 @@ test('expired snapshots change counters using supplied now',()=>assert.equal(C.s
 test('before load never claims price freshness or stale data',()=>{const x=C.summarize({...fixture(),loaded:false});assert.equal(x.priced,0);assert.equal(x.stale,0);assert.equal(x.verify,8);});
 test('production-config total used before catalog arrives',()=>assert.equal(C.summarize({config:fixture().config}).total,8));
 test('status computation does not reorder or mutate datasets',()=>{const ff=fixture(),before=JSON.stringify(ff);C.summarize(ff);assert.equal(JSON.stringify(ff),before);});
-test('release has one immutable canonical version',()=>{assert.equal(R.VERSION,'2.6.5');assert.equal(Object.isFrozen(R),true);});
+test('release has one immutable canonical version',()=>{assert.equal(R.VERSION,'2.6.6');assert.equal(Object.isFrozen(R),true);});
 let ff=fixture();const rankInput={rows:[{chain:0,coverage:2,total:10000},{chain:1,coverage:2,total:11000},{chain:2,coverage:1,total:1}],cartSize:2,networks:ff.networks,config:ff.config,place:ff.place,snapshots:Array(8).fill(stamp)};
 for(const enabled of [false,true]){rankInput.config.fees={enabled,customerFee:{type:'fixed',fixedAmount:5},chainCommission:{type:'fixed',fixedAmount:5}};const ranked=T.rank(rankInput);
  test('rank explanations never imply collected operational fees, enabled='+enabled,()=>assert.ok(ranked.every(r=>!r.explanations.join(' ').includes('כולל דמי שירות ידועים'))));
@@ -31,7 +31,7 @@ for(const enabled of [false,true]){rankInput.config.fees={enabled,customerFee:{t
 (async()=>{
  const e=setup();await loadFixture(e);e.run("cart=[{barcode:'3073781199918',qty:1}]");await e.run('renderCompare()');
  test('footer populated from canonical constant not index literal',()=>assert.equal(e.get('app-version').textContent,R.VERSION));
- test('global counter valid with actual loaded dataset size',()=>assert.match(e.get('chain-summary').textContent,/מתוך 2 רשתות: 2 מציגות מחיר/));
+ test('global counter valid with actual loaded dataset size',()=>assert.match(e.get('chain-summary').textContent,/מתוך 2 רשתות: 2 עם סל מלא/));
  const original=e.get('chain-summary').textContent;
  for(const route of ['home','cart','info','networks','compare']){e.ctx.location.hash='#'+route;e.run('route()');test('same shared counter on '+route,()=>assert.equal(e.get('chain-summary').textContent,original));}
  await e.run('renderCompare()');
@@ -43,13 +43,13 @@ for(const enabled of [false,true]){rankInput.config.fees={enabled,customerFee:{t
  test('partial recommendation is secondary with missing-products message',()=>{assert.doesNotMatch(html,/data-top-chain="0"/);const p=e.run('renderPartialBaskets(HBComparison.model({cart,records:comparisonRecords,networks,meta,config:HB_CONFIG,place:servicePlace}))');assert.match(p,/חסר מוצר אחד בסל/);assert.match(p,/<button class="secondary" data-order="0"/);});
  e.run('testRows=testRows.filter(r=>!r.full).map((r,i)=>({...r,rank:i+1}))');html=e.run('renderTopThree(testRows)');
  test('all-partial results never show primary CTA or winner styling',()=>{assert.doesNotMatch(html,/<button class="primary"|top-first/);assert.match(html,/לא נמצאו רשתות/);});
- e.run("cart=[];save()");test('counter refreshed when last cart item removed',()=>assert.match(e.get('chain-summary').textContent,/2 מציגות מחיר/));
+ e.run("cart=[];save()");test('counter refreshed when last cart item removed',()=>assert.match(e.get('chain-summary').textContent,/0 עם סל מלא/));
  e.run("ready=false;updateChainSummary()");test('data reload does not leave stale global statistics',()=>assert.match(e.get('chain-summary-note').textContent,/טרם הושלמו/));
  const root=path.join(__dirname,'..'),source=fs.readFileSync(path.join(root,'index.html'),'utf8'),css=fs.readFileSync(path.join(root,'styles.css'),'utf8'),app=fs.readFileSync(path.join(root,'app.js'),'utf8');
- test('exactly one shared counter DOM node outside all page sections',()=>{assert.equal((source.match(/id="chain-summary"/g)||[]).length,1);assert.ok(source.indexOf('id="chain-summary"')<source.indexOf('<main'));assert.match(source,/כל רשת נספרת בקבוצה אחת בלבד/);});
+ test('exactly one shared counter DOM node outside all page sections',()=>{assert.equal((source.match(/id="chain-summary"/g)||[]).length,1);assert.ok(source.indexOf('id="chain-summary"')<source.indexOf('<main'));assert.match(source,/כיסוי המחירים וזמינות השירות נספרים בנפרד/);});
  test('no fixed footer version survives',()=>{assert.doesNotMatch(source,/גרסה 2\.2/);assert.match(source,/גרסה <bdi id="app-version"><\/bdi>/);assert.match(app,/textContent=HBRelease.VERSION/);});
  test('release and status scripts ordered before UI initialization',()=>{assert.ok(source.indexOf('src="release.js')<source.indexOf('src="app.js'));assert.ok(source.indexOf('src="chain-status.js')<source.indexOf('src="app.js'));});
- test('shared counter labels exclusive statuses and pending verification',()=>{assert.match(source,/ממתינים לבדיקת הנתונים והמיקום/);assert.match(source,/לא זמינות בעירך/);});
+ test('shared counter labels exclusive statuses and pending verification',()=>{assert.match(source,/ממתינים לבדיקת הנתונים והמיקום/);assert.match(source,/בדיקת נקודת איסוף או משלוח/);});
  test('counter no fetch geolocation or storage and no rank invocation',()=>assert.doesNotMatch(fs.readFileSync(path.join(root,'chain-status.js'),'utf8'),/fetch\(|localStorage|navigator\.|HBTop|\.rank\(/));
  test('390px touch targets at least 44px',()=>{assert.match(css,/button,\.button,nav a,summary\{min-height:44px/);assert.match(css,/button,\.button\{min-width:44px;max-width:100%/);});
  test('390px chart has no intrinsic unshrinkable amount column',()=>assert.match(css,/\.savings-chart li\{grid-template-columns:minmax\(0,1fr\) minmax\(0,1.4fr\) minmax\(0,1fr\)/));

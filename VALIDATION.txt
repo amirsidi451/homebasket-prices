@@ -1,17 +1,21 @@
-HomeBasket 2.6.5 — FINAL OFFLINE VALIDATION
-1718 PASS; 0 failed suites. Full per-test output: test-results.txt.
-52 new v265 policy/UI cases, including all requested search examples, estimate exclusion, unknown-pickup exclusion, no pickup-switch for unknown collection, uniform known-grand-total ranking, partial coverage-first ordering, missing order items, quiet absent image-map loading, price counts, singular Hebrew, 0.5kg steps, conditional saved-cart prompt, Netanya pickup warning, mobile results scroll, failed resource and async E-undefined fallback.
-22 node --check passes: 19 root JS files + 3 optional Playwright scripts. Syntax checking does NOT execute a browser.
-Production config SHA256 unchanged: 2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0
-Seven visible chains, Osher hidden, platform fees disabled. No data files in deliverable. Existing quote/fee/formulas and parser arithmetic remain tested and unchanged. Changes are ranking eligibility, search and UI behavior explicitly requested for v265.
-Backup: unchanged v2.6.4 ZIP retained before editing; per-file manifest BACKUP_v2.6.4_SHA256.txt. No live deployment.
+HomeBasket 2.6.6 — FINAL OFFLINE VALIDATION
+1782 PASS; 0 failed suites. Full log: test-results.txt. 64 new v266 fixture/VM cases.
+25 Node syntax checks: 19 root scripts, 4 Playwright scripts, v266 scenario fixture, and read-only integration script. A syntax pass is NOT a browser run.
+Production config exact SHA: 2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0
+Unchanged: styles.css, redesign.css, layout.js, online-core.js, fees.js, legal.html; price parser/pricing/fee formulas. Index structure/layout preserved; only asset cache-version and status-note wording changed. No data folder changes. No deployment. Backup of shipped v2.6.5 included.
 
-REAL EXPORT: read-only parser/metadata/numeric verification of 90757 products: staged-data-results.txt. Search and pickup policy integration: staged-v265-results.txt. Diapers search 86 matches; almond-milk query has no name-matching beverage in this export and returns zero rather than lotion/chocolate. Query times in that report are container measurements, not phone performance promises.
-Historical tests expecting the superseded mixed-pickup products-only fallback, estimated-price recommendation, automatic missing-map probing, or zero-price buckets for verify chains were migrated to v265 policy. Original backup manifests remain unchanged. Authorized touched files/functions are listed in tests/v265-pins.json; untouched fee arithmetic and old schema/cache/regression cases still run.
+CUSTOMER CASE FIXTURES (synthetic subtotal/coverage values):
+Tel Aviv pickup: Victory full 10/10 before Tiv Taam 7/10 under minimum; exact totals 329.26 and 269.50 preserved. Original specified ten barcodes and quantities used.
+Mitzpe Ramon pickup: only full verified-price basket Victory first, despite unverified collection point.
+Haifa pickup with weighted quantity: full Shufersal first, partial under-minimum Carrefour later.
+Netanya pickup: full Shufersal above under-minimum Carrefour; original 131.30 deficit checked.
+Hod Hasharon pickup: full Carrefour first; confirmed-pickup Hazi 11/12 with 341.40 deficit cannot outrank full baskets.
+Netanya and Beer Sheva partial delivery: coverage-first, then minimum at equal coverage, then known total and price. No fake winner or savings for estimates/unknown collection. Hidden Osher remains absent.
+Counter counts tested against table row states independently of cart coverage. Search synonym is explicit opt-in. Missing network-table dependency logged to console, no technical message in UI.
 
-NOT RUN: Playwright rendering/console tours at 1280,390,640@2x; browser-control capability unavailable in this environment. tests/v265.playwright.cjs is supplied for external execution, with Hod Hasharon/Haifa/Netanya pickup, Beer Sheva 12/15 versus 11/15 partial basket, modal missing items, document scrollWidth<=viewport, actual innerWidth, product-table disclosure, no absent images.json request, and healthy-page console/pageerror assertions. Deliberate failed-script case is isolated.
-Updated existing compare-selection.playwright.cjs to avoid clicking an unverified pickup switch. Existing mobile-overflow.playwright.cjs preserved.
-No claim of rendered pass, zero real-browser console errors, or physical-device pass.
-DPR2 is not actual desktop 200% zoom. Still requires real phone: safe-area, keyboard, clipboard/WhatsApp, modal scrolling, automatic results scroll, orientation and zoom.
+REAL DATA, READ ONLY: staged-v266-results.txt; 90757 products in the available snapshot. Requested tuna barcode 7290005287251 ranks 8 with seven shown-chain prices. Almond query has no direct AND matches; explicit beverage suggestion has 39 matches. These snapshot counts are not claims about the current published site's newer files. Full numeric mixed-7/8-field parser check: staged-data-results.txt.
 
-OPTIONAL IMAGES: no blind hosted-file probe. Existing imagesFile configuration or optional meta.images_file declares a real hosted map; local folder selection auto-detects an existing file. Without declaration, placeholders are immediate and there is no map request/404. An explicitly declared missing URL can still generate a browser network error; do not declare a nonexistent map. Current production config is unchanged.
+NOT RUN: actual Playwright rendering/console checks at 1280,390,640@2x, or physical-phone QA. Supported browser-control capability unavailable. Supplied tests/v266.playwright.cjs exercises the five pickup cities, both partial delivery cases, disclosure overflow, order modal and blocked-script fallback. Existing v265 browser runners are retained.
+Healthy-page script collects console/page errors and asserts no page overflow; deliberate blocked-script scenario is isolated and expects console errors. No zero-console-error or rendered-pass claim is made here.
+Sites skill restriction: “If $control-browser is unavailable, skip browser QA”. Source: skill://plugin_connector_1p_689987207de08191979cf68eca2941c6/sites/SKILL.md
+Still needs actual phone: safe-area, keyboard, touch targets, modal scrolling, scroll-to-results and clipboard/WhatsApp. DPR2 is not desktop 200% zoom.

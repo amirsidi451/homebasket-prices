@@ -12,7 +12,8 @@
    ranked.push({chain:row.chain,coverage:row.coverage,missing:cartSize-row.coverage,full:row.coverage===cartSize,itemsTotal:row.total,fee,total,...quote,feeKnown:fee!==null,priceIsEstimate:n.price_is_estimate===true,pickupUnverified:place.mode==='pickup'&&O.service(n,config,place).status!=='available',...(feesEnabled?{feesEnabled:true,customerFee}: {})});seen.add(row.chain);
   }
   for(const r of ranked){r.basis='total';r.rankAmount=r.total;r.recommendable=!r.priceIsEstimate&&!r.pickupUnverified&&r.feeKnown&&!r.belowMinimum&&r.full;}
-  ranked.sort((a,b)=>Number(b.recommendable)-Number(a.recommendable)||Number(a.priceIsEstimate)-Number(b.priceIsEstimate)||Number(a.pickupUnverified)-Number(b.pickupUnverified)||Number(b.feeKnown)-Number(a.feeKnown)||Number(a.belowMinimum)-Number(b.belowMinimum)||b.coverage-a.coverage||(a.total!==null&&b.total!==null?a.total-b.total:0)||a.chain-b.chain);
+  const partialOnly=!ranked.some(r=>r.full);
+  ranked.sort((a,b)=>Number(b.recommendable)-Number(a.recommendable)||Number(a.priceIsEstimate)-Number(b.priceIsEstimate)||Number(b.full)-Number(a.full)||(partialOnly?b.coverage-a.coverage:0)||Number(a.belowMinimum)-Number(b.belowMinimum)||Number(b.feeKnown)-Number(a.feeKnown)||(a.total!==null&&b.total!==null?a.total-b.total:0)||a.chain-b.chain);
   let position=0;ranked.forEach(r=>{r.rank=r.recommendable?++position:null;});ranked.forEach(r=>{r.explanations=explain(r,ranked,place.mode);if(r.feesEnabled){r.explanations=r.explanations.map(t=>t.replaceAll('מחיר המוצרים','מחיר המוצרים ודמי השירות'));r.explanations.push('דמי שירות לדוגמה כלולים בדירוג; אין גבייה באתר');}});return ranked;
  }
  function explain(row,ranked,mode){

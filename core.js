@@ -38,7 +38,7 @@ function search(items,q,coverage=new Map()){
  for(const p of items.values()){
   if(!query){ranked.push({p,full:true,matched:0,relevance:0,category:0,whole:0});continue;}
   if(onlyDigits&&p.barcode.startsWith(query)){ranked.push({p,barcodeMatch:p.barcode===query?2:1,full:true,matched:terms.length,category:0,whole:0,relevance:0});continue;}
-  const f=productFeatures(p);const foodOrDiaper=text.length&&['חלב','מלפפון','חזה','שמן','תפוח','ביצים','חיתולים'].includes(wordKey(text[0].value));if(foodOrDiaper&&!careOrCleaning(q)&&(careOrCleaning(p.name)||f.words.has('גוף')||/כלבים|חתולים|לכלב|לחתול/.test(f.name)))continue;if(text[0]?.value==='חלב'&&text.length>1&&!['חלב','משקה'].includes(productType(f.name)))continue;let matched=0,textMatched=0,sizeMatched=0,namedSizeMatched=0,whole=0;
+  const f=productFeatures(p);const foodOrDiaper=text.length&&['חלב','מלפפון','חזה','שמן','תפוח','ביצים','חיתולים','טונה','משקה'].includes(wordKey(text[0].value));if(foodOrDiaper&&!careOrCleaning(q)&&(careOrCleaning(p.name)||f.words.has('גוף')||/כלבים|חתולים|לכלב|לחתול/.test(f.name)))continue;if(text[0]?.value==='חלב'&&text.length>1&&!['חלב','משקה'].includes(productType(f.name)))continue;let matched=0,textMatched=0,sizeMatched=0,namedSizeMatched=0,whole=0;
   for(const term of terms){let ok=false;
    if(term.kind==='text'){ok=[...f.words].some(w=>wordKey(w)===wordKey(term.value))||(terms.at(-1)===term&&[...f.words].some(w=>wordKey(w).startsWith(wordKey(term.value))));if(ok)textMatched++;if(f.words.has(term.value))whole++;}
    else if(term.kind==='grade')ok=f.words.has(term.value);
@@ -52,12 +52,15 @@ function search(items,q,coverage=new Map()){
   // Inference from the name only: exports have no category field.
   const category=eggQuery?(/^(?:(?:מארז|תבנית|קרטון)\s+)?(?:\d+\s+)?ביצ(?:ים|י)(?:\s|$)/.test(f.name)?0:2):(text.length?(wordKey(productType(f.name))===wordKey(text[0].value)?0:f.words.has(text[0].value)?1:2):0);
   const textExact=text.every(t=>[...f.words].some(w=>wordKey(w)===wordKey(t.value)));
-  ranked.push({p,textExact,full:matched===terms.length,matched,sizeMatched,namedSizeMatched,whole,category,relevance:phrase?relevance(f.name,phrase):0});
+  ranked.push({p,textExact,full:matched===terms.length,matched,sizeMatched,namedSizeMatched,whole,category:!eggQuery&&textExact?0:category,relevance:phrase?relevance(f.name,phrase):0});
  }
  const exactText=ranked.some(r=>r.textExact);
  return ranked.filter(r=>!exactText||r.textExact||r.barcodeMatch).sort((a,b)=>(b.barcodeMatch||0)-(a.barcodeMatch||0)||a.category-b.category||Number(b.full)-Number(a.full)||(b.sizeMatched||0)-(a.sizeMatched||0)||(coverage.get(b.p.barcode)||0)-(coverage.get(a.p.barcode)||0)||b.whole-a.whole||b.matched-a.matched||(defaultEggPack?((a.p.quantity===12?0:1)-(b.p.quantity===12?0:1)):0)||(b.namedSizeMatched||0)-(a.namedSizeMatched||0)||a.relevance-b.relevance||a.p.name.localeCompare(b.p.name,'he')||a.p.barcode.localeCompare(b.p.barcode)).map(x=>x.p);
 }
 
+
+function searchSuggestions(query){const q=String(query||'').trim();return /^חלב\s+(?:שקדים|סויה|שיבולת)(?:\s|$)/u.test(q)?[q.replace(/^חלב\s+/u,'משקה ')]:[];}
+function countLabel(n,one,many){return n===1?one:new Intl.NumberFormat('he-IL').format(n)+' '+many;}
 
 function coverage(cart,records,chainCount,metric,now,snapshots){return Array.from({length:chainCount},(_,c)=>{let count=0,total=0;for(const i of cart){const r=records.get(i.barcode)?.get(c);if(r&&fresh(snapshots[c],now)&&r[metric]!=null){count++;total+=Math.round(r[metric]*i.qty);}}return{chain:c,coverage:count,total};}).sort((a,b)=>b.coverage-a.coverage||a.total-b.total||a.chain-b.chain);}
 function autoSelect(rows){const usable=rows.filter(r=>r.coverage>0);if(!usable.length)return[];return usable.slice(0,2).map(r=>r.chain);}
@@ -88,5 +91,5 @@ function promotionDescription(value){
  text=text.replace(/₪\s*₪/g,'₪');
  return text.replace(/₪\s*[-־–]+/g,'₪');
 }
-const api={MAX_PRICE_AGE_HOURS,ageHours,ageNotice,cleanName,eggGrade,promotionDescription,displayName,createPromotionIndex,findPromotions,queryTokens,validateSources,priceStatus,commonAcross,similarProducts,adjusted,chains,products,prices,fresh,compare,validCart,snapshotStamp,normalizeUnit,packageLabel,snapshots,search,coverage,autoSelect,cheapest,promotions,activePromotion};if(typeof module!=='undefined')module.exports=api;else root.HB=api;
+const api={searchSuggestions,countLabel,MAX_PRICE_AGE_HOURS,ageHours,ageNotice,cleanName,eggGrade,promotionDescription,displayName,createPromotionIndex,findPromotions,queryTokens,validateSources,priceStatus,commonAcross,similarProducts,adjusted,chains,products,prices,fresh,compare,validCart,snapshotStamp,normalizeUnit,packageLabel,snapshots,search,coverage,autoSelect,cheapest,promotions,activePromotion};if(typeof module!=='undefined')module.exports=api;else root.HB=api;
 })(globalThis);

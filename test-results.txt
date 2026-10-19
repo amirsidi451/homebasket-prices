@@ -1,6 +1,6 @@
-HomeBasket v2.6.5
-TOTAL: 1718 PASS; failures: 0
-52 new v265 policy/UI cases. Offline Node/VM/CSS/markup checks; NOT Playwright execution.
+HomeBasket v2.6.6
+TOTAL: 1782 PASS; failures: 0
+64 new v266 cases. Offline Node/VM/markup/CSS checks; NOT Playwright execution.
 
 compact.test.cjs
 PASS compact products decode names and numeric quantity
@@ -58,7 +58,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 1066 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 997 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -160,7 +160,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":155,"search_ms":13.61,"heap_delta_mb":47.5,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":203,"search_ms":16.78,"heap_delta_mb":47.6,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -729,6 +729,13 @@ PASS calculator no network DOM storage or payment SDK
 PASS startup loads calculator before ranking and savings
 PASS fee summary wraps at 390px without new fixed width
 84 fee-calculation and integration checks passed (offline, no collection)
+Comparison failed RangeError: הגדרת דמי שירות אינה תקינה: נדרש מספר לא שלילי
+    at valid (fees.js:5:75)
+    at policy (fees.js:19:56)
+    at Object.computeFees (fees.js:34:18)
+    at Object.rank (top-ranking.js:10:88)
+    at renderCompare (app.js:129:24)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
 
 v223.test.cjs
 PASS single display total includes all eight chain data indexes
@@ -1828,6 +1835,73 @@ PASS v265 startup guard inline before application dependencies
 PASS v265 failed script resource shows friendly retry without HB/E dependencies
 PASS v265 async E undefined rejection also shows friendly retry
 52 v265 policy/UI cases passed. Actual Playwright/device tests reported separately.
+
+v266.test.cjs
+PASS v266 תל אביב default price ascending: full basket above partial/minimum failure
+PASS v266 תל אביב pure ranking agrees with table order
+PASS v266 תל אביב no fabricated winner or savings with unknown collection
+PASS v266 תל אביב summary acknowledges full baskets and unknown collection
+PASS v266 תל אביב all seven shown and Osher absent
+PASS v266 תל אביב counter verification matches table labels, independently of price coverage
+PASS v266 customer-reported pickup totals preserved 269.50 and 329.26
+PASS v266 מצפה רמון default price ascending: full basket above partial/minimum failure
+PASS v266 מצפה רמון pure ranking agrees with table order
+PASS v266 מצפה רמון no fabricated winner or savings with unknown collection
+PASS v266 מצפה רמון summary acknowledges full baskets and unknown collection
+PASS v266 מצפה רמון all seven shown and Osher absent
+PASS v266 מצפה רמון counter verification matches table labels, independently of price coverage
+PASS v266 חיפה default price ascending: full basket above partial/minimum failure
+PASS v266 חיפה pure ranking agrees with table order
+PASS v266 חיפה no fabricated winner or savings with unknown collection
+PASS v266 חיפה summary acknowledges full baskets and unknown collection
+PASS v266 חיפה all seven shown and Osher absent
+PASS v266 חיפה counter verification matches table labels, independently of price coverage
+PASS v266 נתניה default price ascending: full basket above partial/minimum failure
+PASS v266 נתניה pure ranking agrees with table order
+PASS v266 נתניה no fabricated winner or savings with unknown collection
+PASS v266 נתניה summary acknowledges full baskets and unknown collection
+PASS v266 נתניה all seven shown and Osher absent
+PASS v266 נתניה counter verification matches table labels, independently of price coverage
+PASS v266 Carrefour exact pickup minimum deficit 131.30 preserved
+PASS v266 הוד השרון default price ascending: full basket above partial/minimum failure
+PASS v266 הוד השרון pure ranking agrees with table order
+PASS v266 הוד השרון no fabricated winner or savings with unknown collection
+PASS v266 הוד השרון summary acknowledges full baskets and unknown collection
+PASS v266 הוד השרון all seven shown and Osher absent
+PASS v266 הוד השרון counter verification matches table labels, independently of price coverage
+PASS v266 approved Hazi partial below minimum cannot jump over unverified full
+PASS v266 נתניה all partial delivery retains coverage-first explanation
+PASS v266 נתניה at equal coverage, minimum met before lower incomplete under-minimum cost
+PASS v266 נתניה partial price counter is not zero-price claim
+PASS v266 באר שבע all partial delivery retains coverage-first explanation
+PASS v266 באר שבע at equal coverage, minimum met before lower incomplete under-minimum cost
+PASS v266 באר שבע partial price counter is not zero-price claim
+PASS v266 default price sort ignores confirmed pickup advantage for partial under-minimum cart
+PASS v266 sort does not mutate input
+PASS v266 immutable production config
+PASS v266 unchanged source styles.css
+PASS v266 unchanged source redesign.css
+PASS v266 unchanged source layout.js
+PASS v266 unchanged source online-core.js
+PASS v266 unchanged source fees.js
+PASS v266 unchanged source legal.html
+PASS v266 index layout and markup unchanged except asset version
+PASS v266 explicit synonym suggestion חלב שקדים
+PASS v266 explicit synonym suggestion חלב סויה
+PASS v266 explicit synonym suggestion חלב שיבולת שועל 1 ליטר
+PASS v266 no unrelated query expansion
+PASS v266 tuna whole word with seven-chain coverage ranks before rare prefix matches
+PASS v266 tuna remains word-boundary search
+PASS v266 single-product savings table uses singular product noun
+PASS v266 singular labels for all common counts
+PASS v266 נתניה location feedback distinguishes unknown collection from unknown city
+PASS v266 חיפה location feedback distinguishes unknown collection from unknown city
+PASS v266 תל אביב location feedback distinguishes unknown collection from unknown city
+PASS v266 empty AND results offer a named explicit search, no silent synonym results
+PASS v266 explicit click changes query without adding anything to cart
+PASS v266 missing network-table dependency displays friendly retry, technical detail only in console
+PASS v266 savings singular relevance plus real database size
+64 v266 cases passed; offline fixtures/VM only; Playwright execution reported separately.
 
 markup.test.py
 PASS markup has no duplicate IDs

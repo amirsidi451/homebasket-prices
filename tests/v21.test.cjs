@@ -17,8 +17,8 @@ test('all-partial leader never claims full-basket savings',()=>{assert.match(row
 test('plural missing count shown',()=>assert.match(rows[2].explanations.join(' '),/חסרים 2 מוצרים/));
 f=fixture([[3,100],[3,10000],[2,1]],[null,35.9,0]);rows=T.rank(f);
 test('unknown service cost never assumed zero',()=>{const r=rows.find(r=>r.chain===0);assert.equal(r.total,null);assert.equal(r.fee,null);assert.equal(r.itemsTotal,100);});
-test('known full total before unknown full; partial still after full',()=>assert.deepEqual(rows.map(r=>r.chain),[1,2,0]));
-test('unknown fee explanation warns provisional ranking',()=>assert.match(rows[2].explanations.join(' '),/לא ניתן לחשב סכום כולל.*אינם ידועים.*זמני/));
+test('known full total before unknown full; partial still after full',()=>assert.deepEqual(rows.map(r=>r.chain),[1,0,2]));
+test('unknown fee explanation warns provisional ranking',()=>assert.match(rows[1].explanations.join(' '),/לא ניתן לחשב סכום כולל.*אינם ידועים.*זמני/));
 test('winner cannot claim numeric savings against unknown total',()=>{assert.doesNotMatch(rows[0].explanations.join(' '),/חוסכת/);assert.match(rows[0].explanations.join(' '),/עשויות לשנות את הדירוג/);});
 f=fixture([[3,100],[2,1]],[35.9,0]);rows=T.rank(f);
 test('no savings inferred against partial second place',()=>assert.doesNotMatch(rows[0].explanations.join(' '),/חוסכת/));

@@ -30,7 +30,7 @@ test('offers standalone highlighted section precedes all comparison results',()=
  e.get('alt-qty-0').value='2';e.ctx.confirm=()=>true;await e.run('approveAlternative(0)');
  test('bamba approval keeps original barcode and uses separate target subtotal',()=>{assert.equal(e.run("cart[0].barcode"),'100');assert.equal(e.run("approved.get('7:100').barcode"),'101');assert.match(e.get('comparison').innerHTML,/חלופות שאושרו/);});
  e.get('query').value='שמן זית 750 מ״ל';await e.run('renderProducts()');
- test('search shows coverage even when item is already in cart',()=>{assert.match(e.get('products').innerHTML,/מחיר ב־1 רשתות גלויות בנתונים/);assert.match(e.get('products').innerHTML,/מחיר ב־3 רשתות גלויות בנתונים/);assert.match(e.get('products').innerHTML,/כבר בסל/);});
+ test('search shows coverage even when item is already in cart',()=>{assert.match(e.get('products').innerHTML,/מחיר ברשת גלויה אחת בנתונים/);assert.match(e.get('products').innerHTML,/מחיר ב־3 רשתות גלויות בנתונים/);assert.match(e.get('products').innerHTML,/כבר בסל/);});
  await e.run("openCoverageChoices('200')");
  test('wider coverage suggests same-size olive oil and excludes 1L oil',()=>{assert.equal(e.run('alternativeChoices.length'),1);assert.equal(e.run('alternativeChoices[0].barcode'),'201');assert.equal(e.run('alternativeChoices[0].coverage'),3);});
  test('viewing wider-coverage offers never modifies cart',()=>assert.equal(e.run('cart[1].barcode'),'200'));
