@@ -14,7 +14,7 @@
     "name": "חצי חינם משלוחים",
     "city": "",
     "branch_type": "2",
-    "price_rows": 9778
+    "price_rows": 9784
    }
   ]
  },
@@ -54,42 +54,42 @@
     "name": "ליקוט ראשון מזרח",
     "city": "8300",
     "branch_type": "2",
-    "price_rows": 16701
+    "price_rows": 16719
    },
    {
     "store_id": "519",
     "name": "ליקוט רמת החייל",
     "city": "5000",
     "branch_type": "2",
-    "price_rows": 15841
+    "price_rows": 15843
    },
    {
     "store_id": "502",
     "name": "ליקוט נתניה",
     "city": "7400",
     "branch_type": "2",
-    "price_rows": 14781
+    "price_rows": 14769
    },
    {
     "store_id": "503",
     "name": "ליקוט טיב טעם אשדוד",
     "city": "70",
     "branch_type": "2",
-    "price_rows": 13218
+    "price_rows": 13223
    },
    {
     "store_id": "512",
     "name": "ליקוט טיב טעם קריות",
     "city": "4000",
     "branch_type": "2",
-    "price_rows": 13087
+    "price_rows": 13097
    },
    {
     "store_id": "515",
     "name": "ליקוט טיב באר שבע",
     "city": "9000",
     "branch_type": "2",
-    "price_rows": 12285
+    "price_rows": 12279
    }
   ]
  },
@@ -122,28 +122,28 @@
     "name": "יוחננוף מפוח",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10344
+    "price_rows": 10337
    },
    {
     "store_id": "4",
     "name": "בילו",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10669
+    "price_rows": 10671
    },
    {
     "store_id": "5",
     "name": "אשדוד",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 11023
+    "price_rows": 11021
    },
    {
     "store_id": "7",
     "name": "עקרון",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10754
+    "price_rows": 10753
    },
    {
     "store_id": "8",
@@ -157,14 +157,14 @@
     "name": "נתיבות",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10172
+    "price_rows": 10185
    },
    {
     "store_id": "12",
     "name": "רמלה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10516
+    "price_rows": 10502
    },
    {
     "store_id": "13",
@@ -178,35 +178,35 @@
     "name": "אור יהודה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 6988
+    "price_rows": 6995
    },
    {
     "store_id": "16",
     "name": "גן יבנה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10574
+    "price_rows": 10563
    },
    {
     "store_id": "17",
     "name": "מודיעין ישפרו",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 11382
+    "price_rows": 11393
    },
    {
     "store_id": "18",
     "name": "מודיעין כרמים",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 8064
+    "price_rows": 8057
    },
    {
     "store_id": "19",
     "name": "אור יהודה גדול",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 11083
+    "price_rows": 11087
    },
    {
     "store_id": "20",
@@ -220,231 +220,231 @@
     "name": "סגולה פתח תקווה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10625
+    "price_rows": 10631
    },
    {
     "store_id": "22",
     "name": "חדרה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 11391
+    "price_rows": 11370
    },
    {
     "store_id": "23",
     "name": "טבריה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 9978
+    "price_rows": 9991
    },
    {
     "store_id": "24",
     "name": "כפר סבא",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 11198
+    "price_rows": 11207
    },
    {
     "store_id": "25",
     "name": "נס ציונה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 8212
+    "price_rows": 8209
    },
    {
     "store_id": "26",
     "name": "רמת השרון",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 11190
+    "price_rows": 11189
    },
    {
     "store_id": "27",
     "name": "יד אליהו",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10488
+    "price_rows": 10492
    },
    {
     "store_id": "28",
     "name": "ראשלצ רמת אליהו",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10247
+    "price_rows": 10246
    },
    {
     "store_id": "29",
     "name": "בת ים",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 9895
+    "price_rows": 9892
    },
    {
     "store_id": "30",
     "name": "נתניה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 11153
+    "price_rows": 11156
    },
    {
     "store_id": "31",
     "name": "מרכז סנטרו רחובות",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 11156
+    "price_rows": 11152
    },
    {
     "store_id": "32",
     "name": "בן צבי תל אביב",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10787
+    "price_rows": 10782
    },
    {
     "store_id": "33",
     "name": "איירפורט סיטי",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10327
+    "price_rows": 10319
    },
    {
     "store_id": "34",
     "name": "מבקיעים אשקלון",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10952
+    "price_rows": 10944
    },
    {
     "store_id": "35",
     "name": "תל אביב  נחלת יצחק",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 8084
+    "price_rows": 8077
    },
    {
     "store_id": "36",
     "name": "חדרה צפוני",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10459
+    "price_rows": 10462
    },
    {
     "store_id": "37",
     "name": "עפולה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 9631
+    "price_rows": 9621
    },
    {
     "store_id": "38",
     "name": "טבריה תחתית",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 7916
+    "price_rows": 7908
    },
    {
     "store_id": "39",
     "name": "קרית שמונה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 9701
+    "price_rows": 9694
    },
    {
     "store_id": "40",
     "name": "באר שבע",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10752
+    "price_rows": 10757
    },
    {
     "store_id": "41",
     "name": "אשקלון ברנע",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 9467
+    "price_rows": 9470
    },
    {
     "store_id": "42",
     "name": "קניון הבאר",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 8145
+    "price_rows": 8132
    },
    {
     "store_id": "46",
     "name": "מישור אדומים",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 11274
+    "price_rows": 11265
    },
    {
     "store_id": "48",
     "name": "אשדות יעקב",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 6810
+    "price_rows": 6799
    },
    {
     "store_id": "50",
     "name": "נתניה הדרים",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10842
+    "price_rows": 10839
    },
    {
     "store_id": "51",
     "name": "שדרות",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 9231
+    "price_rows": 9222
    },
    {
     "store_id": "52",
     "name": "גדרה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 10323
+    "price_rows": 10318
    },
    {
     "store_id": "53",
     "name": "רעננה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 6151
+    "price_rows": 6141
    },
    {
     "store_id": "54",
     "name": "ת\"א - אחד העם",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 3622
+    "price_rows": 3613
    },
    {
     "store_id": "55",
     "name": "נתיבות מנהטן",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 7137
+    "price_rows": 7146
    },
    {
     "store_id": "59",
     "name": "אור עקיבא -שקמים",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 6207
+    "price_rows": 6202
    },
    {
     "store_id": "60",
     "name": "בית שאן",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 7809
+    "price_rows": 7792
    },
    {
     "store_id": "73",
     "name": "חולון המרכבה",
     "city": "0",
     "branch_type": "1",
-    "price_rows": 11056
+    "price_rows": 11051
    }
   ]
  }
