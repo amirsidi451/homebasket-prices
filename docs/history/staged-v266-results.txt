@@ -1,0 +1,5 @@
+PASS actual tuna query: 480 matches; requested barcode 7290005287251 ranks 8; coverage 7 shown networks
+PASS חלב שקדים: AND 0; explicit suggestion משקה שקדים (39 matches); no silent replacement
+PASS חלב סויה: AND 1; explicit suggestion משקה סויה (48 matches); no silent replacement
+PASS חלב שיבולת: AND 2; explicit suggestion משקה שיבולת (58 matches); no silent replacement
+PASS read-only integration on 90757 products, 8 source slots. Snapshot-dependent counts, not live-site/browser QA.

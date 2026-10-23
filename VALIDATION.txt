@@ -1,14 +1,23 @@
-HomeBasket v2.6.8 — FINAL VALIDATION
-1854 PASS; 0 failed suites. All previous regressions plus 39 new v268 cases. Full log: test-results.txt.
-New checks: canonical two-decimal deficit wording; full7/7 Victory total16130 and deficit10070 agorot at Mitzpe Ramon; full under minimum precedes partial without winner; minimum-qualified full cart precedes under-minimum full; Netanya/Haifa/Hod Hasharon savings count wording; unknown pickup excluded from numeric savings; fixed two-decimal currency; browser-runner corrections.
-Fixtures contain synthetic coverage/subtotals and are not live retailer data.
+HomeBasket v2.7.1 — אימות מסירה, 23.10.2026
 
-Config exact SHA256: 2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0
-Unchanged bytes: config.js, core.js, fees.js, top-ranking.js, styles.css, redesign.css, layout.js, legal.html, chain-status.js, comparison-view.js. Online fee/quote/service/city-normalization functions and savings model/difference/comparator verified unchanged. Network model differs ONLY in status.push minimum label, verified by normalized source hash. minimumLabel and savings render changes are display-only. Index unchanged apart from cache keys 267 to268. No data schema changes. No live deployment.
-Backup before change: backups/HomeBasket_Static_v2.6.7.zip plus BACKUP_v2.6.7_SHA256.txt.
-Historical manifests retained. Authorized pins added only for changed presentation functions/files; no removal of regression suites.
+בוצע בפועל:
+• python run_tests.py: 2110 PASS, אפס כשלי סוויטות. הפלט המלא: test-results.txt.
+• נוספו 21 בדיקות ממוקדות v271: סיכום available בלבד בגן יבנה/חיפה/נתניה; מצפה רמון ללא איסוף מאומת; מוצר מקביל ומינימום זהה בדיאלוג ובכרטיס; ביטול האישור; תג מקביל; דירוג רגיל למחיר משוער ללא המלצה/חיסכון; תאריך snapshot וניווט יחיד.
+• בדיקות היסטוריות שניבאו סיכום הכולל רשתות unknown או ״מחיר משוער תמיד אחרון״ הותאמו להחלטה החדשה. בדיקות הסכומים נשמרו.
+• בדיקת Chrome אמיתי: tests/v271.browser.html — 1636 PASS, אפס כישלונות.
+  ארבעה רוחבי iframe: 1280, 390, 640, 320. equivalents תקין, חסר ופגום.
+  שש ערים במשלוח ובאיסוף: גן יבנה, ירושלים, תל אביב, חולון, חיפה, מצפה רמון.
+  בכל רוחב עברו 79 בדיקות רוחב/גלילה אופקית, לפני ואחרי פתיחת טבלת המוצרים ובחלון ההזמנה.
+  נבדקו שלב פעיל יחיד, תג מקביל, אישור וביטול, קוד המקביל בהזמנה, קבוצות זמינות, שבע רשתות, דמי תפעול כבויים, שורת תאריך גלויה ויעדי מגע של 44px במיון.
+  לא נרשמו שגיאות runtime או rejected promise בבדיקות. בקונסול לא נמצאו הודעות error שמקורן terminal.local. תוסף פנימי של דפדפן הענן עשוי להוציא הודעות metadata שאינן מהאתר.
+• בדיקת תחביר לכל קובצי JS/CJS: syntax-results.txt, ללא כישלונות.
+• זהות בתים מול מקור 2.7.0 אומתה עבור config.js, styles.css, redesign.css, core.js, online-core.js, fees.js, layout.js, comparison-view.js, chain-status.js ו־legal.html.
+• חתימת config.js:
+  187b03ab8286544f999e3e3ade6be73d50fae88707b353e9a7084a278cdfdb0b
 
-NOT RUN HERE: Playwright/visual browser checks at 1280,390,640@2x, or physical-phone checks. control-browser unavailable. Sites instruction: “If $control-browser is unavailable, skip browser QA”. Source: skill://plugin_connector_1p_689987207de08191979cf68eca2941c6/sites/SKILL.md
-Prepared tests/v268.playwright.cjs fixes v267 false assertion for unlisted Mitzpe Ramon, and checks blocked-script startup UI without calling missing app dependency. It retains overflow/console assertions for healthy pages at all three sizes and adds full-below-minimum scenario. Blocked-script console errors are intentional and separate. No browser-pass or zero-console-error claim is made.
-Physical phone still needs safe-area, touch targets, keyboard, order-modal scrolling, auto-scroll and clipboard/WhatsApp checks. DPR2 is not desktop200%zoom.
-Historical staged-data logs retain their earlier scope; they are not a fresh data check. No data bundled.
+מגבלות שנותרו — לא נטען שעברו:
+• tests/v271.playwright.cjs עבר בדיקת תחביר, אבל ריצת Chromium העצמאית לא התחילה: executable חסר. ניסיון הורדה מהמקור הרשמי נכשל בקובץ קטוע (End of central directory record signature not found).
+• סיור iframe בדפדפן אמיתי אינו אמולציית isMobile, אינו 640@2x ואינו בדיקה בטלפון פיזי. קובץ Playwright מצורף להרצה חיצונית לפי README לפני פרסום.
+• הנתונים בבדיקות הם fixtures סינתטיים עם הקונפיג האמיתי. לא צורפו נתוני הייצור מ־22.10 ולכן לא בוצעה כאן בדיקה מחדש עליהם. שמרו את תיקיית data/ האמיתית שלכם.
+• בטלפון אמיתי עדיין צריך לבדוק safe-area, מקלדת, זום, גלילה וחלון הזמנה, וכן VoiceOver.
+• האתר החי לא עודכן. ZIP מכיל את כל קובצי האתר והבדיקות, ללא backups/ וללא data/ ייצור שלא נמסרה.

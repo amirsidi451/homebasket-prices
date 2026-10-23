@@ -1,27 +1,96 @@
-PASS syntax online-core.js
-PASS syntax top-ranking.js
-PASS syntax city-picker.js
-PASS syntax receipt-core.js
-PASS syntax release.js
-PASS syntax chain-status.js
-PASS syntax layout.js
-PASS syntax app.js
-PASS syntax config.js
-PASS syntax receipt-image.js
-PASS syntax product-images.js
-PASS syntax core.js
-PASS syntax comparison-view.js
-PASS syntax savings.js
-PASS syntax boot-guard.js
-PASS syntax receipt-ui.js
-PASS syntax localities.js
-PASS syntax network-table.js
-PASS syntax fees.js
-PASS syntax tests/v268.playwright.cjs
-PASS syntax tests/v266.playwright.cjs
-PASS syntax tests/v265.playwright.cjs
-PASS syntax tests/compare-selection.playwright.cjs
-PASS syntax tests/mobile-overflow.playwright.cjs
-PASS syntax tests/v267.playwright.cjs
-PASS syntax tests/v268.test.cjs
-TOTAL 26 syntax checks PASS; not browser execution.
+PASS optional-data-worker.js
+PASS receipt-image.js
+PASS localities.js
+PASS online-core.js
+PASS core.js
+PASS comparison-view.js
+PASS receipt-core.js
+PASS city-picker.js
+PASS app.js
+PASS config.js
+PASS network-table.js
+PASS receipt-ui.js
+PASS savings.js
+PASS top-ranking.js
+PASS equivalents.js
+PASS fees.js
+PASS chain-status.js
+PASS release.js
+PASS product-images.js
+PASS layout.js
+PASS boot-guard.js
+PASS tests/v269.playwright.cjs
+PASS tests/v263.test.cjs
+PASS tests/v268.playwright.cjs
+PASS tests/v264.test.cjs
+PASS tests/v222.test.cjs
+PASS tests/compact.test.cjs
+PASS tests/mobile-overflow.playwright.cjs
+PASS tests/v266.test.cjs
+PASS tests/v255.test.cjs
+PASS tests/v265.playwright.cjs
+PASS tests/v262.test.cjs
+PASS tests/v271.playwright.cjs
+PASS tests/v261.test.cjs
+PASS tests/verify-staged-v266.cjs
+PASS tests/large-catalog.test.cjs
+PASS tests/v19.test.cjs
+PASS tests/v16.test.cjs
+PASS tests/v254.test.cjs
+PASS tests/label-leaves.cjs
+PASS tests/v221.test.cjs
+PASS tests/v13.test.cjs
+PASS tests/v12.test.cjs
+PASS tests/support.cjs
+PASS tests/verify-staged-v262.cjs
+PASS tests/v17.test.cjs
+PASS tests/v270.playwright.cjs
+PASS tests/v22.test.cjs
+PASS tests/receipt.test.cjs
+PASS tests/prepare-v271-browser.cjs
+PASS tests/v257.test.cjs
+PASS tests/v269-normalize-model.cjs
+PASS tests/v20.test.cjs
+PASS tests/v24.test.cjs
+PASS tests/v18.test.cjs
+PASS tests/v253.test.cjs
+PASS tests/v270-search.test.cjs
+PASS tests/v268.test.cjs
+PASS tests/v260.test.cjs
+PASS tests/v223.test.cjs
+PASS tests/prepare-v270-browser.cjs
+PASS tests/v25.test.cjs
+PASS tests/v269.test.cjs
+PASS tests/v256.test.cjs
+PASS tests/core.test.cjs
+PASS tests/v270.test.cjs
+PASS tests/v271.browser.js
+PASS tests/v259.test.cjs
+PASS tests/v265.test.cjs
+PASS tests/verify-staged-v265.cjs
+PASS tests/v251.test.cjs
+PASS tests/v267.playwright.cjs
+PASS tests/v23.test.cjs
+PASS tests/compare-selection.playwright.cjs
+PASS tests/v15.test.cjs
+PASS tests/v14.test.cjs
+PASS tests/v270-layout.test.cjs
+PASS tests/v271.test.cjs
+PASS tests/interface.test.cjs
+PASS tests/refresh.test.cjs
+PASS tests/v270-fixture.cjs
+PASS tests/v267.test.cjs
+PASS tests/v252.test.cjs
+PASS tests/v266.playwright.cjs
+PASS tests/v270.browser.js
+PASS tests/v21.test.cjs
+PASS tests/v224.test.cjs
+PASS tests/v258.test.cjs
+PASS vendor/tesseract.min.js
+PASS tests/fixtures/v269-scenarios.cjs
+PASS tests/fixtures/four-shown.cjs
+PASS tests/fixtures/production-v251.js
+PASS tests/fixtures/v266-scenarios.cjs
+PASS tests/fixtures/config.js
+PASS tests/fixtures/v267-scenarios.cjs
+TOTAL 95 PASS; 0 FAIL

@@ -1,6 +1,6 @@
-HomeBasket v2.6.8 — OFFLINE REGRESSION RESULTS
-1854 PASS; 0 failed suites; 39 new v268 cases.
-Fixture/VM/markup checks. Playwright NOT RUN here; see VALIDATION.txt.
+HomeBasket v2.7.1 — run_tests.py: 2110 PASS; failures: 0
+Browser DOM/layout tour: 1636 PASS; 0 FAIL (iframe widths, not native mobile/DPR2).
+Native v271.playwright.cjs: NOT RUN — Chromium missing; download truncated. See VALIDATION.txt.
 
 compact.test.cjs
 PASS compact products decode names and numeric quantity
@@ -58,7 +58,7 @@ PASS incompatible schema fails visibly
 9 interface integration tests passed (API stubs; no visual QA)
 
 large-catalog.test.cjs
-PASS synthetic 97,096 product parse + search + units: 1056 ms (Node, not phone browser)
+PASS synthetic 97,096 product parse + search + units: 872 ms (Node, not phone browser)
 PASS 390px applicable compact card and nowrap CSS rules present (static check, not visual QA)
 
 receipt.test.cjs
@@ -160,7 +160,7 @@ PASS 60,000 promotion rows indexed once and 8091 matches counted
 PASS result materialization always bounded to 40
 PASS selected-chain filtering uses same index
 PASS expired offers not shown
-BENCHMARK {"rows":60000,"matches":8091,"index_ms":161,"search_ms":15.64,"heap_delta_mb":50.6,"environment":"Node synthetic, not Chrome peak-memory measurement"}
+BENCHMARK {"rows":60000,"matches":8091,"index_ms":161,"search_ms":14.99,"heap_delta_mb":49.6,"environment":"Node synthetic, not Chrome peak-memory measurement"}
 PASS closed promotion area never fetches even on input
 PASS concurrent opens share one gzip fetch and one index
 PASS 60k real gzip stream produces only 40 result elements
@@ -396,7 +396,7 @@ PASS service core has no network/storage/geolocation access
 76 v1.8 checks passed; API stubs and CSS audit, not visual browser QA
 
 v19.test.cjs
-PASS verify with empty list stays eligible
+PASS unknown empty list is ineligible
 PASS verify exact warning present
 PASS verify with nonmatching list still eligible
 PASS verify does not mean nationwide known service
@@ -450,7 +450,7 @@ PASS hidden chain absent from comparison and order cards
 PASS hidden cheapest price cannot win
 PASS unmodified eight indexes still decode TivTaam index 7
 PASS hidden chain absent from info
-PASS handoff repeats exact verify availability warning
+PASS unknown cannot open checkout
 PASS handoff explains estimates and confirmation
 PASS pickup includes Yohananof and all verify chains
 PASS Yohananof 15 shekel pickup fee visible
@@ -495,7 +495,7 @@ PASS Yohananof no delivery handoff button or URL opening
 PASS original eighth chain index retained after mode filtering
 PASS Yohananof included for pickup availability verification
 PASS Rami unknown pickup has explicit retailer verification message
-PASS unknown pickup handoff repeats pickup check
+PASS unknown pickup has no order handoff
 PASS cart copy uses same isolated formatter as order handoff
 PASS five equal single packs shown simply as five products
 PASS single actual basket row uses singular summary
@@ -734,7 +734,9 @@ Comparison failed RangeError: הגדרת דמי שירות אינה תקינה: 
     at policy (fees.js:19:56)
     at Object.computeFees (fees.js:34:18)
     at Object.rank (top-ranking.js:10:88)
-    at renderCompare (app.js:129:24)
+    at Object.model (network-table.js:5:126)
+    at renderNetworkComparison (app.js:393:190)
+    at renderCompare (app.js:129:2)
     at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
 
 v223.test.cjs
@@ -803,7 +805,7 @@ PASS pickup-only chain unavailable for delivery counter
 PASS same pickup-only chain available after pickup mode and city switch
 PASS known city exclusion changes counter for all chains
 PASS unknown areas assigned to verification never unavailable by guess
-PASS unselected city can show actual price data without claiming availability
+PASS unselected city never asserts priced available cohort
 PASS all five requested Hebrew category labels appear
 PASS deterministic 512 mixed-state scenarios always partition into eight
 PASS partial top card includes missing-products warning
@@ -1001,11 +1003,10 @@ PASS minimum audit visible but not primary card
 PASS location updates all comparison and audit content without navigation
 PASS radio selection applies pickup immediately and recalculates total
 PASS city draft requires explicit confirmation and invalidates old place
-PASS chosen add quantity survives suggestion rerender
-PASS inline add merges quantity without moving screens
-PASS quantity plus operates in the same result
-PASS quantity minus operates in the same result
-PASS invalid exact-pack draft cannot modify cart
+PASS quantity controls appear only after first addition
+PASS inline plus merges quantity without moving screens
+PASS inline minus uses same cart quantity
+PASS invalid exact-pack quantity cannot modify cart
 PASS close button clears modal and invalidates choices/session
 PASS Escape closes modal with same cancellation logic
 PASS late alternative response cannot reopen or repopulate closed dialog
@@ -1016,7 +1017,7 @@ PASS search retains latest request guard and from-first-letter debounce
 PASS cache protections still use reload and snapshot freshness
 PASS dock picks same all-in cheapest chain instead of cheapest product subtotal
 PASS clearing location cannot leave old priced recommendation or order modal
-94 v2.4 fulfilment/minima/live-location/inline-add/modal checks passed
+93 v2.4 fulfilment/minima/live-location/inline-add/modal checks passed
 
 v25.test.cjs
 PASS pricing/data retained; plain clipboard allowed for online-core: config.js
@@ -1111,7 +1112,7 @@ PASS hero intro precedes step one, three sections have focus targets
 PASS all network status remains available in disclosure before main
 PASS technical comparison and promotion explanations are disclosures
 PASS no image feature rewrite; placeholders and lazy images preserved byte-for-byte
-PASS design plus requested comparison table adds under 110KB of compressed startup assets including local font
+PASS design plus requested comparison table adds under 130KB of compressed startup assets including local font
 PASS city, build and compare stay on one screen in the main workspace
 PASS step two progress and completed first step exposed to keyboard/screenreader
 PASS redesign does not bypass required location precondition
@@ -1373,6 +1374,7 @@ PASS v254 phone route does not automatically open basket modal
 50 v2.5.4 checks passed; code/CSS/DOM stubs, not real phone QA
 
 v255.test.cjs
+PASS production config: seven visible chains and only Osher hidden
 PASS only the 4 shown chains are selectable/eligible
 PASS Top 3 with 4 chains shows exactly 3, cheapest first, no hidden chain
 PASS chain-summary counts the visible chains only
@@ -1388,7 +1390,7 @@ PASS only 1 shown chain with full coverage: Top list has 1, honest note, no hidd
 PASS below-minimum chain not in Top 3 and clearly marked; hidden still absent
 PASS pickup + one chain without prices: partial handled, 4 shown max, hidden absent
 PASS revert: with visible:true for all, 8 chains counted and ranked again (config/data intact)
-TOTAL 15
+TOTAL 16
 
 v256.test.cjs
 PASS v256 uploaded file byte-exact config.js
@@ -1467,7 +1469,7 @@ PASS v257 equivalent city key פרדס חנה כרכור/פרדס-חנה-כרכ�
 PASS v257 config spelling preferred פרדס חנה כרכור
 PASS v257 equivalent city key גבעת שמואל/גבעת־שמואל
 PASS v257 config spelling preferred גבעת שמואל
-City source/service equivalent pairs checked: 137
+City source/service equivalent pairs checked: 1616
 PASS v257 every static equivalent of configured service city has identical availability
 PASS v257 suggestion prefixes never return duplicate city keys
 PASS v257 Rami government spelling served הרצלייה
@@ -1714,7 +1716,7 @@ PASS v263 summary explicitly counts comparable relevant chains
 PASS v263 Yohananof enters pickup; Hazi outside pickup city separated
 PASS v263 picking fee and cheapest estimate retained
 PASS v263 pickup summary saving before unknown fees explains basis
-PASS v263 Hulon permits seven pickup chains
+PASS v263 Hulon only explicit pickup chain eligible
 PASS v263 outside city known networks excluded verify retained
 PASS v263 outside-city reasons not generic unexplained state
 PASS v263 outside costly network cannot inflate savings
@@ -1783,17 +1785,17 @@ PASS v264 order dialog provenance label once explanation preserved
 
 v265.test.cjs
 PASS v265 הוד השרון estimate cannot win
-PASS v265 הוד השרון unknown pickup is verify, not confirmed
-PASS v265 הוד השרון unknown pickup cannot offer mode switch
-PASS v265 הוד השרון estimate after verified, without savings
+PASS v265 הוד השרון unknown pickup never qualifies
+PASS v265 הוד השרון pickup switch only for listed pickup city
+PASS v265 הוד השרון estimate sorted by basket rules, without savings
 PASS v265 חיפה estimate cannot win
-PASS v265 חיפה unknown pickup is verify, not confirmed
-PASS v265 חיפה unknown pickup cannot offer mode switch
-PASS v265 חיפה estimate after verified, without savings
+PASS v265 חיפה unknown pickup never qualifies
+PASS v265 חיפה pickup switch only for listed pickup city
+PASS v265 חיפה estimate sorted by basket rules, without savings
 PASS v265 נתניה estimate cannot win
-PASS v265 נתניה unknown pickup is verify, not confirmed
-PASS v265 נתניה unknown pickup cannot offer mode switch
-PASS v265 נתניה estimate after verified, without savings
+PASS v265 נתניה unknown pickup never qualifies
+PASS v265 נתניה pickup switch only for listed pickup city
+PASS v265 נתניה estimate sorted by basket rules, without savings
 PASS v265 mixed pickup fees rank by known grand total; unknown last
 PASS v265 unknown fee has no numeric savings explanation
 PASS v265 partial basket summary exact, not stale-data error
@@ -1837,45 +1839,51 @@ PASS v265 async E undefined rejection also shows friendly retry
 52 v265 policy/UI cases passed. Actual Playwright/device tests reported separately.
 
 v266.test.cjs
-PASS v266 תל אביב default price ascending: full basket above partial/minimum failure
-PASS v266 תל אביב pure ranking agrees with table order
-PASS v266 תל אביב no fabricated winner or savings with unknown collection
-PASS v266 תל אביב summary acknowledges full baskets and unknown collection
-PASS v266 תל אביב all seven shown and Osher absent
-PASS v266 תל אביב counter verification matches table labels, independently of price coverage
-PASS v266 customer-reported pickup totals preserved 269.50 and 329.26
-PASS v266 מצפה רמון default price ascending: full basket above partial/minimum failure
-PASS v266 מצפה רמון pure ranking agrees with table order
-PASS v266 מצפה רמון no fabricated winner or savings with unknown collection
-PASS v266 מצפה רמון summary acknowledges full baskets and unknown collection
-PASS v266 מצפה רמון all seven shown and Osher absent
-PASS v266 מצפה רמון counter verification matches table labels, independently of price coverage
-PASS v266 חיפה default price ascending: full basket above partial/minimum failure
-PASS v266 חיפה pure ranking agrees with table order
-PASS v266 חיפה no fabricated winner or savings with unknown collection
-PASS v266 חיפה summary acknowledges full baskets and unknown collection
-PASS v266 חיפה all seven shown and Osher absent
-PASS v266 חיפה counter verification matches table labels, independently of price coverage
-PASS v266 נתניה default price ascending: full basket above partial/minimum failure
-PASS v266 נתניה pure ranking agrees with table order
-PASS v266 נתניה no fabricated winner or savings with unknown collection
-PASS v266 נתניה summary acknowledges full baskets and unknown collection
-PASS v266 נתניה all seven shown and Osher absent
-PASS v266 נתניה counter verification matches table labels, independently of price coverage
-PASS v266 Carrefour exact pickup minimum deficit 131.30 preserved
-PASS v266 הוד השרון default price ascending: full basket above partial/minimum failure
-PASS v266 הוד השרון pure ranking agrees with table order
-PASS v266 הוד השרון no fabricated winner or savings with unknown collection
-PASS v266 הוד השרון summary acknowledges full baskets and unknown collection
-PASS v266 הוד השרון all seven shown and Osher absent
-PASS v266 הוד השרון counter verification matches table labels, independently of price coverage
-PASS v266 approved Hazi partial below minimum cannot jump over unverified full
-PASS v266 נתניה all partial delivery retains coverage-first explanation
-PASS v266 נתניה at equal coverage, minimum met before lower incomplete under-minimum cost
-PASS v266 נתניה partial price counter is not zero-price claim
-PASS v266 באר שבע all partial delivery retains coverage-first explanation
-PASS v266 באר שבע at equal coverage, minimum met before lower incomplete under-minimum cost
-PASS v266 באר שבע partial price counter is not zero-price claim
+PASS v266 תל אביב original subtotal and coverage VICTORY_NEW_SOURCE
+PASS v266 תל אביב original subtotal and coverage SHUFERSAL
+PASS v266 תל אביב original subtotal and coverage YAYNO_BITAN_AND_CARREFOUR
+PASS v266 תל אביב original subtotal and coverage TIV_TAAM
+PASS v266 תל אביב original subtotal and coverage RAMI_LEVY
+PASS v266 תל אביב original subtotal and coverage HAZI_HINAM
+PASS v266 תל אביב original subtotal and coverage YOHANANOF
+PASS v266 תל אביב only available chains ranked
+PASS v266 תל אביב known total/full/minimum rules in available cohort
+PASS v266 מצפה רמון original subtotal and coverage VICTORY_NEW_SOURCE
+PASS v266 מצפה רמון original subtotal and coverage SHUFERSAL
+PASS v266 מצפה רמון original subtotal and coverage YAYNO_BITAN_AND_CARREFOUR
+PASS v266 מצפה רמון original subtotal and coverage TIV_TAAM
+PASS v266 מצפה רמון original subtotal and coverage RAMI_LEVY
+PASS v266 מצפה רמון original subtotal and coverage HAZI_HINAM
+PASS v266 מצפה רמון original subtotal and coverage YOHANANOF
+PASS v266 מצפה רמון only available chains ranked
+PASS v266 מצפה רמון known total/full/minimum rules in available cohort
+PASS v266 חיפה original subtotal and coverage SHUFERSAL
+PASS v266 חיפה original subtotal and coverage VICTORY_NEW_SOURCE
+PASS v266 חיפה original subtotal and coverage YAYNO_BITAN_AND_CARREFOUR
+PASS v266 חיפה original subtotal and coverage TIV_TAAM
+PASS v266 חיפה original subtotal and coverage RAMI_LEVY
+PASS v266 חיפה original subtotal and coverage HAZI_HINAM
+PASS v266 חיפה original subtotal and coverage YOHANANOF
+PASS v266 חיפה only available chains ranked
+PASS v266 חיפה known total/full/minimum rules in available cohort
+PASS v266 נתניה original subtotal and coverage SHUFERSAL
+PASS v266 נתניה original subtotal and coverage VICTORY_NEW_SOURCE
+PASS v266 נתניה original subtotal and coverage YAYNO_BITAN_AND_CARREFOUR
+PASS v266 נתניה original subtotal and coverage TIV_TAAM
+PASS v266 נתניה original subtotal and coverage RAMI_LEVY
+PASS v266 נתניה original subtotal and coverage HAZI_HINAM
+PASS v266 נתניה original subtotal and coverage YOHANANOF
+PASS v266 נתניה only available chains ranked
+PASS v266 נתניה known total/full/minimum rules in available cohort
+PASS v266 הוד השרון original subtotal and coverage SHUFERSAL
+PASS v266 הוד השרון original subtotal and coverage VICTORY_NEW_SOURCE
+PASS v266 הוד השרון original subtotal and coverage YAYNO_BITAN_AND_CARREFOUR
+PASS v266 הוד השרון original subtotal and coverage TIV_TAAM
+PASS v266 הוד השרון original subtotal and coverage RAMI_LEVY
+PASS v266 הוד השרון original subtotal and coverage HAZI_HINAM
+PASS v266 הוד השרון original subtotal and coverage YOHANANOF
+PASS v266 הוד השרון only available chains ranked
+PASS v266 הוד השרון known total/full/minimum rules in available cohort
 PASS v266 default price sort ignores confirmed pickup advantage for partial under-minimum cart
 PASS v266 sort does not mutate input
 PASS v266 immutable production config
@@ -1885,7 +1893,7 @@ PASS v266 unchanged source layout.js
 PASS v266 unchanged source online-core.js
 PASS v266 unchanged source fees.js
 PASS v266 unchanged source legal.html
-PASS v266 index layout and markup unchanged except asset version
+PASS v266 workflow and handoff IDs preserved
 PASS v266 explicit synonym suggestion חלב שקדים
 PASS v266 explicit synonym suggestion חלב סויה
 PASS v266 explicit synonym suggestion חלב שיבולת שועל 1 ליטר
@@ -1901,7 +1909,7 @@ PASS v266 empty AND results offer a named explicit search, no silent synonym res
 PASS v266 explicit click changes query without adding anything to cart
 PASS v266 missing network-table dependency displays friendly retry, technical detail only in console
 PASS v266 savings singular relevance plus real database size
-64 v266 cases passed; offline fixtures/VM only; Playwright execution reported separately.
+70 v266 cases passed; offline fixtures/VM only; Playwright execution reported separately.
 
 v267.test.cjs
 PASS v267 Tel Aviv exact ten-barcode cart and quantities retained
@@ -1958,7 +1966,7 @@ PASS v268 unchanged layout.js
 PASS v268 unchanged chain-status.js
 PASS v268 unchanged comparison-view.js
 PASS v268 unchanged legal.html
-PASS v268 network model changes only its minimum display wording
+PASS v268 v270 network model authorized availability-only and equivalent changes pinned
 PASS v268 numeric/service API unchanged online-core.js.fee
 PASS v268 numeric/service API unchanged online-core.js.quote
 PASS v268 numeric/service API unchanged online-core.js.service
@@ -1969,17 +1977,292 @@ PASS v268 numeric/service API unchanged savings.js.difference
 PASS v268 numeric/service API unchanged network-table.js.sortRows
 PASS v268 new browser tour allows a genuinely unlisted city
 PASS v268 blocked-script test never invokes missing app dependency
-PASS v268 under-minimum full basket has accurate savings headline
-PASS v268 chart and network table use same deficit label
-PASS v268 נתניה states full carts that meet minimum, not all full carts
-PASS v268 נתניה keeps unverified pickup outside savings
-PASS v268 חיפה states full carts that meet minimum, not all full carts
-PASS v268 חיפה keeps unverified pickup outside savings
-PASS v268 הוד השרון states full carts that meet minimum, not all full carts
-PASS v268 הוד השרון keeps unverified pickup outside savings
+PASS v268 outside full basket never creates savings or recommendation
+PASS v268 נתניה full below-minimum still represented accurately
+PASS v268 חיפה full below-minimum still represented accurately
+PASS v268 הוד השרון full below-minimum still represented accurately
 PASS v268 savings monetary cells always show two decimals including zero and integers
 PASS v268 eligible full basket remains before full below minimum
-39 v268 cases passed; fixture/VM only; Playwright not executed here.
+35 v268 cases passed; fixture/VM only; Playwright not executed here.
+
+v269.test.cjs
+PASS v269 unchanged config.js
+PASS v269 unchanged core.js
+PASS v269 unchanged online-core.js
+PASS v269 unchanged fees.js
+PASS v269 unchanged top-ranking.js
+PASS v269 unchanged savings.js
+PASS v269 unchanged styles.css
+PASS v269 unchanged redesign.css
+PASS v269 unchanged layout.js
+PASS v269 unchanged chain-status.js
+PASS v269 unchanged comparison-view.js
+PASS v269 unchanged legal.html
+PASS v269 ranking comparator unchanged
+PASS v269 v270 model pinned
+PASS v269 מצפה רמון original financial amounts unchanged
+PASS v269 מצפה רמון unknown excluded from financial cohort
+PASS v269 תל אביב original financial amounts unchanged
+PASS v269 תל אביב unknown excluded from financial cohort
+PASS v269 נתניה original financial amounts unchanged
+PASS v269 נתניה unknown excluded from financial cohort
+PASS v269 Mitzpe Ramon explains no verified pickup, not outside basket
+PASS v269 old four-chain scenarios explicitly use fixtures, own production config expects seven
+PASS v269 v255 passes independently of a poisonous sibling serve config
+PASS v269 מצפה רמון savings follows current table sort price ascending
+PASS v269 מצפה רמון savings follows current table sort price descending
+PASS v269 מצפה רמון savings follows current table sort coverage descending
+PASS v269 מצפה רמון savings follows current table sort saving descending
+PASS v269 מצפה רמון unknown pickup has no recommendation or saving
+PASS v269 תל אביב savings follows current table sort price ascending
+PASS v269 תל אביב savings follows current table sort price descending
+PASS v269 תל אביב savings follows current table sort coverage descending
+PASS v269 תל אביב savings follows current table sort saving descending
+PASS v269 תל אביב unknown pickup has no recommendation or saving
+PASS v269 נתניה savings follows current table sort price ascending
+PASS v269 נתניה savings follows current table sort price descending
+PASS v269 נתניה savings follows current table sort coverage descending
+PASS v269 נתניה savings follows current table sort saving descending
+PASS v269 נתניה unknown pickup has no recommendation or saving
+38 v269 cases passed; offline fixture/VM only.
+
+v270-layout.test.cjs
+PASS v270 accessibility AA palette #ffffff on #08766c
+PASS v270 accessibility AA palette #ffffff on #227c64
+PASS v270 accessibility AA palette #ffffff on #086257
+PASS v270 accessibility AA palette #ffffff on #1a6752
+PASS v270 accessibility AA palette #12332f on #ffffff
+PASS v270 accessibility AA palette #4b6660 on #ffffff
+PASS v270 accessibility AA palette #e3f3eb on #182a23
+PASS v270 accessibility AA palette #b1c9bc on #182a23
+PASS v270 accessibility AA palette #684300 on #f8f0df
+PASS v270 accessibility AA palette #ffe1a3 on #43351d
+PASS v270 accessibility dark theme explicitly overrides inherited dark button ink
+PASS v270 accessibility compact labels in one non-wrapping sort control
+PASS v270 accessibility quantity controls have at least 44px touch area
+PASS v270 accessibility visible keyboard focus
+PASS v270 accessibility footer release and stable workflow anchors retained
+
+v270-search.test.cjs
+METRIC index_97096_ms=172
+PASS v270 search חלב indexed results exactly match original AND/size/coverage results
+PASS v270 search חלב indexed query within 2000ms budget
+METRIC query חלב 185ms
+PASS v270 search חלב 3% 2 ליטר indexed results exactly match original AND/size/coverage results
+PASS v270 search חלב 3% 2 ליטר indexed query within 2000ms budget
+METRIC query חלב 3% 2 ליטר 200ms
+PASS v270 search טונה indexed results exactly match original AND/size/coverage results
+PASS v270 search טונה indexed query within 2000ms budget
+METRIC query טונה 96ms
+PASS v270 search נייר טואלט indexed results exactly match original AND/size/coverage results
+PASS v270 search נייר טואלט indexed query within 2000ms budget
+METRIC query נייר טואלט 79ms
+PASS v270 search חיתולים indexed results exactly match original AND/size/coverage results
+PASS v270 search חיתולים indexed query within 2000ms budget
+METRIC query חיתולים 94ms
+PASS v270 search במבה 80 גרם indexed results exactly match original AND/size/coverage results
+PASS v270 search במבה 80 גרם indexed query within 2000ms budget
+METRIC query במבה 80 גרם 76ms
+PASS v270 search מלפפון indexed results exactly match original AND/size/coverage results
+PASS v270 search מלפפון indexed query within 2000ms budget
+METRIC query מלפפון 109ms
+PASS v270 search חלב שקדים indexed results exactly match original AND/size/coverage results
+PASS v270 search חלב שקדים indexed query within 2000ms budget
+METRIC query חלב שקדים 4ms
+PASS v270 search 729000 indexed results exactly match original AND/size/coverage results
+PASS v270 search 729000 indexed query within 2000ms budget
+METRIC query 729000 29ms
+PASS v270 search שמן זי indexed results exactly match original AND/size/coverage results
+PASS v270 search שמן זי indexed query within 2000ms budget
+METRIC query שמן זי 112ms
+PASS v270 search index does not alter product records
+21 indexed search checks passed
+
+v270.test.cjs
+PASS v270 exact attached config hash
+PASS v270 seven visible, fees off, Osher hidden
+PASS v270 Gan Yavne delivery VICTORY_NEW_SOURCE available
+PASS v270 Gan Yavne delivery RAMI_LEVY available
+PASS v270 Gan Yavne delivery TIV_TAAM available
+PASS v270 Gan Yavne delivery YAYNO_BITAN_AND_CARREFOUR outside
+PASS v270 Gan Yavne delivery HAZI_HINAM outside
+PASS v270 Gan Yavne delivery SHUFERSAL unknown
+PASS v270 Gan Yavne delivery YOHANANOF unsupported
+PASS v270 Gan Yavne pickup VICTORY_NEW_SOURCE available
+PASS v270 Gan Yavne pickup YAYNO_BITAN_AND_CARREFOUR outside
+PASS v270 Gan Yavne pickup HAZI_HINAM outside
+PASS v270 Gan Yavne pickup TIV_TAAM outside
+PASS v270 Gan Yavne pickup YOHANANOF outside
+PASS v270 Gan Yavne pickup RAMI_LEVY unknown
+PASS v270 Gan Yavne pickup SHUFERSAL unknown
+PASS v270 Jerusalem Rami is available with northern-city qualification
+PASS v270 Holon pickup HAZI_HINAM
+PASS v270 Holon pickup TIV_TAAM
+PASS v270 Holon pickup YOHANANOF
+PASS v270 alias אוהל משה delivery
+PASS v270 alias אוהל משה pickup
+PASS v270 alias אפקה delivery
+PASS v270 alias אפקה pickup
+PASS v270 alias ארנונה delivery
+PASS v270 alias ארנונה pickup
+PASS v270 alias בית צפאפא delivery
+PASS v270 alias בית צפאפא pickup
+PASS v270 alias בנימינה delivery
+PASS v270 alias בנימינה pickup
+PASS v270 alias גבעה הצרפתית delivery
+PASS v270 alias גבעה הצרפתית pickup
+PASS v270 alias גבעת אולגה delivery
+PASS v270 alias גבעת אולגה pickup
+PASS v270 alias גבעת אלונים delivery
+PASS v270 alias גבעת אלונים pickup
+PASS v270 alias גבעת המבתר delivery
+PASS v270 alias גבעת המבתר pickup
+PASS v270 alias גבעת מרדכי delivery
+PASS v270 alias גבעת מרדכי pickup
+PASS v270 alias גבעת שאול delivery
+PASS v270 alias גבעת שאול pickup
+PASS v270 alias גילה delivery
+PASS v270 alias גילה pickup
+PASS v270 alias גלילות delivery
+PASS v270 alias גלילות pickup
+PASS v270 alias הדר יוסף delivery
+PASS v270 alias הדר יוסף pickup
+PASS v270 alias הר חומה delivery
+PASS v270 alias הר חומה pickup
+PASS v270 alias התקווה delivery
+PASS v270 alias התקווה pickup
+PASS v270 alias טירת הכרמל delivery
+PASS v270 alias טירת הכרמל pickup
+PASS v270 alias יד אליהו delivery
+PASS v270 alias יד אליהו pickup
+PASS v270 alias יהוד delivery
+PASS v270 alias יהוד pickup
+PASS v270 alias יפו delivery
+PASS v270 alias יפו pickup
+PASS v270 alias יקנעם delivery
+PASS v270 alias יקנעם pickup
+PASS v270 alias ירושלים צפון חדש delivery
+PASS v270 alias ירושלים צפון חדש pickup
+PASS v270 alias כוכב הצפון delivery
+PASS v270 alias כוכב הצפון pickup
+PASS v270 alias כוכב יאיר delivery
+PASS v270 alias כוכב יאיר pickup
+PASS v270 alias כפר שלם delivery
+PASS v270 alias כפר שלם pickup
+PASS v270 alias מודיעין delivery
+PASS v270 alias מודיעין pickup
+PASS v270 alias מכון דוד delivery
+PASS v270 alias מכון דוד pickup
+PASS v270 alias מעלות delivery
+PASS v270 alias מעלות pickup
+PASS v270 alias נווה יעקב delivery
+PASS v270 alias נווה יעקב pickup
+PASS v270 alias נווה שאנן delivery
+PASS v270 alias נווה שאנן pickup
+PASS v270 alias נחלת יצחק delivery
+PASS v270 alias נחלת יצחק pickup
+PASS v270 alias פסגת זאב delivery
+PASS v270 alias פסגת זאב pickup
+PASS v270 alias פרדס חנה delivery
+PASS v270 alias פרדס חנה pickup
+PASS v270 alias צהלה delivery
+PASS v270 alias צהלה pickup
+PASS v270 alias צור יגאל delivery
+PASS v270 alias צור יגאל pickup
+PASS v270 alias קדימה delivery
+PASS v270 alias קדימה pickup
+PASS v270 alias קטמון delivery
+PASS v270 alias קטמון pickup
+PASS v270 alias קריית חיים delivery
+PASS v270 alias קריית חיים pickup
+PASS v270 alias קרית חיים delivery
+PASS v270 alias קרית חיים pickup
+PASS v270 alias קרית נחום delivery
+PASS v270 alias קרית נחום pickup
+PASS v270 alias רמות delivery
+PASS v270 alias רמות pickup
+PASS v270 alias רמת אביב delivery
+PASS v270 alias רמת אביב pickup
+PASS v270 alias רמת אביב ג delivery
+PASS v270 alias רמת אביב ג pickup
+PASS v270 alias רמת אביב החדשה delivery
+PASS v270 alias רמת אביב החדשה pickup
+PASS v270 alias רמת אפעל delivery
+PASS v270 alias רמת אפעל pickup
+PASS v270 alias רמת אשכול delivery
+PASS v270 alias רמת אשכול pickup
+PASS v270 alias רמת הדר delivery
+PASS v270 alias רמת הדר pickup
+PASS v270 alias רמת החייל delivery
+PASS v270 alias רמת החייל pickup
+PASS v270 alias שמואל הנביא delivery
+PASS v270 alias שמואל הנביא pickup
+PASS v270 alias תל ברוך delivery
+PASS v270 alias תל ברוך pickup
+PASS v270 alias תל חיים delivery
+PASS v270 alias תל חיים pickup
+PASS v270 גן יבנה delivery exhaustive disjoint cohorts
+PASS v270 גן יבנה pickup exhaustive disjoint cohorts
+PASS v270 ירושלים delivery exhaustive disjoint cohorts
+PASS v270 ירושלים pickup exhaustive disjoint cohorts
+PASS v270 תל אביב delivery exhaustive disjoint cohorts
+PASS v270 תל אביב pickup exhaustive disjoint cohorts
+PASS v270 חולון delivery exhaustive disjoint cohorts
+PASS v270 חולון pickup exhaustive disjoint cohorts
+PASS v270 חיפה delivery exhaustive disjoint cohorts
+PASS v270 חיפה pickup exhaustive disjoint cohorts
+PASS v270 מצפה רמון delivery exhaustive disjoint cohorts
+PASS v270 מצפה רמון pickup exhaustive disjoint cohorts
+PASS v270 fixture parses both offers with source id mapped to catalog index
+PASS v270 no approval never changes missing product, original records or coverage
+PASS v270 approved equivalent price multiplied by original quantity, full coverage and rank
+PASS v270 changed quantity uses original cart quantity, not stale approval quantity
+PASS v270 cancel restores exact original missing state
+PASS v270 stale exporter suggestions ignored
+PASS v270 missing or malformed optional file harmless null
+PASS v270 missing or malformed optional file harmless {}
+PASS v270 missing or malformed optional file harmless []
+PASS v270 missing or malformed optional file harmless {"export_generated_a
+PASS v270 missing or malformed optional file harmless {"export_generated_a
+PASS v270 offer hidden when exact product already exists
+PASS v270 produce and weighted never offered
+PASS v270 stale approval removed, legacy approved alternative retained
+PASS v270 unit price, brand/size/flavour warnings always explicit
+PASS v270 invalid suggestion field 1 -1 rejected
+PASS v270 invalid suggestion field 1 101 rejected
+PASS v270 invalid suggestion field 2 3 rejected
+PASS v270 invalid suggestion field 3 ? rejected
+PASS v270 invalid suggestion field 4 ? rejected
+PASS v270 available full qualified, full below minimum, coverage descending, estimates follow same ordering
+PASS v270 unapproved UI offer not counted in comparison
+PASS v270 explicit approval persisted without breaking existing storage key
+PASS v270 order shows approved replacement name original code and price
+PASS v270 approved basket line is safe for local code absent from catalog
+159 v270 contract checks passed
+
+v271.test.cjs
+PASS v271 גן יבנה summary excludes unknown full cheap baskets
+PASS v271 חיפה summary excludes unknown full cheap baskets
+PASS v271 נתניה summary excludes unknown full cheap baskets
+PASS v271 Mitzpe Ramon explains no verified pickup regardless of unknown full baskets
+PASS v271 network-table.js obsolete unverified pickup summary removed
+PASS v271 savings.js obsolete unverified pickup summary removed
+PASS v271 estimate partial 9/10 beats verified 7/10
+PASS v271 estimate full minimum met beats verified full below minimum
+PASS v271 full below minimum remains ahead of partial
+PASS v271 partial same coverage minimum before cheaper
+PASS v271 estimate sorts ordinarily without recommendation or savings
+PASS v271 config exact and release single source
+PASS v271 desktop and mobile have one stepper plus data link
+PASS v271 before approval deficit 235.30 exact
+PASS v271 approved equivalent recomputes order and card from same effective quote
+PASS v271 cancel equivalent restores minimum and missing coverage
+PASS v271 one visible snapshot date line, export date not substituted
+PASS v271 גן יבנה savings fallback exactly agrees with available-only headline
+PASS v271 חיפה savings fallback exactly agrees with available-only headline
+PASS v271 נתניה savings fallback exactly agrees with available-only headline
+PASS v271 מצפה רמון savings fallback exactly agrees with available-only headline
+21 v271 checks passed
 
 markup.test.py
 PASS markup has no duplicate IDs

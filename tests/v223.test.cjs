@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),C=require('../chain-status.js'),R=require('../release.js'),T=require('../top-ranking.js'),Layout=require('../layout.js'),{setup,loadFixture}=require('./support.cjs');
 let count=0;const test=(name,fn)=>{fn();count++;console.log('PASS '+name);};
 const now=Date.now(),stamp=new Date(now).toISOString();
-function fixture(){return{networks:Array.from({length:8},(_,i)=>({source:'C'+i,index:i,name:'רשת '+i})),config:{chains:Object.fromEntries(Array.from({length:8},(_,i)=>['C'+i,{visible:true,availability:'verify',delivery:true,pickup:true,estimatedDeliveryFee:0,estimatedPickupFee:0,orderUrl:'https://shop.example.test/'}]))},place:{city:'בדיקה',mode:'delivery'},meta:{per_chain_freshness:Object.fromEntries(Array.from({length:8},(_,i)=>['C'+i,{latest_snapshot_at:stamp}]))},cart:[{barcode:'100',qty:1},{barcode:'200',qty:1}],records:new Map([['100',new Map([[0,{last:100}],[1,{last:200}],[2,{last:300}]])],['200',new Map([[1,{last:50}]])]]),loaded:true,now};}
+function fixture(){return{networks:Array.from({length:8},(_,i)=>({source:'C'+i,index:i,name:'רשת '+i})),config:{chains:Object.fromEntries(Array.from({length:8},(_,i)=>['C'+i,{visible:true,availability:'known',serviceAreas:['בדיקה'],delivery:true,pickup:true,estimatedDeliveryFee:0,estimatedPickupFee:0,orderUrl:'https://shop.example.test/'}]))},place:{city:'בדיקה',mode:'delivery'},meta:{per_chain_freshness:Object.fromEntries(Array.from({length:8},(_,i)=>['C'+i,{latest_snapshot_at:stamp}]))},cart:[{barcode:'100',qty:1},{barcode:'200',qty:1}],records:new Map([['100',new Map([[0,{last:100}],[1,{last:200}],[2,{last:300}]])],['200',new Map([[1,{last:50}]])]]),loaded:true,now};}
 let f=fixture(),s=C.summarize(f);
 test('single display total includes all eight chain data indexes',()=>assert.equal(s.total,8));
 test('partial or verify chains do not masquerade as full priced',()=>assert.equal(s.priced,1));
@@ -21,7 +21,7 @@ test('expired snapshots change counters using supplied now',()=>assert.equal(C.s
 test('before load never claims price freshness or stale data',()=>{const x=C.summarize({...fixture(),loaded:false});assert.equal(x.priced,0);assert.equal(x.stale,0);assert.equal(x.verify,8);});
 test('production-config total used before catalog arrives',()=>assert.equal(C.summarize({config:fixture().config}).total,8));
 test('status computation does not reorder or mutate datasets',()=>{const ff=fixture(),before=JSON.stringify(ff);C.summarize(ff);assert.equal(JSON.stringify(ff),before);});
-test('release has one immutable canonical version',()=>{assert.equal(R.VERSION,'2.6.8');assert.equal(Object.isFrozen(R),true);});
+test('release has one immutable canonical version',()=>{assert.equal(R.VERSION,'2.7.1');assert.equal(Object.isFrozen(R),true);});
 let ff=fixture();const rankInput={rows:[{chain:0,coverage:2,total:10000},{chain:1,coverage:2,total:11000},{chain:2,coverage:1,total:1}],cartSize:2,networks:ff.networks,config:ff.config,place:ff.place,snapshots:Array(8).fill(stamp)};
 for(const enabled of [false,true]){rankInput.config.fees={enabled,customerFee:{type:'fixed',fixedAmount:5},chainCommission:{type:'fixed',fixedAmount:5}};const ranked=T.rank(rankInput);
  test('rank explanations never imply collected operational fees, enabled='+enabled,()=>assert.ok(ranked.every(r=>!r.explanations.join(' ').includes('כולל דמי שירות ידועים'))));

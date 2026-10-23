@@ -1,0 +1,14 @@
+{
+  "files": {
+    "app.js": "8f59b71c25437f31cc951c7e42a6a10f77a7609d30a39cc92b5a0a1faedaab06",
+    "network-table.js": "f6b040174575cfc57e1a818a5d547babe21c9756e6aa820934a129433c58eccc"
+  },
+  "core": {},
+  "online": {},
+  "ui": {
+    "renderRelevantSavings": "c939add464e00e49f6e0381ca30641b9e638e262287cd17469dbc062c800e28e"
+  },
+  "network": {
+    "model": "21511bbdd83e2c68a8f9db1d8c0c220c6e05a7c6d8ddd6740032429fbaca8403"
+  }
+}

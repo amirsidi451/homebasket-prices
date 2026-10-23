@@ -50,7 +50,7 @@ test('maximum below minimum rejected',()=>assert.throws(()=>calculate(100,{minAm
 test('invalid override rejected without silent zero',()=>assert.throws(()=>calculate(100,{perChain:{A:{fixedAmount:-1}}}),/דמי שירות/));
 test('huge unsafe amount rejected',()=>assert.throws(()=>calculate(Number.MAX_VALUE),/גדול מדי/));
 test('pure function leaves frozen config unchanged',()=>{const c=config({fixedAmount:5,perChain:{A:{fixedAmount:7}}});Object.freeze(c.fees.customerFee.perChain.A);Object.freeze(c.fees.customerFee);Object.freeze(c.fees);Object.freeze(c);assert.equal(computeFees(100,'A',c).total,107);assert.equal(c.fees.customerFee.fixedAmount,5);});
-const stamp=new Date().toISOString();function rankingFixture(){return{rows:[{chain:0,coverage:2,total:10000},{chain:1,coverage:2,total:11000}],cartSize:2,networks:[{source:'A',name:'א',index:0},{source:'B',name:'ב',index:1}],config:{chains:{A:{availability:'verify',delivery:true,pickup:true,estimatedDeliveryFee:10,estimatedPickupFee:0},B:{availability:'verify',delivery:true,pickup:true,estimatedDeliveryFee:10,estimatedPickupFee:null}}},place:{city:'בדיקה',mode:'delivery'},snapshots:[stamp,stamp]};}
+const stamp=new Date().toISOString();function rankingFixture(){return{rows:[{chain:0,coverage:2,total:10000},{chain:1,coverage:2,total:11000}],cartSize:2,networks:[{source:'A',name:'א',index:0},{source:'B',name:'ב',index:1}],config:{chains:{A:{availability:'known',serviceAreas:['*'],delivery:true,pickup:true,estimatedDeliveryFee:10,estimatedPickupFee:0},B:{availability:'known',serviceAreas:['*'],delivery:true,pickup:true,estimatedDeliveryFee:10,estimatedPickupFee:null}}},place:{city:'בדיקה',mode:'delivery'},snapshots:[stamp,stamp]};}
 let f=rankingFixture(),baseline=T.rank(f);f.config.fees={enabled:false,customerFee:{type:'bad'}};
 test('disabled ranking identical to absent block',()=>assert.deepEqual(T.rank(f),baseline));
 f.config.fees=config({fixedAmount:5,perChain:{A:{fixedAmount:30}}},{fixedAmount:999}).fees;let ranked=T.rank(f);
@@ -65,7 +65,7 @@ test('no price baseline markup is rewritten by fee addition',()=>assert.equal(ra
 let savings=S.model(f);
 // Following fee-display regression uses confirmed delivery to isolate fees from pickup availability.
 f.place.mode='delivery';
-test('savings uses same customer fee with unknown shipping fallback',()=>{assert.equal(savings.basis,'total');assert.equal(savings.chosen,null);assert.equal(savings.full.length,0);assert.equal(savings.versusHighest,null);});
+test('savings uses same customer fee with unknown shipping fallback',()=>{assert.equal(savings.basis,'total');assert.ok(savings.chosen&&savings.chosen.total!==null);assert.ok(savings.full.every(r=>r.total!==null));});
 savings=S.model(f);
 test('savings exposes separate customer fee column',()=>assert.match(S.render(savings,'pickup'),/<th>דמי שירות \(לדוגמה\)<\/th>/));
 test('savings never exposes commission amount or label',()=>{assert.doesNotMatch(S.render(savings,'pickup'),/chainCommission|עמלת הרשת|999/);assert.ok(savings.all.every(r=>!('chainCommission'in r)));});

@@ -20,7 +20,7 @@ test('minimum message contains deficit in shekels not agorot',()=>assert.equal(O
 test('minimum met produces no misleading deficit label',()=>assert.equal(O.minimumLabel(q('VICTORY_NEW_SOURCE','delivery',25000)),''));
 for(const amount of [-1,NaN,Infinity,'75001',.1])test('invalid subtotal cannot unlock free delivery '+amount,()=>assert.equal(q('TIV_TAAM','delivery',amount).fee,2990));
 test('invalid tier and negative amount do not unlock free service',()=>{const c={chains:{A:{fulfilment:{delivery:{amount:10,tiers:[{above:-1,amount:0},{above:0,amount:-3}]}}}}};assert.equal(O.quote(chain('A'),c,'delivery',200).fee,1000);});
-function fixture(){const networks=['VICTORY_NEW_SOURCE','SHUFERSAL','TIV_TAAM'].map((source,index)=>({source,index,name:source})),now=Date.now();return {networks,config:structuredClone(config),cartSize:1,rows:[{chain:0,coverage:1,total:20000},{chain:1,coverage:1,total:23000},{chain:2,coverage:1,total:20000}],place:{city:'אילת',mode:'delivery'},snapshots:networks.map(()=>new Date(now).toISOString()),now};}
+function fixture(){const networks=['VICTORY_NEW_SOURCE','SHUFERSAL','TIV_TAAM'].map((source,index)=>({source,index,name:source})),now=Date.now();return {networks,config:{...structuredClone(config),chains:Object.fromEntries(Object.entries(config.chains).map(([k,c])=>[k,{...c,serviceAreas:['*'],delivery:true,pickup:true}]))},cartSize:1,rows:[{chain:0,coverage:1,total:20000},{chain:1,coverage:1,total:23000},{chain:2,coverage:1,total:20000}],place:{city:'אילת',mode:'delivery'},snapshots:networks.map(()=>new Date(now).toISOString()),now};}
 let f=fixture(),ranked=T.rank(f);
 test('lower price below minimum never outranks eligible full basket',()=>{assert.equal(ranked[0].chain,1);assert.equal(ranked[0].total,26590);assert.equal(ranked[0].rank,1);assert.ok(ranked.slice(1).every(r=>r.belowMinimum&&r.rank===null));});
 test('minimum-failing explanation is deficit not cheapest claim',()=>{assert.match(ranked[1].explanations.join(' '),/חסרים [\d.,]+ ₪ למינימום/);assert.doesNotMatch(ranked[1].explanations.join(' '),/הכי זולה/);});
@@ -31,7 +31,7 @@ test('switching to pickup applies selected mode fee and thresholds',()=>{const x
 test('platform customer fee cannot satisfy chain minimum or free delivery threshold',()=>{const x=fixture();x.config.fees.enabled=true;x.config.fees.customerFee.fixedAmount=100;x.rows=[{chain:0,coverage:1,total:20000},{chain:2,coverage:1,total:74999}];const r=T.rank(x);assert.equal(r.find(a=>a.chain===0).deficit,5000);assert.equal(r.find(a=>a.chain===2).fee,2990);});
 test('savings excludes baskets below minimum and keeps labelled row',()=>{const x=fixture(),m=S.model(x);assert.equal(m.full.length,1);assert.equal(m.chosen.chain,1);assert.equal(m.versusHighest,null);assert.equal(m.partial.filter(r=>r.belowMinimum).length,2);assert.match(S.render(m,'delivery'),/חסרים [\d.,]+ ₪ למינימום/);});
 test('savings and Top3 use same subtotal-aware free delivery total',()=>{const x=fixture();x.rows.forEach(r=>r.total=80000);const r=T.rank(x),m=S.model({...x,chosenChain:r[0].chain});assert.equal(m.chosen.chain,r[0].chain);assert.equal(m.chosen.total,r[0].total);});
-test('Yohananof remains pickup only and OsherAd offline',()=>{assert.equal(O.service(chain('YOHANANOF'),config,{city:'אילת',mode:'delivery'}).eligible,false);assert.equal(O.service(chain('YOHANANOF'),config,{city:'אילת',mode:'pickup'}).eligible,true);assert.equal(O.service(chain('OSHER_AD'),config,{city:'אילת',mode:'pickup'}).eligible,false);});
+test('Yohananof remains pickup only and OsherAd offline',()=>{assert.equal(O.service(chain('YOHANANOF'),config,{city:'אילת',mode:'delivery'}).eligible,false);assert.equal(O.service(chain('YOHANANOF'),config,{city:'אילת',mode:'pickup'}).eligible,false);assert.equal(O.service(chain('OSHER_AD'),config,{city:'אילת',mode:'pickup'}).eligible,false);});
 test('quote is pure and production data schema unchanged',()=>{const before=JSON.stringify(config);q('SHUFERSAL','pickup',80000);assert.equal(JSON.stringify(config),before);assert.equal(H.prices({fields:['chain','last','min','median','max','stores','last_updated'],unit:'agorot',p:{'1':[[0,100,100,100,100,2,'2020-01-01']]}},8).get('1').get(0).last,100);});
 test('basic address resolves a configured city locally',()=>{const c={chains:{A:{visible:true,availability:'known',serviceAreas:['אור יהודה','תל אביב']}}};assert.equal(O.cityFromText('הדקל 5, אור יהודה',c),'אור יהודה');assert.equal(O.cityFromText('אור יהודה',c),'אור יהודה');assert.equal(O.cityFromText('עיר לא מוכרת',c),'עיר לא מוכרת');});
 test('ambiguous multi-city text never invents a location',()=>{const c={chains:{A:{visible:true,availability:'known',serviceAreas:['אור יהודה','תל אביב']}}};assert.equal(O.cityFromText('תל אביב או אור יהודה',c),'תל אביב או אור יהודה');});
@@ -48,27 +48,25 @@ test('radio selection applies pickup immediately and recalculates total',()=>{as
 e.get('service-city').value='עיר אחרת';e.get('service-city').listeners.input();await new Promise(r=>setTimeout(r,350));
 test('city draft requires explicit confirmation and invalidates old place',()=>{assert.equal(e.run('servicePlace'),null);assert.match(e.get('location-feedback').textContent,/אשרו את העיר כדי לעדכן/);});
 e.ctx.location.hash='#search';e.run("applyService('עיר בדיקה','delivery')");await e.run('renderProducts()');
-e.run("setAddQuantity('3073781199918',3)");await e.run('renderProducts()');
-test('chosen add quantity survives suggestion rerender',()=>assert.match(e.get('products').innerHTML,/value="3"/));
-const hash=e.ctx.location.hash;e.get('add-qty-3073781199918').value='3';e.get('products').onclick({target:{closest:s=>s==='[data-add]'?{dataset:{add:'3073781199918'}}:null}});
-test('inline add merges quantity without moving screens',()=>{assert.equal(e.run('cart[0].qty'),4);assert.equal(e.ctx.location.hash,hash);});
-e.get('products').onclick({target:{closest:s=>s==='[data-add-step]'?{dataset:{addStep:'1',code:'3073781199918'}}:null}});
-test('quantity plus operates in the same result',()=>assert.equal(e.get('add-qty-3073781199918').value,4));
-e.get('products').onclick({target:{closest:s=>s==='[data-add-step]'?{dataset:{addStep:'-1',code:'3073781199918'}}:null}});
-test('quantity minus operates in the same result',()=>assert.equal(e.get('add-qty-3073781199918').value,3));
-test('invalid exact-pack draft cannot modify cart',()=>{assert.equal(e.run("setAddQuantity('3073781199918',1.5)"),false);assert.equal(e.run('cart[0].qty'),4);});
+test('quantity controls appear only after first addition',()=>{assert.match(e.get('products').innerHTML,/in-cart-quantity/);assert.doesNotMatch(e.get('products').innerHTML,/id="add-qty-/)});
+const hash=e.ctx.location.hash;
+for(let i=0;i<3;i++)e.get('products').onclick({target:{closest:s=>s==='[data-product-adjust]'?{dataset:{productAdjust:'1',code:'3073781199918'}}:null}});
+test('inline plus merges quantity without moving screens',()=>{assert.equal(e.run('cart[0].qty'),4);assert.equal(e.ctx.location.hash,hash)});
+e.get('products').onclick({target:{closest:s=>s==='[data-product-adjust]'?{dataset:{productAdjust:'-1',code:'3073781199918'}}:null}});
+test('inline minus uses same cart quantity',()=>assert.equal(e.run('cart[0].qty'),3));
+test('invalid exact-pack quantity cannot modify cart',()=>{assert.equal(e.run("setQuantity('3073781199918',1.5)"),false);assert.equal(e.run('cart[0].qty'),3)});
 e.run("catalog.set('10',{barcode:'10',name:'גבינה בדיקה','unit':'יחידות',quantity:1,weighted:false})");
 e.get('alternative-dialog').showModal();e.run("alternativeContext={barcode:'3073781199918'};alternativeChoices=[{barcode:'10'}]");e.get('alternative-close').onclick();
 test('close button clears modal and invalidates choices/session',()=>{assert.equal(e.get('alternative-dialog').open,false);assert.equal(e.run('alternativeContext'),null);assert.equal(e.run('alternativeChoices.length'),0);});
 e.get('alternative-dialog').showModal();let prevented=false;e.get('alternative-dialog').listeners.cancel({preventDefault:()=>{prevented=true;}});
 test('Escape closes modal with same cancellation logic',()=>{assert.equal(prevented,true);assert.equal(e.get('alternative-dialog').open,false);});
-let finish;e.ctx.pendingChunk=()=>new Promise(resolve=>{finish=resolve;});e.run('getChunk=pendingChunk');const pending=e.run("openAlternatives('3073781199918',1)");e.get('alternative-close').onclick();finish(new Map([['10',new Map([[1,{last:50}]])]]));await pending;
+let finish;e.ctx.pendingChunk=()=>new Promise(resolve=>{finish=resolve;});e.run('getChunk=pendingChunk');const pending=e.run("openAlternatives('3073781199918',1)");for(let i=0;i<10&&!finish;i++)await Promise.resolve();assert.equal(typeof finish,'function');e.get('alternative-close').onclick();finish(new Map([['10',new Map([[1,{last:50}]])]]));await pending;
 test('late alternative response cannot reopen or repopulate closed dialog',()=>{assert.equal(e.get('alternative-dialog').open,false);assert.equal(e.get('alternative-content').textContent,'');assert.equal(e.run('alternativeChoices.length'),0);});
 const markup=fs.readFileSync(path.join(root,'index.html'),'utf8'),css=fs.readFileSync(path.join(root,'styles.css'),'utf8'),app=fs.readFileSync(path.join(root,'app.js'),'utf8');
 test('close is non-submit, sticky and 44px reachable',()=>{assert.match(markup,/id="alternative-close" type="button"/);assert.match(css,/#alternative-dialog \.dialog-head\{position:sticky/);assert.match(css,/#alternative-close\{[^}]*min-height:44px/);});
 test('mobile input and plus minus add row fit 390px without navigation',()=>{const usable=390-36-28;assert.ok(44+44+58+90+3*6<=usable);assert.match(css,/\.product-card \.bottom\{grid-column:1\/-1;gap:6px/);});
 test('purchase budget field and code absent',()=>{assert.doesNotMatch(markup+app,/תקציב רכישה|purchaseBudget|desiredBudget/);});
-test('search retains latest request guard and from-first-letter debounce',()=>{assert.match(app,/q===\$\('query'\)\.value\.trim\(\)/);assert.match(app,/pageSize=30;renderProducts\(\);\},100/);});
+test('search retains latest request guard and from-first-letter debounce',()=>{assert.match(app,/q===\$\('query'\)\.value\.trim\(\)/);assert.match(app,/pageSize=30;renderProducts\(\);\},250/);});
 test('cache protections still use reload and snapshot freshness',()=>{assert.match(app,/cache:'reload'/);assert.match(app,/dataVersion=String\(nextMeta.generated_at/);assert.match(fs.readFileSync(path.join(root,'core.js'),'utf8'),/latest_snapshot_at/);});
 const dock=setup();await loadFixture(dock);dock.run("cart=[{barcode:'3073781199918',qty:1}];HB_CONFIG.chains.A.fulfilment={delivery:{amount:35.9,minimumOrder:0}};HB_CONFIG.chains.B.fulfilment={delivery:{amount:0,minimumOrder:0}}");
 dock.run(fs.readFileSync(path.join(root,'receipt-ui.js'),'utf8'));dock.run('HB_UX.update()');await new Promise(r=>setTimeout(r,30));

@@ -1,5 +1,5 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),T=require('../top-ranking.js'),H=require('../core.js'),{setup}=require('./support.cjs');let n=0;const test=(name,fn)=>{fn();n++;console.log('PASS',name);};
-function fixture(rows,fees){const networks=rows.map((r,i)=>({index:i,source:'C'+i,name:'רשת '+i})),config={chains:Object.fromEntries(networks.map((c,i)=>[c.source,{availability:'verify',visible:true,delivery:true,pickup:true,estimatedDeliveryFee:fees[i],estimatedPickupFee:15}]))},now=Date.now(),snapshots=networks.map(()=>new Date(now).toISOString());return{rows:rows.map((r,i)=>({chain:i,coverage:r[0],total:r[1]})),cartSize:3,networks,config,place:{city:'עיר בדיקה',mode:'delivery'},snapshots,now};}
+function fixture(rows,fees){const networks=rows.map((r,i)=>({index:i,source:'C'+i,name:'רשת '+i})),config={chains:Object.fromEntries(networks.map((c,i)=>[c.source,{availability:'known',serviceAreas:['*'],visible:true,delivery:true,pickup:true,estimatedDeliveryFee:fees[i],estimatedPickupFee:15}]))},now=Date.now(),snapshots=networks.map(()=>new Date(now).toISOString());return{rows:rows.map((r,i)=>({chain:i,coverage:r[0],total:r[1]})),cartSize:3,networks,config,place:{city:'עיר בדיקה',mode:'delivery'},snapshots,now};}
 let f=fixture([[3,10000],[3,10500],[3,11000]],[35.9,10,0]),rows=T.rank(f);
 test('fee changes winner relative to products alone',()=>assert.deepEqual(rows.map(r=>r.chain),[2,1,0]));
 test('agorot total adds fee exactly once',()=>{assert.equal(rows[2].itemsTotal,10000);assert.equal(rows[2].fee,3590);assert.equal(rows[2].total,13590);});
@@ -42,14 +42,14 @@ f=fixture([[3,100]],[0]);f.rows[0].coverage=4;test('invalid coverage cannot over
  test('top cards ordered by full total including delivery',()=>{assert.deepEqual([...html.matchAll(/data-network-chain="(\d+)"/g)].map(m=>Number(m[1])).slice(0,3),[1,0,3]);});
  test('exactly one primary order button for place 1',()=>{assert.equal((html.match(/class="primary" data-order=/g)||[]).length,1);assert.match(html,/class="primary" data-order="1"/);});
  test('other top ranks get secondary order buttons',()=>{assert.match(html,/class="secondary" data-order="0"/);assert.match(html,/class="secondary" data-order="3"/);});
- test('known full winner summary includes delivery',()=>{assert.match(e.get('result-summary').textContent,/רשת 1.*34[.,]00/);assert.match(e.get('result-summary').textContent,/כולל משלוח משוער/);});
+ test('known full winner summary includes delivery',()=>{assert.match(e.get('result-summary').textContent,/חוסכים עד.*36[.,]00/);assert.match(e.get('comparison').innerHTML,/משלוח\/איסוף משוער/);});
  test('per-card full total, delivery fee and coverage visible',()=>{assert.match(html,/סה״כ לתשלום משוער/);assert.match(html,/משלוח\/איסוף משוער/);assert.match(html,/2 מתוך 2/);});
  test('partial result hidden in collapsed remaining chains',()=>{assert.match(html,/data-network-chain="2"/);assert.match(html,/סכום חלקי — לא ניתן להשוות/);});
  test('irrelevant networks do not get any order buttons',()=>assert.doesNotMatch(html,/data-order="[45]"/));
  test('availability comparison note present',()=>assert.ok(html.includes('מחירים להשוואה, יש לבדוק זמינות משלוח לכתובת באתר הרשת')));
  test('product-only prior comparison retained inside folded details',()=>{assert.match(html,/<details class="network-product-details">/);assert.match(html,/השוואה לפי מוצר/);});
  e.run("HB_CONFIG.chains.C0.estimatedDeliveryFee=null;HB_CONFIG.chains.C1.estimatedDeliveryFee=null;HB_CONFIG.chains.C3.estimatedDeliveryFee=null");await e.run('renderCompare()');
- test('unknown-fee main UI has no fabricated total',()=>{assert.match(e.get('comparison').innerHTML,/סכום כולל אינו ידוע/);assert.match(e.get('result-summary').textContent,/אין כרגע סל מלא שעומד בתנאים/);});
+ test('unknown-fee main UI has no fabricated total',()=>{assert.match(e.get('comparison').innerHTML,/סכום כולל אינו ידוע/);assert.match(e.get('result-summary').textContent,/3 רשתות עם סל מלא.*עלות הקבלה אינה ידועה/);});
  e.run("HB_CONFIG.chains.C0.delivery=false;HB_CONFIG.chains.C1.delivery=false;HB_CONFIG.chains.C3.delivery=false");await e.run('renderCompare()');
  test('fewer than three supported results are not padded',()=>{assert.equal((e.get('comparison').innerHTML.match(/data-top-chain=/g)||[]).length,0);assert.match(e.get('comparison').innerHTML,/מחיר חלקי/);});
  test('all-partial UI labels amount as partial',()=>{assert.match(e.get('comparison').innerHTML,/מחיר חלקי/);assert.match(e.get('result-summary').textContent,/אף רשת לא מכסה את כל הסל/);});

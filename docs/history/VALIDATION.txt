@@ -1,0 +1,14 @@
+HomeBasket v2.6.9 — FINAL VALIDATION
+1893 PASS; 0 failed suites. All existing regressions retained. 38 new v269 cases plus 1 always-on local production-config assertion in v255.
+Offline fixture/VM/markup tests only. Full log: test-results.txt.
+Covered: exact reported table order for Mitzpe Ramon pickup7, Tel Aviv pickup10, Netanya pickup6; savings chart order equals current table order across default price, reverse price, coverage and savings sorts; full under-minimum summary includes chain and two-decimal deficit, without winner/savings; poisoned sibling serve config has no effect on v255.
+Numerical table fields, eligibility, ranking order, amounts, minimums, saving and winner fields match stored v268 baseline in all three scenarios. Synthetic coverage/subtotals are not live prices.
+Config SHA256: 2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0
+Unchanged bytes: config.js, core.js, online-core.js, fees.js, top-ranking.js, savings.js, styles.css, redesign.css, layout.js, chain-status.js, comparison-view.js, legal.html. sortRows source unchanged. Network model differs ONLY in pickup summary text declarations, verified by normalized source hash. app.js differs only in chart ordering. Index markup unchanged except cache token268 to269. Release constant2.6.9. No data format changes. No deployment.
+Backup before edit: backups/HomeBasket_Static_v2.6.8.zip and BACKUP_v2.6.8_SHA256.txt.
+Historical source manifests retained; approved hash pins updated only for explicitly requested display changes. Old four-visible-chain tests remain fixture-only; production assertion reads this ZIP's own config.
+
+NOT RUN HERE: actual Playwright rendering or console checks at1280,390,640@2x; physical-phone QA. control-browser unavailable. Sites instruction: “If $control-browser is unavailable, skip browser QA”. Source: skill://plugin_connector_1p_689987207de08191979cf68eca2941c6/sites/SKILL.md
+Prepared tests/v269.playwright.cjs retains v268 regression tour and adds chart/table ordering checks, coverage-sort sync and new Mitzpe Ramon summary at all three sizes. It asserts innerWidth/scrollWidth and healthy-page console/page errors. Deliberately blocked script is isolated and expects console errors; unlisted city warning remains valid. No rendered-pass or zero-console-error claim made.
+Physical phone still requires safe-area, keyboard, touch, modal scrolling, scroll-to-results and clipboard/WhatsApp checks. DPR2 is not desktop200%zoom.
+Historical staged-data reports retain their earlier scope and are not a fresh data check. data not bundled.

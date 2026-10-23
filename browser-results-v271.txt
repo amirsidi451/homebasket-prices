@@ -1,0 +1,11 @@
+HomeBasket v2.7.1 — observed Chrome DOM/layout run, 23.10.2026
+Runner: tests/v271.browser.html, tests/v271.browser.js
+Result: DONE: 1636 PASS; 0 FAIL
+Fixtures: with / without / broken equivalents
+Widths: 320 / 390 / 640 / 1280 CSS px (iframe)
+No-overflow assertions: 79 per width; all pass.
+Cities: Gan Yavne, Jerusalem, Tel Aviv, Holon, Haifa, Mitzpe Ramon
+Modes: delivery and pickup
+Source-filtered browser console (terminal.local): no error messages.
+No production data, no retailer requests, no native isMobile/DPR2 claim.
+Native Playwright executable was missing; official browser download truncated.

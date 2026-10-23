@@ -22,12 +22,12 @@ test('existing malicious bidi controls stripped before wrapping',()=>{const s=O.
  test('pending search shows loading instead of products',()=>{assert.match(e.get('products').innerHTML,/מחפשים/);assert.doesNotMatch(e.get('products').innerHTML,/data-add|כיסוי טרם נבדק/);});
  e.get('query').value='אורז';e.get('query').listeners.input();release();await old;
  test('old response cannot render during next debounce interval',()=>{assert.match(e.get('products').innerHTML,/מחפשים/);assert.doesNotMatch(e.get('products').innerHTML,/חלב 3%/);});
- await sleep(140);
+ await sleep(350);
  test('latest query alone renders after debounce',()=>{assert.match(e.get('products').innerHTML,/אורז בסמטי/);assert.doesNotMatch(e.get('products').innerHTML,/חלב 3%|כיסוי טרם נבדק/);});
  test('loading clears after latest response',()=>assert.equal(e.get('products')['aria-busy'],'false'));
  for(const q of ['ח','חל','חלב','א','אור','אורז']){e.get('query').value=q;e.get('query').listeners.input();}
- await sleep(140);test('six rapid inputs settle on final query',()=>{assert.match(e.get('products').innerHTML,/אורז בסמטי/);assert.doesNotMatch(e.get('products').innerHTML,/חלב 3%/);});
- e.get('query').value='';e.get('query').listeners.input();await sleep(140);test('empty search gives guidance, never arbitrary storage containers',()=>{assert.match(e.get('products').innerHTML,/הקלידו/);assert.doesNotMatch(e.get('products').innerHTML,/data-add|כיסוי טרם נבדק/);});
+ await sleep(350);test('six rapid inputs settle on final query',()=>{assert.match(e.get('products').innerHTML,/אורז בסמטי/);assert.doesNotMatch(e.get('products').innerHTML,/חלב 3%/);});
+ e.get('query').value='';e.get('query').listeners.input();await sleep(350);test('empty search gives guidance, never arbitrary storage containers',()=>{assert.match(e.get('products').innerHTML,/הקלידו/);assert.doesNotMatch(e.get('products').innerHTML,/data-add|כיסוי טרם נבדק/);});
  e.run("getChunk=async()=>{throw Error('test offline')}");e.get('query').value='חלב';await e.run('renderProducts()');test('search price failure shows error, not stale unrelated products',()=>{assert.match(e.get('products').innerHTML,/לא ניתן לטעון מחירים/);assert.doesNotMatch(e.get('products').innerHTML,/data-add|אורז בסמטי/);});
  const c=setup({}, {consent:false,service:false});c.ctx.stamp=new Date().toISOString();
  c.run("networks=HB.chains(Object.entries(HB_CONFIG.chains).map(([source,x])=>({source,name:x.name})));meta={per_chain_freshness:Object.fromEntries(networks.map(x=>[x.source,{latest_snapshot_at:stamp}]))};ready=true;catalog=HB.products({fields:['name','unit','quantity','weighted'],p:{'123':['במבה','גרם',80,0]}});cart=[{barcode:'123',qty:1}];priceMode='single';priceFiles=['prices.json.gz'];priceCache.set('prices.json.gz',new Map([['123',new Map(networks.map(n=>[n.index,{last:1000+n.index}]))]]));applyService('עיר בדיקה','delivery');");await c.run('renderCompare()');
@@ -35,9 +35,9 @@ test('existing malicious bidi controls stripped before wrapping',()=>{const s=O.
  test('Yohananof no delivery handoff button or URL opening',()=>{assert.doesNotMatch(c.get('comparison').innerHTML,/data-order="3"/);assert.equal(c.run('openOrder(3)'),false);});
  test('original eighth chain index retained after mode filtering',()=>assert.equal(c.run('networks[7].source'),'TIV_TAAM'));
  c.run("HB_CONFIG.chains.RAMI_LEVY.pickup=null;applyService('עיר בדיקה','pickup')");await c.run('renderCompare()');
- test('Yohananof included for pickup availability verification',()=>{assert.match(c.get('comparison').innerHTML,/יוחננוף/);assert.equal(c.run('serviceState(networks[3]).status'),'verify');});
- test('Rami unknown pickup has explicit retailer verification message',()=>{assert.equal(c.run('serviceState(networks[1]).label'),'בדקו נקודת איסוף באתר הרשת');assert.equal(c.run('isEligible(1)'),true);});
- c.run('openOrder(1)');test('unknown pickup handoff repeats pickup check',()=>assert.match(c.get('order-service').textContent,/בדקו נקודת איסוף באתר הרשת/));
+ test('Yohananof included for pickup availability verification',()=>{assert.match(c.get('comparison').innerHTML,/יוחננוף/);assert.equal(c.run('serviceState(networks[3]).status'),'unknown');});
+ test('Rami unknown pickup has explicit retailer verification message',()=>{assert.equal(c.run('serviceState(networks[1]).label'),'לא ידוע אם יש נקודת איסוף בעיר — בדקו באתר הרשת');assert.equal(c.run('isEligible(1)'),false);});
+ test('unknown pickup has no order handoff',()=>assert.equal(c.run('openOrder(1)'),false)); c.run("HB_CONFIG.chains.RAMI_LEVY.pickup=true;HB_CONFIG.chains.RAMI_LEVY.serviceAreas={pickup:['עיר בדיקה']};openOrder(1)");
  let copied='';c.ctx.navigator.clipboard.writeText=async text=>copied=text;await c.get('copy').onclick();test('cart copy uses same isolated formatter as order handoff',()=>assert.equal(copied,c.get('order-list').value));
  const summary=setup();summary.run("catalog=new Map(Array.from({length:5},(_,i)=>[String(i),{name:'מוצר '+i,unit:'יחידות',quantity:1,weighted:false}]));cart=Array.from({length:5},(_,i)=>({barcode:String(i),qty:1}));");
  vm.runInContext(fs.readFileSync(path.join(__dirname,'../receipt-ui.js'),'utf8'),summary.ctx);

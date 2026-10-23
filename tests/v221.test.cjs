@@ -1,7 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),S=require('../savings.js'),H=require('../core.js'),T=require('../top-ranking.js'),{setup,loadFixture}=require('./support.cjs');
 let checks=0;function test(name,f){f();checks++;console.log('PASS '+name);}
 const now=Date.now(),stamp=new Date(now).toISOString();
-function fixture(){return {rows:Array.from({length:8},(_,chain)=>({chain,coverage:2,total:10000+chain*1000})),cartSize:2,networks:Array.from({length:8},(_,chain)=>({name:'רשת '+chain,source:'C'+chain,index:chain})),config:{chains:Object.fromEntries(Array.from({length:8},(_,i)=>['C'+i,{availability:'verify',delivery:true,pickup:true,estimatedDeliveryFee:10,estimatedPickupFee:0,orderUrl:'https://shop.example.test/'}]))},place:{city:'עיר בדיקה',mode:'delivery'},snapshots:Array(8).fill(stamp),now};}
+function fixture(){return {rows:Array.from({length:8},(_,chain)=>({chain,coverage:2,total:10000+chain*1000})),cartSize:2,networks:Array.from({length:8},(_,chain)=>({name:'רשת '+chain,source:'C'+chain,index:chain})),config:{chains:Object.fromEntries(Array.from({length:8},(_,i)=>['C'+i,{availability:'known',serviceAreas:['*'],delivery:true,pickup:true,estimatedDeliveryFee:10,estimatedPickupFee:0,orderUrl:'https://shop.example.test/'}]))},place:{city:'עיר בדיקה',mode:'delivery'},snapshots:Array(8).fill(stamp),now};}
 let f=fixture(),m=S.model(f);
 test('all eight chains preserved in reference model',()=>assert.equal(m.all.length,8));
 test('known fees use grand totals uniformly',()=>{assert.equal(m.basis,'total');assert.equal(m.full[0].amount,11000);assert.equal(m.full[7].amount,18000);});
@@ -48,7 +48,7 @@ test('zero saving text says tie',()=>assert.equal(S.savingText(S.difference(0,0)
 test('invalid difference arguments are rejected',()=>{assert.equal(S.difference(null,0),null);assert.equal(S.difference(-1,0),null);assert.equal(S.difference(Infinity,1),null);});
 test('negative average difference shown as expense not fake savings',()=>assert.match(S.savingText(S.difference(100,200)),/יקר יותר/));
 f=fixture();f.rows[0].total=NaN;f.rows[1].coverage=3;m=S.model(f);test('invalid price and impossible coverage excluded',()=>{assert.equal(m.full.length,6);assert.equal(m.all[0].itemsTotal,null);assert.equal(m.all[1].itemsTotal,null);});
-f=fixture();f.place.mode='pickup';f.config.chains.C1.estimatedPickupFee=null;m=S.model(f);test('pickup unknown fee same uniform products policy',()=>{assert.equal(m.basis,'total');assert.equal(m.chosen,null);assert.ok(m.full.every(r=>r.total!==null));});
+f=fixture();f.place.mode='pickup';f.config.chains.C1.estimatedPickupFee=null;m=S.model(f);test('pickup unknown fee same uniform products policy',()=>{assert.equal(m.basis,'total');assert.ok(m.chosen&&m.chosen.chain!==1);assert.ok(m.full.every(r=>r.total!==null));});
 f.networks[0].name='<img src=x onerror=alert(1)>';m=S.model(f);test('network names escaped in rows and chart',()=>{assert.doesNotMatch(S.render(m,'pickup'),/<img/);assert.match(S.render(m,'pickup'),/&lt;img/);});
 test('fractional weighted quantities included via coverage core',()=>{const ff=fixture();const rows=H.coverage([{barcode:'a',qty:1.25},{barcode:'b',qty:2}],new Map([['a',new Map([[0,{last:1000}]])],['b',new Map([[0,{last:200}]])]]),8,'last',now,ff.snapshots);assert.equal(S.model({...ff,rows}).all[0].itemsTotal,1650);});
 test('existing Top3 policy untouched by savings model',()=>{const ff=fixture();const before=T.rank(ff);S.model(ff);assert.deepEqual(T.rank(ff),before);});

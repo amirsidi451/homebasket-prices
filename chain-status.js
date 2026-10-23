@@ -8,6 +8,7 @@
    const state=O.service(list[i],config,place);let group;
    // Exactly one category; priority is explicit and does not change eligibility.
    if(['hidden','unsupported','outside'].includes(state.status))group='unavailable';
+   else if(state.status==='unknown'||state.status==='location')group='verify';
    else if(!loaded)group='verify';
    else if(!H.fresh(snapshots[i],now))group='stale';
    else if(!cart.length)group=knownPricedChains.has(i)?'priced':'verify';
@@ -15,13 +16,13 @@
    else if(cart.some(item=>H.priceStatus(records.get(item.barcode)?.get(i),snapshots[i],'last',now)!=='תקין'))group='partial';
    else group='priced';
    const current=H.fresh(snapshots[i],now),coverage=current?cart.filter(item=>H.priceStatus(records.get(item.barcode)?.get(i),snapshots[i],'last',now)==='תקין').length:0;
-   const priceState=!state.eligible&&place?'unavailable':!loaded?'pending':!current?'stale':!cart.length?(knownPricedChains.has(i)?'catalog':'pending'):!checked?'pending':coverage===cart.length?'full':coverage>0?'partial':'none';
-   buckets[group]++;assignments.push({chain:i,source:list[i].source,group,priceState,coverage,verificationRequired:state.eligible&&state.status!=='available'});
+   const priceState=state.status==='unknown'?'verify':!state.eligible&&place?'unavailable':!loaded?'pending':!current?'stale':!cart.length?(knownPricedChains.has(i)?'catalog':'pending'):!checked?'pending':coverage===cart.length?'full':coverage>0?'partial':'none';
+   buckets[group]++;assignments.push({chain:i,source:list[i].source,group,priceState,coverage,verificationRequired:false});
   }
   const text='מתוך '+total+' רשתות: '+buckets.priced+' מציגות מחיר, '+buckets.verify+' דורשות בדיקת זמינות באתר הרשת, '+buckets.unavailable+' לא זמינות בעירך, '+buckets.stale+' לא עדכניות, '+buckets.partial+' מחיר חלקי';
   return {total,...buckets,assignments,text,pending:!loaded||!cart.length||!checked};
  }
- function displayCounts(assignments){const count=key=>assignments.filter(a=>a.priceState===key).length;return {fullBaskets:count('full'),partialBaskets:count('partial'),withoutPrice:count('none'),pendingPrices:count('pending'),catalogPrices:count('catalog'),unavailable:count('unavailable'),stale:count('stale'),verificationRequired:assignments.filter(a=>a.verificationRequired).length};}
- function displaySummary(assignments){const c=displayCounts(assignments),n=assignments.length;return (n===1?'מתוך רשת אחת: ':'מתוך '+n+' רשתות: ')+c.fullBaskets+' עם סל מלא · '+c.partialBaskets+' עם מחיר חלקי · '+c.withoutPrice+' ללא מחיר בסל'+(c.catalogPrices?' · '+c.catalogPrices+' עם מחירים בקטלוג':'')+(c.pendingPrices?' · '+c.pendingPrices+' בבדיקת מחירים':'')+' · '+c.unavailable+' לא זמינות לבחירה · '+c.stale+' לא עדכניות. זמינות שירות (בנפרד מכיסוי הסל): '+(c.verificationRequired===1?'רשת אחת דורשת':c.verificationRequired+' דורשות')+' בדיקת זמינות באתר הרשת';}
+ function displayCounts(assignments){const count=key=>assignments.filter(a=>a.priceState===key).length;return {fullBaskets:count('full'),partialBaskets:count('partial'),withoutPrice:count('none'),pendingPrices:count('pending'),catalogPrices:count('catalog'),unavailable:count('unavailable'),stale:count('stale'),unknown:count('verify'),verificationRequired:assignments.filter(a=>a.verificationRequired).length};}
+ function displaySummary(assignments){const c=displayCounts(assignments),n=assignments.length;return (n===1?'מתוך רשת אחת: ':'מתוך '+n+' רשתות: ')+c.fullBaskets+' עם סל מלא · '+c.partialBaskets+' עם מחיר חלקי · '+c.withoutPrice+' ללא מחיר בסל'+(c.catalogPrices?' · '+c.catalogPrices+' עם מחירים בקטלוג':'')+(c.pendingPrices?' · '+c.pendingPrices+' בבדיקת מחירים':'')+' · '+(c.unknown||0)+' יש לבדוק זמינות · '+c.unavailable+' לא זמינות לבחירה · '+c.stale+' לא עדכניות';}
  return {summarize,displayCounts,displaySummary};
 });

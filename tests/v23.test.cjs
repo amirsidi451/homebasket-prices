@@ -47,7 +47,7 @@ test('invalid image metadata does not break products',()=>{assert.equal(I.parse(
 test('product data shape is unchanged by separate image map',()=>{const raw={fields:['name','unit','quantity','weighted'],p:{'123':['חלב','ליטר',2,0]}},p=H.products(raw).get('123');I.parse({'123':'https://cdn.test/a.png'});assert.deepEqual(Object.keys(p).sort(),['barcode','name','quantity','unit','weighted']);});
 (async()=>{
  const e=setup();await loadFixture(e);
- test('search card includes quantity input and large add control',()=>{assert.match(e.get('products').innerHTML,/id="add-qty-3073781199918"/);assert.match(e.get('products').innerHTML,/class="primary add-product"/);});
+ test('search card includes quantity input and large add control',()=>{assert.doesNotMatch(e.get('products').innerHTML,/id="add-qty-3073781199918"/);assert.match(e.get('products').innerHTML,/class="primary add-product"/);});
  test('product with no image has initial-letter placeholder, no blank image',()=>{assert.match(e.get('products').innerHTML,/product-letter"[^>]*>ג/);assert.doesNotMatch(e.get('products').innerHTML,/<img/);});
  e.get('add-qty-3073781199918').value='3';e.get('products').onclick({target:{closest:()=>({dataset:{add:'3073781199918'}})}});
  test('selected quantity used on add instead of always one',()=>assert.equal(e.run('cart[0].qty'),3));
@@ -79,14 +79,14 @@ test('product data shape is unchanged by separate image map',()=>{const raw={fie
  test('v2.5.5: all shown (visible) chains appear with unique reason rows; hidden C7 does not',()=>{assert.equal((audit.match(/data-network-chain=/g)||[]).length,7);for(let i=0;i<7;i++)assert.ok(audit.includes('data-network-chain="'+i+'"'));assert.ok(!audit.includes('data-network-chain="7"'));});
  test('v2.5.5: hidden chain is not listed in the audit',()=>assert.doesNotMatch(audit,/מוסתרת – אין שירות אונליין/));
  test('older-than-72 chain explicitly dated and not priced',()=>{const stale=audit.slice(audit.indexOf('data-network-chain="6"')).split('</tr>')[0];assert.match(stale,/לא עדכנית/);assert.doesNotMatch(stale,/data-order=/);});
- test('65h source shown with warning and partial prices',()=>{assert.match(html,/הנתונים בני 65/);assert.match(html,/data-network-chain="5"/);});
+ test('65h source shown with warning and partial prices',()=>{assert.match(ui.get('comparison-data-age').innerHTML,/סריקת מחירי הרשת/);assert.match(html,/data-network-chain="5"/);});
  test('suggest substitute action exposed and wired in missing UI',()=>{assert.match(html,/>הצע תחליף<\/button>/);assert.match(html,/data-alt="300" data-target-chain="1"/);assert.equal(typeof ui.get('all-chain-explanations').listeners.click,'function');});
  const original=ui.run('JSON.stringify(cart)');await ui.run("openAlternatives('300',1)");
  test('opening suggestions cannot alter cart or approved fees/prices',()=>{assert.equal(ui.run('JSON.stringify(cart)'),original);assert.equal(ui.run('approved.size'),0);});
  ui.run("priceCache.get('prices.json.gz').get('300').delete(0)");await ui.run('renderCompare()');html=ui.get('comparison').innerHTML;
  test('no full basket clear headline and no Top3 partial ranks',()=>{assert.match(ui.get('result-summary').textContent,/אף רשת לא מכסה את כל הסל/);assert.equal((html.match(/network-winner"/g)||[]).length,0);});
- test('fallback shared ranking visible rather than trapped in folded details',()=>{assert.match(html,/<section class="panel common-fallback">[\s\S]*מצב משותף/);assert.match(html,/2 מתוך 3 מוצרים זהים/);});
- test('fallback explicitly excludes shipping fees and full-basket savings',()=>assert.match(html,/אינו מחיר הסל המלא ואינו נכלל בחיסכון לסל מלא/));
+ test('fallback shared ranking visible rather than trapped in folded details',()=>{assert.match(html,/2 מתוך 3/);assert.match(html,/סכום חלקי — לא ניתן להשוות/);});
+ test('fallback explicitly excludes shipping fees and full-basket savings',()=>assert.match(html,/חיסכון מחושב רק בין סלים מלאים שעומדים בתנאים/));
  test('partial rows never primary purchase recommendations',()=>{const table=html.slice(html.indexOf('<table class="network-table">'),html.indexOf('</table>'));assert.doesNotMatch(table,/class="primary"/);});
  test('full-basket savings remain absent on no-full fallback',()=>assert.doesNotMatch(ui.get('savings').innerHTML,/לעומת היקרה ביותר: <strong>/));
  const receipt=fs.readFileSync(path.join(__dirname,'../receipt-ui.js'),'utf8');ui.run(receipt);ui.ctx.location.hash='#search';ui.run('route()');

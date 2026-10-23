@@ -26,7 +26,7 @@ test('static deep link on same origin supported',()=>assert.equal(O.destination(
 for(const value of ['javascript:alert(1)','http://shop.example.test/','https://user:password@shop.example.test/',''])test('unsafe order destination blocked: '+value,()=>assert.equal(O.destination(chain,{chains:{A:{...entry,orderUrl:value}}}),null));
 test('cross-origin deep link blocked',()=>assert.equal(O.destination(chain,{chains:{A:{...entry,deepLink:'https://other.example/'}}}),null));
 test('relative javascript deep link blocked',()=>assert.equal(O.destination(chain,{chains:{A:{...entry,deepLink:'javascript:alert(1)'}}}),null));
-test('city suggestions contain no wildcard or duplicates',()=>assert.deepEqual(O.cities({chains:{A:entry,B:{serviceAreas:['*','אור יהודה']}}}),['אור יהודה','תל אביב']));
+test('city suggestions contain no wildcard or duplicates',()=>assert.deepEqual(O.cities({chains:{A:entry,B:{serviceAreas:['*','אור יהודה']}}}),['אור יהודה','תל אביב-יפו']));
 test('aggregate price labelled unverified online',()=>assert.match(O.priceLabel(chain,config),/לא אומת/));
 test('online label only explicit config',()=>assert.match(O.priceLabel(chain,{chains:{A:{priceBasis:'online'}}}),/מקור אונליין שהוגדר/));
 (async()=>{
@@ -46,13 +46,13 @@ test('online label only explicit config',()=>assert.match(O.priceLabel(chain,{ch
  test('location not persisted even when cart saving enabled',()=>{e.run('saveCartEnabled=true;save()');assert.match(e.storage['homebasket-place-v1'],/עיר ב/);});
  test('search coverage uses both visible networks regardless of service city',()=>assert.equal(e.run("coverageIndex.get('3073781199918')"),2));
  e.run("HB_CONFIG.chains.A.serviceAreas=['עיר ב'];HB_CONFIG.chains.B.estimatedDeliveryFee=35.9;applyService('עיר ב','delivery')");await e.run('renderCompare()');
- test('two eligible networks compare same scalar',()=>{assert.match(e.get('result-summary').textContent,/הרשת הזולה ביותר לסל המלא: רשת א/);assert.match(e.get('result-summary').textContent,/20/);});
+ test('two eligible networks compare same scalar',()=>{assert.match(e.get('result-summary').textContent,/חוסכים עד/);assert.match(e.get('comparison').innerHTML,/20[.,]00/);});
  test('known delivery fee displayed separately',()=>assert.match(e.get('comparison').innerHTML,/35[.,]90/));
- test('fee not added to fair products total',()=>assert.match(e.get('result-summary').textContent,/20/));
+ test('fee not added to fair products total',()=>assert.match(e.get('comparison').innerHTML,/20[.,]00/));
  test('estimated price label always visible for default export',()=>assert.match(e.get('comparison').innerHTML,/לא אומת כמחיר אונליין/));
- e.get('metric').value='median';await e.run('renderCompare()');test('hidden legacy metric cannot switch canonical chain price',()=>assert.match(e.get('result-summary').textContent,/20/));
+ e.get('metric').value='median';await e.run('renderCompare()');test('hidden legacy metric cannot switch canonical chain price',()=>assert.match(e.get('comparison').innerHTML,/20[.,]00/));
  e.run('openOrder(0);setQuantity("3073781199918",3)');test('cart edits invalidate handoff list',()=>{assert.equal(e.get('order-dialog').open,false);assert.equal(e.get('order-list').value,'');});
- e.run("applyService('עיר לא מוכרת','delivery')");await e.run('renderCompare()');test('unconfigured area cannot rank any chain',()=>{assert.equal(e.run('selected.size'),0);assert.match(e.get('result-summary').textContent,/אין כרגע סל מלא/);});
+ e.run("applyService('עיר לא מוכרת','delivery')");await e.run('renderCompare()');test('unconfigured area cannot rank any chain',()=>{assert.equal(e.run('selected.size'),0);assert.match(e.get('result-summary').textContent,/אין רשת עם משלוח מאומת לעיר/);});
  e.run("applyService('עיר ב','delivery');catalog.set('42',{barcode:'42',name:'גבינה חלופית',quantity:1,unit:'יחידות',weighted:false});approved.set('0:3073781199918',{barcode:'42',qty:2});comparisonRecords.set('3073781199918',new Map());comparisonRecords.set('42',new Map([[0,{last:990}]]));openOrder(0)");
  test('explicit approved substitute used for missing original in handoff',()=>assert.match(plain(e.get('order-list').value),/גבינה חלופית.*— 2 אריזות/));
  test('city never included in versioned data URLs',()=>assert.doesNotMatch(e.run("dataURL('prices.json.gz').href"),/עיר|%D7%A2%D7%99%D7%A8/));

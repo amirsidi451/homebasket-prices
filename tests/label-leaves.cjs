@@ -6,5 +6,5 @@ function tree(html){const root={tag:'root',attrs:'',text:'',children:[]},stack=[
 function walk(n){return [n,...n.children.flatMap(walk)]}
 function labels(n){return walk(n).filter(x=>!x.children.length&&!['button','a','summary','script','style'].includes(x.tag)).map(x=>decode(x.text)).filter(s=>/[א-תA-Za-z]/.test(s))}
 function duplicates(n){const counts=new Map();for(const label of labels(n))counts.set(label,(counts.get(label)||0)+1);return [...counts].filter(([,count])=>count>1)}
-function rows(html){return walk(tree(html)).filter(n=>/data-(?:network|unavailable)-chain=/.test(n.attrs))}
+function rows(html){return walk(tree(html)).filter(n=>/data-(?:network|unavailable|unknown)-chain=/.test(n.attrs))}
 module.exports={tree,walk,labels,duplicates,rows};

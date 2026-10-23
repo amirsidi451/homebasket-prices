@@ -1,0 +1,10 @@
+{
+  "release": "2.5.1",
+  "gzipStartupBytes": 161942,
+  "previousRelease": "2.5",
+  "previousGzipStartupBytes": 158593,
+  "additionalBytes": 3349,
+  "fontBytes": 76684,
+  "method": "Node gzip default; excludes data, docs, backup ZIP and first-use OCR",
+  "realBrowser": false
+}

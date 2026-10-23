@@ -5,15 +5,19 @@
  function cityKey(value){return normalize(canonicalCity(value)).replace(/יי+/g,'י').replace(/[\s־–—-]+/g,'');}
  function settings(chain,config){return config?.chains?.[chain.source]||{};}
  function availabilityLabel(mode){return mode==='pickup'?'יש לבדוק זמינות איסוף באתר הרשת':'יש לבדוק זמינות משלוח לכתובת באתר הרשת';}
+ const aliasCache=new WeakMap();
+ function localityName(value,config){const aliases=config?.localityAliases||{},key=cityKey(value);let map=aliasCache.get(aliases);if(!map){map=new Map(Object.entries(aliases).map(([a,b])=>[cityKey(a),b]));aliasCache.set(aliases,map);}let name=canonicalCity(value),seen=new Set();while(map.has(cityKey(name))&&!seen.has(cityKey(name))){seen.add(cityKey(name));name=canonicalCity(map.get(cityKey(name)));}return name;}
+ function areaList(c,field,mode){const areas=c?.[field];return Array.isArray(areas)?areas:Array.isArray(areas?.[mode])?areas[mode]:[];}
+ function areaContains(list,city,config){const key=cityKey(localityName(city,config));return list.some(a=>a==='*'||cityKey(localityName(a,config))===key);}
+ function knownCity(city,config,mode){return Object.values(config?.chains||{}).some(c=>c.visible!==false&&[...(mode?[mode]:['delivery','pickup'])].some(m=>areaContains([...areaList(c,'serviceAreas',m),...areaList(c,'serviceAreasUnknown',m)],city,config)));}
  function service(chain,config,place){
   const c=settings(chain,config);if(c.visible===false)return {eligible:false,status:'hidden',label:'לא מוצגת — אין הזמנות אונליין'};if(!place?.city||!['delivery','pickup'].includes(place.mode))return {eligible:false,status:'location',label:'בחרו עיר ואופן קבלה'};
-  const enabled=c[place.mode];if(enabled===false)return {eligible:false,status:'unsupported',label:place.mode==='delivery'?'אין משלוח לפי ההגדרות':'אין איסוף עצמי לפי ההגדרות'};
-  if(place.mode==='pickup'&&(enabled!==true||c.availability==='verify'))return {eligible:true,status:'verify',label:'בדקו נקודת איסוף באתר הרשת'};
-  if(c.availability==='verify')return {eligible:true,status:'verify',label:availabilityLabel(place.mode)};
-  const areas=Array.isArray(c.serviceAreas)?c.serviceAreas:c.serviceAreas?.[place.mode];
-  if(enabled!==true||!Array.isArray(areas)||!areas.length)return {eligible:false,status:'unknown',label:'זמינות לא ידועה — יש לבדוק באתר הרשת'};
-  if(!areas.some(a=>a==='*'||cityKey(a)===cityKey(place.city)))return {eligible:false,status:'outside',label:'לא משרתת את העיר לפי ההגדרות'};
-  return {eligible:true,status:'available',label:availabilityLabel(place.mode)};
+  const mode=place.mode,enabled=c[mode],pickup=mode==='pickup',city=localityName(place.city,config),areas=areaList(c,'serviceAreas',mode),unknown=areaList(c,'serviceAreasUnknown',mode);
+  if(enabled===false)return {eligible:false,status:'unsupported',label:pickup?'אין איסוף עצמי לפי ההגדרות':'אין משלוח לפי ההגדרות'};
+  if(enabled!==true||(!areaContains(areas,city,config)&&(areaContains(unknown,city,config)||!areas.length)))return {eligible:false,status:'unknown',label:pickup?'לא ידוע אם יש נקודת איסוף בעיר — בדקו באתר הרשת':'לא ידוע אם יש משלוח בעיר — בדקו באתר הרשת'};
+  if(!areaContains(areas,city,config))return {eligible:false,status:'outside',label:pickup?'אין נקודת איסוף בעיר לפי אתר הרשת':'אין משלוח בעיר לפי אתר הרשת'};
+  const notes=c.serviceAreaNotes?.[mode]||{},note=Object.entries(notes).find(([key])=>cityKey(localityName(key,config))===cityKey(city))?.[1]||'';
+  return {eligible:true,status:'available',label:pickup?'יש נקודת איסוף בעיר לפי אתר הרשת':'משלוח לעיר לפי אתר הרשת',note};
  }
  function fee(chain,config,mode){if(!['delivery','pickup'].includes(mode))return null;const c=settings(chain,config),v=mode==='delivery'?c.estimatedDeliveryFee:c.estimatedPickupFee;return typeof v==='number'&&Number.isFinite(v)&&v>=0?Math.round(v*100):null;}
  // subtotal is product prices in AGOROT, excluding fulfilment and platform fees.
@@ -43,10 +47,10 @@
   return out;
  }
  function destination(chain,config){const c=settings(chain,config);try{const base=new URL(c.orderUrl);if(base.protocol!=='https:'||base.username||base.password)return null;const deep=c.deepLink?new URL(c.deepLink,base):base;if(deep.protocol!=='https:'||deep.origin!==base.origin||deep.username||deep.password)return null;return deep.href;}catch{return null;}}
- function cities(config){return [...new Set(Object.values(config.chains||{}).filter(c=>c.visible!==false&&c.availability!=='verify').flatMap(c=>Array.isArray(c.serviceAreas)?c.serviceAreas:Object.values(c.serviceAreas||{}).flat()).filter(x=>typeof x==='string'&&x!=='*'&&x.trim()))].sort((a,b)=>a.localeCompare(b,'he'));}
+ function cities(config){return [...new Set(Object.values(config.chains||{}).filter(c=>c.visible!==false).flatMap(c=>['delivery','pickup'].flatMap(m=>[...areaList(c,'serviceAreas',m),...areaList(c,'serviceAreasUnknown',m)])).filter(x=>typeof x==='string'&&x!=='*'&&x.trim()).map(x=>localityName(x,config)))].sort((a,b)=>a.localeCompare(b,'he'));}
  // Only extract an unambiguous configured city; no network geocoding or price selection.
  function cityFromText(text,config){
-  const raw=canonicalCity(String(text||'').trim().replace(/\s+/g,' ')),value=normalize(raw.replace(/תל[\s־–-]+אביב(?:[\s־–-]+יפו)?/g,'תל אביב-יפו')),known=cities(config).map(canonicalCity);
+  const raw=localityName(String(text||'').trim().replace(/\s+/g,' '),config),value=normalize(raw.replace(/תל[\s־–-]+אביב(?:[\s־–-]+יפו)?/g,'תל אביב-יפו')),known=cities(config).map(canonicalCity);
   const exact=known.find(city=>cityKey(city)===cityKey(raw));if(exact)return exact;
   const matches=known.filter(city=>(' '+value.replace(/יי+/g,'י')+' ').includes(' '+normalize(city).replace(/יי+/g,'י')+' ')).sort((a,b)=>b.length-a.length);
   return matches.length&&matches.every(city=>normalize(matches[0]).includes(normalize(city)))?matches[0]:raw;
@@ -75,5 +79,5 @@
   return output;
  }
  function applyAreas(raw,config){const output=parseAreas(raw);for(const [source,areas]of Object.entries(output)){if(settings({source},config).availability==='known')config.chains[source].serviceAreas=areas;}return Object.keys(output);}
- return {cityKey,canonicalCity,availabilityLabel,normalize,settings,service,fee,quote,minimumLabel,policyLabel,destination,cities,cityFromText,priceLabel,list,packs,productsCount,bidiText,parseAreas,applyAreas};
+ return {localityName,areaList,areaContains,knownCity,cityKey,canonicalCity,availabilityLabel,normalize,settings,service,fee,quote,minimumLabel,policyLabel,destination,cities,cityFromText,priceLabel,list,packs,productsCount,bidiText,parseAreas,applyAreas};
 });

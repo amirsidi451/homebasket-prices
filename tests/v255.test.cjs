@@ -9,17 +9,16 @@ const TOTALS=[10000,9000,11000,5000,12000,5500,6000,6500];
 function env({hide=true,cart=5,minimums={},noPriceFor=[],areas={}}={}){
  const stamp=new Date().toISOString(),e=setup({},{consent:false});e.ctx.stamp=stamp;e.ctx.TOTALS=TOTALS;e.ctx.NOPRICE=noPriceFor;e.ctx.CARTN=cart;
  e.run("networks=HB.chains("+JSON.stringify(SOURCES.map((s,i)=>({source:s,name:NAMES[i]})))+");meta={per_chain_freshness:Object.fromEntries(networks.map(n=>[n.source,{latest_snapshot_at:stamp}]))};");
- const cfg={};SOURCES.forEach((s,i)=>{cfg[s]={availability:i===1?'known':'verify',visible:hide?SHOWN.includes(i):true,delivery:true,pickup:true,orderUrl:'https://shop.example.test/'+s,serviceAreas:{delivery:i===1?['רחובות','תל אביב']:[],pickup:i===1?['רחובות']:[]},estimatedDeliveryFee:30,estimatedPickupFee:10,fulfilment:{basis:'estimate',delivery:{amount:30,minimumOrder:minimums[i]||0},pickup:{amount:10,minimumOrder:minimums[i]||0}}};});
+ const cfg={};SOURCES.forEach((s,i)=>{cfg[s]={availability:i===1?'known':'verify',visible:hide?SHOWN.includes(i):true,delivery:true,pickup:true,orderUrl:'https://shop.example.test/'+s,serviceAreas:{delivery:i===1?['רחובות','תל אביב']:['*'],pickup:i===1?['רחובות']:['*']},estimatedDeliveryFee:30,estimatedPickupFee:10,fulfilment:{basis:'estimate',delivery:{amount:30,minimumOrder:minimums[i]||0},pickup:{amount:10,minimumOrder:minimums[i]||0}}};});
  e.ctx.CFG=cfg;
  e.run("HB_CONFIG.chains=CFG;catalog=HB.products({fields:['name','unit','quantity','weighted'],p:Object.fromEntries(Array.from({length:8},(_,i)=>[String(100+i),['מוצר '+i,'יחידות',1,0]]))});cart=Array.from({length:CARTN},(_,i)=>({barcode:String(100+i),qty:1}));priceMode='single';priceFiles=['prices.json.gz'];priceCache.set('prices.json.gz',new Map(cart.map((it,j)=>[it.barcode,new Map(networks.filter(n=>!NOPRICE.includes(n.index)).map(n=>[n.index,{last:Math.floor(TOTALS[n.index]/CARTN)+(j===0?TOTALS[n.index]%CARTN:0)}]))])));ready=true;");
  return e;
 }
 const tops=e=>[...e.get('comparison').innerHTML.matchAll(/data-network-chain="(\d+)"/g)].map(m=>+m[1]);
 (async()=>{
- // --- production config flags (only when the serve directory is next to the test dir)
- const prod=path.join(__dirname,'..','..','serve','config.js'),prodAlt=path.join(__dirname,'..','config.production.js');
- for(const p of [prod,prodAlt])if(fs.existsSync(p)){const w={};w.window=w;vm.runInNewContext(fs.readFileSync(p,'utf8'),w);
-  test('production config: exactly the 4 verified chains visible ('+path.basename(path.dirname(p))+')',()=>{const c=w.HB_CONFIG.chains;assert.deepEqual(Object.keys(c).filter(k=>c[k].visible!==false).sort(),['RAMI_LEVY','SHUFERSAL','VICTORY_NEW_SOURCE','YAYNO_BITAN_AND_CARREFOUR']);assert.deepEqual(Object.keys(c).filter(k=>c[k].visible===false).sort(),['HAZI_HINAM','OSHER_AD','TIV_TAAM','YOHANANOF']);assert.equal(Object.keys(c).length,8);});}
+ // Production flags are checked only from the ZIP's own config, never a sibling serve tree.
+ const w={};w.window=w;vm.runInNewContext(fs.readFileSync(path.join(__dirname,'..','config.js'),'utf8'),w);
+ test('production config: seven visible chains and only Osher hidden',()=>{const c=w.HB_CONFIG.chains;assert.deepEqual(Object.keys(c).filter(k=>c[k].visible!==false).sort(),['HAZI_HINAM','RAMI_LEVY','SHUFERSAL','TIV_TAAM','VICTORY_NEW_SOURCE','YAYNO_BITAN_AND_CARREFOUR','YOHANANOF']);assert.deepEqual(Object.keys(c).filter(k=>c[k].visible===false),['OSHER_AD']);assert.equal(Object.keys(c).length,8);});
  // --- Rehovot delivery
  let e=env();e.run("applyService('רחובות','delivery')");await e.run('renderCompare()');
  test('only the 4 shown chains are selectable/eligible',()=>{assert.equal(e.run('visibleNetworks().length'),4);assert.equal(e.run('eligibleIds().length'),4);assert.deepEqual([...e.run('eligibleIds()')],SHOWN);});

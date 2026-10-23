@@ -1,0 +1,13 @@
+HomeBasket v2.6.9 — handoff source provenance, 2026-10-22
+
+The retained v269 ZIP was truncated (15,095,384 bytes): no central directory / ZIP end marker, final local header ran beyond file length while inside backups/HomeBasket_Static_v2.6.8.zip. 68 complete preceding members were extracted and individually validated using declared uncompressed sizes and CRC32. The retained v268 ZIP (8,297,063 bytes) passed Python ZipFile.testzip() and supplied the complete earlier project tree.
+
+Complete recovered v269 members were retained except backups. app.js was recovered intact and verified against the original one-expression v269 chart-order patch. Missing v269 tail members were restored from the full v268 project and the exact v269 edits previously authored in this conversation: pickup-summary additions in network-table.js, release/cache keys, test isolation/pins, v269 fixtures and Playwright runner. Numeric fixture expectations were regenerated using the unchanged v268 model, not from the restored model under test.
+
+There is no retained full-file v269 tail checksum manifest to independently prove bit-for-bit identity to the lost end of the original ZIP. The package is a documented reconstruction of v269, not a claim that all bytes of the unavailable original archive were recovered. A locally published copy from the owner, if available, remains the best independent comparison source. No new product feature or redesign was introduced.
+
+Validation after restoration: all 1893 offline assertions passed; syntax checks passed. Config SHA256 remains 2713978a652f4a5aa89e235f8ed48e532e0d06855a8ee7ae5d17c00b6805fdb0. Unchanged relative to the verified v268 base: styles/redesign, core, online-core, fees, top-ranking, savings, chain-status, comparison-view, layout, legal, receipt modules, image module, city modules and boot guard. Unit tests verify v269 numerical/ranking equivalence, normalization of only the summary additions, matching display sorts and isolation from sibling serve config.
+
+Actual browser/Playwright and physical-phone checks were not rerun in this handoff. Tests are included with instructions in HANDOFF.md. No data directory, local SQLite, scraper/exporter, Task Scheduler task or Chrome extension was in the retained static-site ZIP; obtain them separately from the owner's computer.
+
+All backups/ directories and nested ZIPs removed from the handoff. Historical checksum lists and changelogs are retained for tests/history; they may refer to removed backups. SHA256SUMS_HANDOFF.txt describes this delivery, not the removed historical backups. Existing VALIDATION.txt is a historical v269 record; this file and HANDOFF.md explain the recovery limitation.

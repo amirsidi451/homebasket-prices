@@ -71,7 +71,7 @@ e.ctx.HBReceiptUI.clearReceipt();
 const originalQuery=e.ctx.document.querySelectorAll;
 e.ctx.document.querySelectorAll=selector=>selector==='.view'?['home','search','receipt','cart','networks','compare','info'].map(e.get):originalQuery(selector);
 e.ctx.location.hash='#home';e.run('route()');
-test('opening view exposes both manual and receipt entry paths',()=>{assert.equal(e.get('home').hidden,false);assert.equal(e.get('receipt').hidden,true);});
+test('opening view exposes both manual and receipt entry paths',()=>{assert.equal(e.get('home').hidden,true);assert.equal(e.get('search').hidden,false);assert.equal(e.get('receipt').hidden,true);});
 e.ctx.location.hash='#networks';e.run('route()');
 test('legacy network step redirects to comparison options',()=>{assert.equal(e.get('compare').hidden,false);assert.equal(e.get('networks').hidden,true);assert.equal(e.get('home').hidden,true);});
 await new Promise(resolve=>setTimeout(resolve,0));

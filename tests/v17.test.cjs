@@ -50,7 +50,7 @@ test('replacement provenance badge visible in cart',()=>assert.match(e.get('cart
 await e.run('renderCompare()');const out=e.get('comparison').innerHTML;
 test('comparison uses one primary table and closed detailed sections',()=>{assert.equal((out.match(/class="network-table"/g)||[]).length,1);assert.match(out,/<details class="network-product-details">/);assert.ok(!out.includes('לא מכסה את הקבוצה המשותפת'));});
 test('all product-price tables are closed behind disclosures',()=>{let depth=0,visible=0;for(const m of out.matchAll(/<\/?(details|table)\b[^>]*>/g)){const close=m[0].startsWith('</');if(m[1]==='details')depth+=close?-1:1;else if(!close&&depth===0)visible++;assert.ok(depth>=0);}assert.equal(depth,0);assert.equal(visible,1);});
-test('one concise summary names price and coverage',()=>assert.match(e.get('result-summary').textContent,/הרשת הזולה ביותר לסל המלא:.*1 מתוך 1 מוצר/));
+test('one concise summary names price and coverage',()=>assert.match(e.get('result-summary').textContent,/חוסכים עד.*לעומת היקרה מבין 2 רשתות/));
 for(const file of ['receipt-core.js','receipt-image.js','layout.js','receipt-ui.js'])vm.runInContext(fs.readFileSync(path.join(__dirname,'..',file),'utf8'),e.ctx);
 e.get('basket-drawer').open=true;e.get('receipt').listeners.focusin();test('receipt editing automatically closes obstructing drawer',()=>assert.equal(e.get('basket-drawer').open,false));
 let progressText='',seenSize=null;

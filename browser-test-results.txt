@@ -1,0 +1,9 @@
+HomeBasket v270 actual Chrome responsive QA
+DONE: 1320 PASS; 0 FAIL
+Widths: 1280 / 390 / 640 / 320 CSS px (iframes; not mobile emulation).
+Variants: valid equivalents / missing optional file / malformed file.
+Cities: Gan Yavne / Jerusalem / Tel Aviv / Holon / Haifa / Mitzpe Ramon; delivery + pickup.
+No app-origin console errors observed.
+Search-card height: 84px on all four widths, for all three fixture products.
+Native Playwright isMobile/DPR2 run: NOT COMPLETED; Chromium installation failed.
+See VALIDATION.txt for full scope and limitations.
